@@ -1,0 +1,26 @@
+{
+  "author": "Ragnar",
+  "name": "bem-fm",
+  "email": "murdalay@gmail.com",
+  "version": "0.0.2",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "dependencies": {
+    "bem-environ": "1.4.0",
+    "mime" :"^1.3.2",
+    "body-parser": "^1.12.1",
+    "path": "^0.11.14"
+  },
+  "devDependencies": {
+    "bem": "0.9.0",
+    "bower": "1.3.9",
+    "bower-npm-install": "0.5.9",
+    "stylus": "0.47.3",
+    "bem-tools-autoprefixer": "0.0.3"
+  },
+  "scripts": {
+    "postinstall": "bower-npm-install",
+    "deps": "bower-npm-install --non-interactive"
+  }
+}

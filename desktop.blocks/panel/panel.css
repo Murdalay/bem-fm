@@ -1,0 +1,16 @@
+.panel {
+    width: 49.1%;
+    position: fixed;
+    top: 48px;
+    height: 100%;
+    margin-left: 0.3%;
+    margin-right: 0.3%
+}
+
+.panel_position_right {
+	right: 0;
+}
+
+.radio-group {
+	position: relative;
+}

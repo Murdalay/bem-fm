@@ -1,0 +1,16 @@
+block('info')(
+	js()(true),
+	content()([
+		{
+			block: 'status',
+			mods : { position : 'left' }
+		},
+		{
+			block: 'status',
+			mods : { position : 'right' }
+		},		
+		{
+			block: 'queue-display'
+		}
+	])
+)

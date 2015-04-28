@@ -1,0 +1,21 @@
+block('panel')(
+	js()(true),
+	content()([
+			{ block : 'path' },
+			{
+			    block : 'radio-group',
+			    mods : { theme : 'islands', size : 'l', type : 'button' },
+			    val : 'name',
+			    options : [
+			        { val : 'name', text : 'Name' },
+			        { val : 'type', text : 'Type' },
+			        { val : 'size', text : 'Size' },
+			        { val : 'owner', text : 'Owner' },
+			        { val : 'date', text : 'Creation date' }
+			    ]
+			},
+			{
+				block : 'list'
+			}
+	])
+)

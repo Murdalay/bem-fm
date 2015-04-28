@@ -1,0 +1,10 @@
+block('path')(
+	js()(true),
+	content()(
+		{
+		    block : 'input',
+		    mods : { theme : 'islands', size : 'l', width : 'available' },
+		    name : 'path'
+		}
+	)
+)

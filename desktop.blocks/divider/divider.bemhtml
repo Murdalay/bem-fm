@@ -1,0 +1,6 @@
+block('divider')(content()(
+	{
+	    block: 'image',
+	    url: '/images/divider.png'
+	}
+))

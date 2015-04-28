@@ -1,0 +1,18 @@
+.disabler {
+	min-width: 120%;
+	min-height: 120%;
+	position: fixed;
+	z-index: 900;
+	top: 0;
+	transition: opacity 1.3s;
+	opacity: 0.83;
+	background-color: #555;
+
+	background-image: url("/images/disabler.png");
+	background-repeat: repeat repeat;
+
+	&.disabler_disabled_true {
+		opacity: 0;
+		top: 3000px;
+	}
+}
