@@ -1,10 +1,12 @@
 [{
-    mustDeps : { block : 'i-bem', elems : 'dom' }
+    mustDeps : [
+        { block : 'i-bem', elems : 'dom' },
+        { block : 'state' }
+    ]
 },
 {
     shouldDeps : [
         { block : 'cookie' },
-        { block : 'config' },
         { block : 'path-normalizer' },
         { block : 'state' },
         { block : 'jquery' },

@@ -1,10 +1,11 @@
 /* global modules:false */
 
 modules.define('request', 
-	['events__channels', 'vow', 'jquery', 'vow-queue', 'querystring', 'next-tick', 'objects', 'config'], 
-	function(provide, channels, vow, $, Queue, querystring, nxt, objects, config) {
+	['events__channels', 'vow', 'jquery', 'vow-queue', 'querystring', 'next-tick', 'objects', 'state'], 
+	function(provide, channels, vow, $, Queue, querystring, nxt, objects, state) {
 
 var com = channels('116'),
+	conf = state.getClientConfig,
 	_counter = 0,
 
     _onSuccess = function(resp) {
@@ -13,13 +14,9 @@ var com = channels('116'),
     },
 
 	_specify = function(action, data) {
-        var _settings = config.client.queueSettings[action] ? 
-		        config.client.queueSettings[action] : 
-			        {
-						priority: 6, 
-						weight: 10,
-						url: action
-					},
+        var _def = { priority: 5, weight: 10 },
+	        _settings = conf() && conf().queueSettings[action] ? 
+		        conf().queueSettings[action] : _def,
 
 	        _request = objects.extend({
 	            type: 'GET',
@@ -28,7 +25,7 @@ var com = channels('116'),
 	            url: '/' + action,
 	            data: data,
 	            cache: false
-	        }, _settings[action] ? _settings[action] : _settings['def']);
+	        }, _settings ? _settings : _def);
 
         return _request;
 	},
@@ -121,6 +118,18 @@ var com = channels('116'),
 			_formRequest({ 
 				item: item, 
 				action: 'list' }, cb, onFail);
+	    },
+
+		getConfig: function(item, cb, onFail) {
+			_formRequest({ 
+				item: item, 
+				action: 'getconf' }, cb, onFail);
+	    },
+
+		setConfig: function(item, cb, onFail) {
+			_formRequest({ 
+				data: item, 
+				action: 'setconf' }, cb, onFail);
 	    },
 
 		mkDir: function(item, cb, onFail) {

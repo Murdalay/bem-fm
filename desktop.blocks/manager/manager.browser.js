@@ -79,18 +79,13 @@ provide(BEMDOM.decl(this.name, {
 
     _stubMenusState : function(e) {
 		this._activeMenu = e.target;
-		this._activeMenuPosition = this._activeMenu.hasMod('position', 'left') ?
-			'left' : 'right';
-		this._inactiveMenuPosition = this._activeMenuPosition === 'left' ?
-			'right' : 'left';
-
-		com.once(this._inactiveMenuPosition + '-path-is', 
-			function(e, data){ this._inactiveMenuPath = data }, 
-		this);					
-		com.emit('tell-path-' + this._inactiveMenuPosition);
-
+		this._activeMenuPosition = this._activeMenu.getMod('position');
 		this._activeMenu.setMod('active');
+
+		this._inactiveMenuPosition = this._activeMenuPosition === 'left' ? 'right' : 'left';
+		this._inactiveMenuPath = state.getCurPath(this._inactiveMenuPosition);
 		this._inactiveMenu = this.getInactiveMenu();
+
 		this._inactiveMenu && this._inactiveMenu.hasMod('active') && this._inactiveMenu.delMod('active');
 
     },

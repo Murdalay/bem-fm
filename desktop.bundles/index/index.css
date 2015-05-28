@@ -587,6 +587,10 @@
 .details__date {
   color: #ad9;
 }
+.details-wrapper {
+  -webkit-border-horizontal-spacing: 0;
+  -webkit-border-vertical-spacing: 0;
+}
 /* ../../common.blocks/details/details.styl end */
 /* ../../libs/bem-components/design/common.blocks/menu/_theme/menu_theme_islands.styl begin */
 .menu_theme_islands {

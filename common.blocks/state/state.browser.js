@@ -4,9 +4,10 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 	function(provide, channels, size, identify, objects, normalizer) {
 	var com = channels('116'),
         normalize = normalizer.normalize,
-		state = { curList: {}, curPath: {}, lists: {} },
+		state = { curList: {}, curPath: {}, lists: {}, config: null },
 		ids = {},
 		paths = {},
+
 		_init = function(path, extension){
 			var _path = normalize(path);
 
@@ -20,6 +21,7 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 				id: null 
 			}, extension ? extension : {}));
 		},
+		
 		api = {
 			isDir: function(path){
 				var _path = normalize(path);
@@ -126,6 +128,18 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 
 			setCurPath: function(path, align){ 
 				state.curPath[align] = path;
+			},
+
+			getConfig: function(){ 
+				return state.config;
+			},
+
+			getClientConfig: function(){
+				return state.config ? state.config.client : null;
+			},
+
+			setConfig: function(config){ 
+				state.config = config;
 			},
 
 			getList: function(path){ 

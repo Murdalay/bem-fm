@@ -1,7 +1,7 @@
 /* global modules:false */
 
-modules.define('status', ['i-bem__dom', 'config', 'events__channels', 'state', 'functions__debounce', 'size'], 
-	function(provide, BEMDOM, config, channels, state, debounce, size) {
+modules.define('status', ['i-bem__dom', 'events__channels', 'state', 'functions__debounce', 'size'], 
+	function(provide, BEMDOM, channels, state, debounce, size) {
 		var com = channels('116');
 
 provide(BEMDOM.decl(this.name, {

@@ -2788,14 +2788,6 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
-                "block": "path"
-            },
-            {
-                "tech": "js",
-                "block": "path-normalizer"
-            },
-            {
-                "tech": "js",
                 "block": "state"
             },
             {
@@ -2806,6 +2798,14 @@ exports.depsByTechs = {
             {
                 "tech": "js",
                 "block": "size"
+            },
+            {
+                "tech": "js",
+                "block": "path"
+            },
+            {
+                "tech": "js",
+                "block": "path-normalizer"
             },
             {
                 "tech": "js",

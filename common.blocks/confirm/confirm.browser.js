@@ -1,9 +1,10 @@
 /* global modules:false */
 
-modules.define('confirm', ['i-bem__dom', 'events__channels', 'vow', 'config', 'state', 'keyboard__codes'], 
-	function(provide, BEMDOM, channels, vow, config, state, keyCodes) {
+modules.define('confirm', ['i-bem__dom', 'events__channels', 'vow', 'state', 'keyboard__codes'], 
+	function(provide, BEMDOM, channels, vow, state, keyCodes) {
 
-var com = channels('116');
+var com = channels('116'),
+    conf = state.getClientConfig;
 
 provide(BEMDOM.decl(this.name, {
     onSetMod : {
@@ -26,18 +27,16 @@ provide(BEMDOM.decl(this.name, {
 
     getConfirm: function(action, items, source, destination) {
         var defer = vow.defer(),
-            _confMessage = config.client.messages[action],
+            _confMessage = conf().messages[action],
             _message,
             _length = items.length,
-            _hint = _confMessage ? config.client.messages[action].hint : null,
+            _hint = _confMessage ? conf().messages[action].hint : null,
             list = items.length > 1 ? items.length : state.getName(items[0]);
 
         com.on('answer-is', function(e, data){ 
             defer.resolve(data);
             this._hidePopup();
         }, this);
-
-        this._showPopup(destination);
 
         if(_confMessage && _length > 1) {
             list = _length;
@@ -60,41 +59,28 @@ provide(BEMDOM.decl(this.name, {
         _hint && this._currentQuestion.setHint(_hint);
         this._currentQuestion.setMessage(_message);
         source && this._currentQuestion.setSource(source);
-
+        
+        this._showPopup(destination);
         return defer.promise();
     },
 
     getSimple: function(action, preset) {
         var defer = vow.defer(),
-            _hint = config.client.messages[action].hint,
-            _message = config.client.messages[action]['message'] || 'Type the text';
+            _hint = conf().messages[action].hint,
+            _message = conf().messages[action]['message'] || 'Type the text';
 
         com.on('answer-is', function(e, data){ 
             defer.resolve(data);
             this._hidePopup();
         }, this);
 
-    	this._showPopup('simple');
 
         this._questionSimple.setSimple(_message, preset);
         _hint && this._questionSimple.setHint(_hint);
 
+    	this._showPopup('simple');
 
 		return defer.promise();
-    },
-
-    _showPopup: function(dest) {
-        var _width = window.innerWidth / 2;
-
-        dest !== 'simple' && (this._activePopup = dest ? this._popupDest : this._popup);
-        dest === 'simple' && (this._activePopup = this._popupSimple);
-
-        this._disabler.delMod('disabled');
-        this._activePopup.setPosition(_width, 360)
-        this._activePopup.setMod('visible');
-
-        this.bindToDoc('keydown', this._onKeyPress);
-        com.emit('keyOverride');
     },
 
     _onKeyPress: function(e) {
@@ -111,11 +97,28 @@ provide(BEMDOM.decl(this.name, {
         }
     },
 
+    _showPopup: function(dest) {
+        var _left = Math.round(window.innerWidth / 2);
+
+        dest !== 'simple' && (this._activePopup = dest ? this._popupDest : this._popup);
+        dest === 'simple' && (this._activePopup = this._popupSimple);
+        
+        this._disabler.delMod('disabled');
+        this._activePopup.setPosition(_left, 360);
+        this._activePopup.setMod('visible');
+
+        this.bindToDoc('keydown', this._onKeyPress);
+
+        // ask all keydown subscribers to ignore keydowns
+        com.emit('keyOverride');
+    },
+
     _hidePopup: function() {
         delete this._currentQuestion;
         this._disabler.setMod('disabled', 'true');
         this._activePopup.delMod('visible');
 
+        // tell all keydown subscribers that they can resume listening
         this.unbindFromDoc('keydown', this._onKeyPress);
         com.emit('keyRestore');
     }

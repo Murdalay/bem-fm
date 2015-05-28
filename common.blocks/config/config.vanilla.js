@@ -1,6 +1,6 @@
 /* global modules:false */
 
-modules.define('config', ['request'], function(provide, request) {
+modules.define('config', function(provide) {
 
 var server = {
 		basePath: '/Users/ragnar/',

@@ -1,5 +1,5 @@
 block('details')(
-	tag()('table'),
+	tag()('tr'),
 	content()([
 		{
 			elem: 'name',
@@ -35,3 +35,11 @@ block('details')(
 	elem('date')(tag()('td'))
 )
 
+block('details')(def().match(!this.ctx._wrapped)(function() {
+        var ctx = this.ctx;
+        ctx._wrapped = true;
+        applyCtx({ block: 'details-wrapper', content: this.ctx })
+   })
+)
+
+block('details-wrapper')(tag()('table'))

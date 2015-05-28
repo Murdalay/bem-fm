@@ -104,8 +104,7 @@
                             {
                                 block : 'question'
                             }
-                        ],
-                        viewportOffset : 100
+                        ]
                     },
                     {
                         block : 'popup',
@@ -116,8 +115,7 @@
                                 block : 'question',
                                 mods : { 'with-destination': 'true' },
                             }
-                        ],
-                        viewportOffset : 100
+                        ]
                     },
                     {
                         block : 'popup',
@@ -128,8 +126,7 @@
                                 block : 'question',
                                 mods : { simple: 'true' } ,
                             }
-                        ],
-                        viewportOffset : 100
+                        ]
                     }
                 ]
             },            

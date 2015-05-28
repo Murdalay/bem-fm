@@ -117,6 +117,27 @@ modules.define('router', ['config'], function(provide, channels, config) {
 
 	});	
 
+	app.get('/getconf', function (req, res) {
+		var conf = require(process.cwd() + '/config.json');
+		
+		res.end(JSON.stringify(conf));
+	});	
+
+	app.get('/setconf', function (req, res) {
+		console.log(req.query);
+		
+		vfs.write(path.join(process.cwd(), 'config.json'), JSON.stringify(JSON.parse(req.query.data), null, 4), 'utf-8')		
+		.then(function(data){
+			console.log(data);
+			res.end(JSON.stringify('done'));
+		})
+		.fail(function(response, message){
+			res.status(500).end(JSON.stringify(response));
+			console.warn('Failed to store config\n');
+			console.error(response);
+		});
+	});	
+
 	app.get('/copy', function (req, res) {
 		vfs.copy(req.query.source, 
 			path.join(req.query.destination, path.basename(req.query.source)))

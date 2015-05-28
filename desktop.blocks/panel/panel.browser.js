@@ -8,9 +8,7 @@ provide(BEMDOM.decl(this.name, {
     onSetMod : {
         'js' : {
             'inited' : function() {
-        		this.hasMod('position', 'left') ? 
-            		this._position = 'left' : 
-	            		this._position = 'right';
+        		this._position = this.getMod('position');
 
         		this._list = this.findBlockInside('list');
         		this._path = this.findBlockInside('path');

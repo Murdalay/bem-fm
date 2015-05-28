@@ -1,8 +1,9 @@
 /* global modules:false */
 
-modules.define('path', ['i-bem__dom', 'events__channels', 'cookie', 'config', 'jquery', 'functions__debounce', 'path-normalizer', 'state'], 
-    function(provide, BEMDOM, channels, cookie, config, $, debounce, normalizer, state) {
+modules.define('path', ['i-bem__dom', 'events__channels', 'cookie', 'state', 'jquery', 'functions__debounce', 'path-normalizer', 'state'], 
+    function(provide, BEMDOM, channels, cookie, state, $, debounce, normalizer, state) {
         var com = channels('116'),
+            conf = state.getClientConfig,
             normalize = normalizer.normalize;
 
 provide(BEMDOM.decl(this.name, {
@@ -23,6 +24,10 @@ provide(BEMDOM.decl(this.name, {
             'right' : function() {
                 this.serveAsPathfinder('right');
             }
+        },
+        'ready' : function() {
+            console.log('message');
+            this.serveAsPathfinder(this._position);
         }        
     },
 
@@ -39,12 +44,18 @@ provide(BEMDOM.decl(this.name, {
     getVal: function() { return this._control.domElem.val() },
 
     serveAsPathfinder : function(position) {
-        this.bindTo('input change', debounce(this._checkPath, 650, this));
-        com.on('check-path', this._checkPath, this);
-
         this._position = position;
-        this._getDefPath();
-        this._ready4All();
+
+        if(this.hasMod('ready')){
+            this.bindTo('input change', debounce(this._checkPath, 650, this));
+            com.on('check-path', this._checkPath, this);
+
+            this._getDefPath();
+            this._ready4All();
+        } else {
+            state.getConfig() ? this.setMod('ready') :
+                com.on('config-ready', this._confReady, this);
+        }
     },
 
     serveAsDestination : function() {
@@ -90,6 +101,10 @@ provide(BEMDOM.decl(this.name, {
         com.emit(this._position + '-path-is', this._curPath);
     },
 
+    _confReady: function() {
+        this.setMod('ready');
+    },
+
     _ready4All: function() {
         com.on('tell-path-' + this._position, this._emitPath, this);
         com.on('set-path-' + this._position, this.setAll, this);
@@ -97,9 +112,10 @@ provide(BEMDOM.decl(this.name, {
 
     _getDefPath : function() {
         this._curPath = cookie.get('path-' + this._position);
-        this._curPath || (this._curPath = config.client[this._position]);
+        this._curPath || (this._curPath = conf()[this._position]);
 
         this._checkPath(this._curPath);
+        console.log(conf()[this._position]);
     },
 
    _checkPath: function(path, cb) {

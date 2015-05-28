@@ -1,7 +1,7 @@
 /* global modules:false */
 
-modules.define('state-controller', ['events__channels', 'request', 'vow', 'path-normalizer', 'state', 'size', 'tick', 'idle', 'config'], 
-function(provide, channels, request, vow, normalizer, state, size, tick, idle, config) {
+modules.define('state-controller', ['events__channels', 'request', 'vow', 'path-normalizer', 'state', 'size', 'tick', 'idle'], 
+function(provide, channels, request, vow, normalizer, state, size, tick, idle) {
 
 var com = channels('116'),
 	normalize = normalizer.normalize,
@@ -109,7 +109,7 @@ var com = channels('116'),
     frequency = 30,
     tickCount = 0,
     
-    bindToTick = function() {
+    _bindToTick = function() {
         boundToTick = true;
         tick
             .on('tick', update) // подписываемся на событие tick 
@@ -127,21 +127,39 @@ var com = channels('116'),
     },
 
     update = function() { 
-    	if (tickCount <= config.client.updateFrequency) {
+    	if (tickCount <= state.getClientConfig().updateFrequency) {
     		tickCount += 1;
 	    } else {
     		tickCount = 0;
     		_refreshList();
 	    }
+	},
+
+    _getConfig = function() {
+    	var _sucscess = function(res){
+    		state.setConfig(res);
+    		com.emit('config-ready');
+
+			_bindToTick();
+    	};
+
+		request.getConfig('', _sucscess);
+	},
+
+    storeConfig = function() { 
+    	var conf = state.getConfig();
+
+		conf && request.setConfig({ data : JSON.stringify(conf) });
 	};
 
-bindToTick();
+_getConfig();
 
 // internal actions – file type checks and statistic retrieving 
 com.on('give-list', _getList, this);
 com.on('is-dir', _checkIfDir, this);
 com.on('state', _getStates, this);
+com.on('config-updated', storeConfig, this);
 
-provide();
+provide({ storeConfig : storeConfig });
 
 });
