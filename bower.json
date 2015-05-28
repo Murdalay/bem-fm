@@ -2,17 +2,17 @@
   "author": "Ragnar",
   "name": "bem-fm",
   "email": "murdalay@gmail.com",
-  "version": "0.0.0",
+  "version": "0.0.6",
   "ignore": [
     ".bem/cache",
     "node_modules",
     "libs"
   ],
   "dependencies": {
-    "bem-core": "v2.3.0",
+    "bem-core": "v2.6.0",
     "bem-components": "2.1.1"
   },
   "resolutions": {
-    "bem-core": "v2.3.0"
+    "bem-core": "v2.6.0"
   }
 }
