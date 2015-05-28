@@ -491,6 +491,9 @@
 }
 /* ../../common.blocks/menu/menu.styl end */
 /* ../../common.blocks/menu-item/menu-item.styl begin */
+.menu-item_theme_islands.i-bem.menu-item_checked {
+  background: 13px 70% no-repeat url("images/tip.svg");
+}
 .menu-item_theme_islands.i-bem.menu-item_hovered {
   background-color: #96549e;
   color: #eee;
@@ -509,9 +512,6 @@
   font-variant: small-caps;
   font-size: 1.1em;
   line-height: 32px;
-}
-.menu-item_theme_islands.menu-item_checked {
-  background: 0 50% no-repeat url("../../common.blocks/menu-item/images/tip.svg");
 }
 /* ../../common.blocks/menu-item/menu-item.styl end */
 /* ../../common.blocks/details/details.styl begin */
