@@ -27,6 +27,43 @@ modules.define('router', ['config'], function(provide, channels, config) {
 			});
 	});
 
+var njds = require('nodejs-disks');
+    njds.drives(
+        function (err, drives) {
+        	console.log(drives);
+            njds.drivesDetail(
+                drives,
+                function (err, data) {
+                    for(var i = 0; i<data.length; i++)
+                    {
+                        /* Get drive mount point */
+                        console.log(data[i].mountpoint);
+
+                        /* Get drive total space */
+                        console.log(data[i].total);
+
+                        /* Get drive used space */
+                        console.log(data[i].used);
+
+                        /* Get drive available space */
+                        console.log(data[i].available);
+
+                        /* Get drive name */
+                        console.log(data[i].drive);
+
+                        /* Get drive used percentage */
+                        console.log(data[i].usedPer);
+
+                        /* Get drive free percentage */
+                        console.log(data[i].freePer);
+                    }
+
+
+
+                }
+            );
+        }
+    )
 
 	app.get('/isdir', function (req, res) {
 		var _path = path.normalize(req.query.path);
