@@ -88,7 +88,7 @@ provide(MenuItem.decl( /** @lends menu-item.prototype */{
     },
 
     // redefining basic onclick handling
-    _onPointerClick : function() {
+    _onPointerClick: function() {
         var base = this.__base,
             _old = function(){ 
                 base.apply(this, arguments) 
@@ -100,7 +100,7 @@ provide(MenuItem.decl( /** @lends menu-item.prototype */{
         }
     },
 
-    _exec : function(e) {
+    _exec: function(e) {
         window.clearTimeout(timer); 
         (this._isdir || this.hasMod('toplevel')) && 
             com.emit('exec', { position: this._position, path: this._path });

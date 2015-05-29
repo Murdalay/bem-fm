@@ -9223,7 +9223,8 @@ provide(BEMDOM.decl(this.name, {
         		this._path = this.findBlockInside('path');
         		this._sorters = this.findBlockInside('radio-group');
 
-        		this._sorters.on('change', this._onSorterClick, this);
+        		this.bindTo(this._sorters.domElem, 'click', this._onSorterClick, this)
+
 				com.on('refresh', this._getList, this);
 				com.on('path-' + this._position, this._getList, this);
 
@@ -9268,8 +9269,15 @@ provide(BEMDOM.decl(this.name, {
     	this._path.setMod('position', this._position);
     },
 
-    _onSorterClick : function(e) {
-		var _name = e.target.getVal();
+    _onSorterClick : function() {
+		var _name = this._sorters.getVal();
+
+		if(this.hasMod('sort', _name)) {
+			this.toggleMod('reverse');
+		} else {
+			this.hasMod('reverse') && this.delMod('reverse');
+		}
+		
 		this.setMod('sort', _name);
 		this.setMod('custom-sort');
 		this._update();
@@ -9321,7 +9329,7 @@ provide(BEMDOM.decl(this.name, {
 
 		this.hasMod('custom-sort') && 
 			list.length > 1 &&
-				(list = sort.sortByKey(list, 'key'));
+				(list = sort.sortByKey(list, 'key', !this.hasMod('reverse')));
 
 		// notifying all listeners that list is ready and how big it is
 		com.emit('ready-list-' + _pos, this._listLength);
@@ -9705,7 +9713,12 @@ function mergesort(inArray) {
 	}
  
 	presorted = sort(inArray);
-	return presorted.reverse();
+
+	if (presorted[0] <= presorted[presorted.length - 1]) {
+		return presorted;
+	} else {
+		return presorted.reverse();
+	}
 }
 
 /**
@@ -9765,11 +9778,13 @@ function sortByKey(inArray, key, reverse) {
  
 	presorted = sort(inArray);
 
-	if(reverse){
-		return presorted;
+	if(presorted[0].key == presorted[presorted.length - 1].key){
+		presorted = presorted.reverse();
 	}
 
-	return presorted.reverse();
+	reverse && (presorted = presorted.reverse());
+	return presorted;
+
 };
 
 provide({ mergesort: mergesort, sortByKey: sortByKey });
@@ -10297,7 +10312,7 @@ provide(MenuItem.decl( /** @lends menu-item.prototype */{
     },
 
     // redefining basic onclick handling
-    _onPointerClick : function() {
+    _onPointerClick: function() {
         var base = this.__base,
             _old = function(){ 
                 base.apply(this, arguments) 
@@ -10309,7 +10324,7 @@ provide(MenuItem.decl( /** @lends menu-item.prototype */{
         }
     },
 
-    _exec : function(e) {
+    _exec: function(e) {
         window.clearTimeout(timer); 
         (this._isdir || this.hasMod('toplevel')) && 
             com.emit('exec', { position: this._position, path: this._path });

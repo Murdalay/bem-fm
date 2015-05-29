@@ -67,7 +67,6 @@ function mergesort(inArray) {
 	}
  
 	presorted = sort(inArray);
-	return presorted.reverse();
 }
 
 /**
@@ -127,11 +126,13 @@ function sortByKey(inArray, key, reverse) {
  
 	presorted = sort(inArray);
 
-	if(reverse){
-		return presorted;
+	if(presorted[0].key == presorted[presorted.length - 1].key){
+		presorted = presorted.reverse();
 	}
 
-	return presorted.reverse();
+	reverse && (presorted = presorted.reverse());
+	return presorted;
+
 };
 
 provide({ mergesort: mergesort, sortByKey: sortByKey });
