@@ -1,7 +1,7 @@
 /* global modules:false */
 
-modules.define('panel', ['i-bem__dom', 'config', 'BEMHTML', 'events__channels', 'sort', 'state', 'functions__debounce'], 
-	function(provide, BEMDOM, config, BEMHTML, channels, sort, state, debounce) {
+modules.define('panel', ['i-bem__dom', 'BEMHTML', 'events__channels', 'sort', 'state', 'functions__debounce'], 
+	function(provide, BEMDOM, BEMHTML, channels, sort, state, debounce) {
 		var com = channels('116');
 
 provide(BEMDOM.decl(this.name, {
@@ -11,10 +11,15 @@ provide(BEMDOM.decl(this.name, {
         		this._position = this.getMod('position');
 
         		this._list = this.findBlockInside('list');
+        		this._select = this.findBlockInside('select');
         		this._path = this.findBlockInside('path');
         		this._sorters = this.findBlockInside('radio-group');
 
-        		this.bindTo(this._sorters.domElem, 'click', this._onSorterClick, this)
+
+        		this.bindTo(this._sorters.domElem, 'click', this._onSorterClick, this);
+
+        		com.on('disks-changed', this._setSelectValue, this);
+        		com.on(this._position + '-drive-changed', this._setActiveSelectItem, this);
 
 				com.on('refresh', this._getList, this);
 				com.on('path-' + this._position, this._getList, this);
@@ -23,6 +28,7 @@ provide(BEMDOM.decl(this.name, {
         		com.on('updated-item-' + this._position, debounce(this._update, 700, this), this);
 				// default sort mode
 				this.hasMod('sort') || this.setMod('sort', 'name');
+				
         		this._setChildsMod();
             }
         },
@@ -56,9 +62,61 @@ provide(BEMDOM.decl(this.name, {
         return this._listLength;
     },
 
-    _setChildsMod : function() {
+    _setChildsMod: function() {
     	this._path.setMod('position', this._position);
+    	this._select.setMod('position', this._position);
+    	this._setSelectValue();
     },
+
+    _setPath: function(e) {
+    	var drives = state.getDisks(),
+	    	mountpoint = drives[e.target.getVal()].mountpoint;
+    	com.emit('set-path-' + this._position, mountpoint);
+    	com.emit('path-'     + this._position, mountpoint);
+    },
+
+    _setSelectValue : function() {
+    	var items = [],
+	    	drives = state.getDisks();
+
+		if(drives) {
+			drives.forEach(function (item, index) {
+				var drive = {
+		            val : index,
+		            text : item.drive
+		        };
+
+				items.push(drive);
+			}.bind(this));
+
+			var html = BEMHTML.apply(
+
+		    	{
+				    block : 'select',
+				    mods : { mode : 'radio', theme : 'islands', size : 'l' },
+				    name : 'drive_'+ this._position,
+				    val : state.getActiveDriveIndex(this._position),
+				    options : items
+				}
+			);
+
+			this._select.un('change', this._setPath);
+
+			BEMDOM.replace(this._select.domElem, html);
+
+			this._select = this.findBlockInside('select');
+			this._select.on('change', this._setPath, this);
+
+		} else {
+			setTimeout(this._setSelectValue.bind(this), 500);
+		}
+	},
+
+    _setActiveSelectItem : function() {
+		this._select.setVal(state.getActiveDriveIndex(this._position));
+		console.log(state.getActiveDriveIndex(this._position));
+		this._menu.setMod('focused');
+	},
 
     _onSorterClick : function() {
 		var _name = this._sorters.getVal();
@@ -96,18 +154,18 @@ provide(BEMDOM.decl(this.name, {
 			path = this._curPath,
 			toplevel = {
 	            block : 'menu-item',
-	            mods : { toplevel : true, position: this._position },
+	            mods : { toplevel : true, position: this._position, pathfinder : true },
 	            val : path + '/..',
 	            content : '..'
 	        },
 	        _pos = this._position;
 
 		this._listLength = data.length;
-		
+
 		// saving the current path and list for future generations
     	state.setCurPath(path, this._position);
     	state.setCurList(this._position, data);
-
+    	
 		// sorting the list
 		data.forEach(function(value){
 			var _path = path + '/' + value;
@@ -131,7 +189,7 @@ provide(BEMDOM.decl(this.name, {
 		list.forEach(function(value){
 			var item = {
 	            block : 'menu-item',
-	            mods : { position: _pos },
+	            mods : { position : _pos, pathfinder : true },
 	            val : value.path,
 	            content : value.name
 	        };
@@ -142,14 +200,17 @@ provide(BEMDOM.decl(this.name, {
     	html = BEMHTML.apply(
 	    	{
 			    block : 'menu',
-			    mods : { theme : 'islands', size : 'l', mode : 'check', position: this._position, panel: true },
+			    mods : { panel: true, theme : 'islands', size : 'l', mode : 'check', position: this._position },
 			    content : items
 			}
 		);
 
         BEMDOM.update(this._list.domElem, html);
-        this._menu = this.findBlockInside('menu');
+        this._menu = this._list.findBlockInside('menu');
+
         this._menu.setMod('focused');
+
+		this._path.detectMountpoint();
     }
 }));
 

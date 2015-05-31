@@ -1,10 +1,12 @@
-modules.define('router', ['config'], function(provide, channels, config) {
+modules.define('router', ['config', 'vow'], function(provide, config, vow) {
 	var express = require('express'),
 	    path = require('path'),
 	    fs = require('fs'),
 	    vfs = require('vow-fs'),
 	    morgan = require('morgan'),
 	    mime = require('mime'),
+	    disksObj = null,
+	    njds = require('nodejs-disks'),
 		app = express(),
 		pathToBundle = path.join(process.cwd(), 'desktop.bundles', 'index');
 
@@ -27,43 +29,46 @@ modules.define('router', ['config'], function(provide, channels, config) {
 			});
 	});
 
-var njds = require('nodejs-disks');
-    njds.drives(
-        function (err, drives) {
-        	console.log(drives);
-            njds.drivesDetail(
-                drives,
-                function (err, data) {
-                    for(var i = 0; i<data.length; i++)
-                    {
-                        /* Get drive mount point */
-                        console.log(data[i].mountpoint);
+	app.get('/ping', function (req, res) {
+		var defer = vow.defer(),
+		    _path = path.normalize(req.query.path),
+			_data = null,
 
-                        /* Get drive total space */
-                        console.log(data[i].total);
+			finishReqest = function(){
+				vfs.listDir(_path)
+						.then(function(data){
+							res.end(JSON.stringify({ list : data, disks : _data }));
+						})
+						.fail(function(response){
+							console.error('Failed to get list\n' + response);
+						});
+					}.bind(this),
 
-                        /* Get drive used space */
-                        console.log(data[i].used);
+			promise = function(){
+				njds.drives(function (err, drives) {
+			            njds.drivesDetail(drives, function (err, data) {
+			            	defer.resolve(data);
+						}.bind(this));
+			        }.bind(this)
+			    );
 
-                        /* Get drive available space */
-                        console.log(data[i].available);
+		        return defer.promise(); 
+			}();
 
-                        /* Get drive name */
-                        console.log(data[i].drive);
+	    promise.then(function(res) { 
+	    	if(disksObj && res.length == disksObj.length){
+		    	res.every(function(item, i){
+		    		item.used == disksObj[i].used
+		    	}) && (_data = res); 
+	    	} else {
+		    	_data = res; 
+	    	}
 
-                        /* Get drive used percentage */
-                        console.log(data[i].usedPer);
+			disksObj = res;
+			finishReqest();
+	    });
 
-                        /* Get drive free percentage */
-                        console.log(data[i].freePer);
-                    }
-
-
-
-                }
-            );
-        }
-    )
+	});
 
 	app.get('/isdir', function (req, res) {
 		var _path = path.normalize(req.query.path);
@@ -156,7 +161,8 @@ var njds = require('nodejs-disks');
 
 	app.get('/getconf', function (req, res) {
 		var conf = require(process.cwd() + '/config.json');
-		
+
+		disksObj = null;
 		res.end(JSON.stringify(conf));
 	});	
 

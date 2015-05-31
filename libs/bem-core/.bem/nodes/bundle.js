@@ -26,7 +26,7 @@ registry.decl('BundleNode', {
         ];
     },
 
-    'create-html-node': function(tech, _) {
+    'create-html-node' : function(tech, _) {
         var args = [].slice.call(arguments, 1);
 
         ~this.getPath().indexOf('test-bemtree') &&
@@ -36,10 +36,6 @@ registry.decl('BundleNode', {
     },
 
     'create-browser.js-optimizer-node' : function() {
-        return this['create-js-optimizer-node'].apply(this, arguments);
-    },
-
-    'create-browser.js+bemhtml-optimizer-node' : function() {
         return this['create-js-optimizer-node'].apply(this, arguments);
     },
 
@@ -58,4 +54,3 @@ registry.decl('BundleNode', {
 });
 
 };
-

@@ -1,17 +1,18 @@
 block('status')(
 	js()(true),
-	content()([
-		{
-			elem: 'list'
-		},
-		{
-			elem: 'list-size'
-		},
-		{
-			elem: 'selected'
-		},
-		{
-			elem: 'selected-size'
-		}
-	])
+	content()(function(){
+		return [
+			{
+				elem: 'list'
+			},
+			{
+				elem: 'list-size'
+			},
+			{
+				elem: 'selected'
+			},
+			{
+				elem: 'selected-size'
+			}
+	]})
 )

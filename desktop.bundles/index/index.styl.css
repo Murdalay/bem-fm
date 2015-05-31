@@ -480,6 +480,11 @@
   display: none;
 }
 /* ../../desktop.blocks/list/list.styl end */
+/* ../../libs/bem-components/common.blocks/select/select.styl begin */
+.select {
+  display: inline-block;
+}
+/* ../../libs/bem-components/common.blocks/select/select.styl end */
 /* ../../libs/bem-components/common.blocks/menu/menu.styl begin */
 .menu {
   overflow-y: auto;
@@ -585,225 +590,65 @@
   -webkit-border-vertical-spacing: 0;
 }
 /* ../../common.blocks/details/details.styl end */
-/* ../../libs/bem-components/design/common.blocks/menu/_theme/menu_theme_islands.styl begin */
-.menu_theme_islands {
-  box-sizing: border-box;
-  user-select: none;
-  outline: 0;
-  background: #fff;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-/* Using pseudo-elements intead of paddings because of Firefox bug with bottom padding (#1158):
-     * https://bugzilla.mozilla.org/show_bug.cgi?id=748518 */
-}
-.menu_theme_islands:before,
-.menu_theme_islands:after {
-  display: block;
-  content: '';
-}
-.menu_theme_islands.menu_size_s {
-  font-size: 13px;
-  line-height: 24px;
-}
-.menu_theme_islands.menu_size_s:before,
-.menu_theme_islands.menu_size_s:after {
-  height: 3px;
-}
-.menu_theme_islands.menu_size_s .menu-item + .menu__group {
-  margin-top: 3px;
-}
-.menu_theme_islands.menu_size_s .menu__group {
-  padding: 3px 0;
-}
-.menu_theme_islands.menu_size_s .menu__group-title {
-  padding: 0 10px;
-}
-.menu_theme_islands.menu_size_m {
-  font-size: 13px;
-  line-height: 24px;
-}
-.menu_theme_islands.menu_size_m:before,
-.menu_theme_islands.menu_size_m:after {
-  height: 4px;
-}
-.menu_theme_islands.menu_size_m .menu-item + .menu__group {
-  margin-top: 4px;
-}
-.menu_theme_islands.menu_size_m .menu__group {
-  padding: 4px 0;
-}
-.menu_theme_islands.menu_size_m .menu__group-title {
-  padding: 0 13px;
-}
-.menu_theme_islands.menu_size_l {
-  font-size: 15px;
-  line-height: 28px;
-}
-.menu_theme_islands.menu_size_l:before,
-.menu_theme_islands.menu_size_l:after {
-  height: 5px;
-}
-.menu_theme_islands.menu_size_l .menu-item + .menu__group {
-  margin-top: 5px;
-}
-.menu_theme_islands.menu_size_l .menu__group {
-  padding: 5px 0;
-}
-.menu_theme_islands.menu_size_l .menu__group-title {
-  padding: 0 15px;
-}
-.menu_theme_islands.menu_size_xl {
-  font-size: 15px;
-  line-height: 32px;
-}
-.menu_theme_islands.menu_size_xl:before,
-.menu_theme_islands.menu_size_xl:after {
-  height: 6px;
-}
-.menu_theme_islands.menu_size_xl .menu-item + .menu__group {
-  margin-top: 6px;
-}
-.menu_theme_islands.menu_size_xl .menu__group {
-  padding: 6px 0;
-}
-.menu_theme_islands.menu_size_xl .menu__group-title {
-  padding: 0 20px;
-}
-.menu_theme_islands .menu__group {
-  border: 1px solid rgba(0,0,0,0.1);
-  border-width: 1px 0;
-}
-.menu_theme_islands .menu__group-title {
-  color: #999;
-}
-.menu_theme_islands .menu__group + .menu__group {
-  border-top: 0;
-}
-.menu_theme_islands .menu__group:last-child {
-  padding-bottom: 0;
-  border-bottom: 0;
-}
-.menu_theme_islands .menu__group:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-/* ../../libs/bem-components/design/common.blocks/menu/_theme/menu_theme_islands.styl end */
-/* ../../libs/bem-components/design/common.blocks/menu-item/_theme/menu-item_theme_islands.styl begin */
-.menu-item_theme_islands {
-  position: relative;
-  white-space: nowrap;
-}
-.menu-item_theme_islands.menu-item_disabled {
-  opacity: 0.3;
-}
-.menu-item_theme_islands .link_disabled {
-  cursor: text;
-}
-.menu-item_theme_islands.menu-item_checked {
-  background: 0 50% no-repeat url("../../libs/bem-components/design/common.blocks/theme/_islands/tip.svg");
-}
-.menu-item_theme_islands.menu-item_hovered {
-  cursor: pointer;
-  background-color: #ffeba0;
-}
-.menu-item_theme_islands.menu-item_type_link .link {
-  text-decoration: none;
-  color: inherit;
-  outline: none;
-/* Fit clickable area to `menu-item` size */
-}
-.menu-item_theme_islands.menu-item_type_link .link:after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  content: '';
-}
-.menu_size_s .menu-item_theme_islands {
-  padding: 0 10px;
-  background-size: 14px 14px;
-  background-position: 10px 50%;
-}
-.menu_size_s .menu__group + .menu-item_theme_islands {
-  margin-top: 3px;
-}
-.menu_size_s[class*='menu_mode'] .menu-item_theme_islands,
-.menu_size_s .menu__group-title ~ .menu-item_theme_islands {
-  padding: 0 30px;
-}
-.menu_size_m .menu-item_theme_islands {
-  padding: 0 13px;
-  background-size: 14px 14px;
-  background-position: 13px 50%;
-}
-.menu_size_m .menu__group + .menu-item_theme_islands {
-  margin-top: 4px;
-}
-.menu_size_m[class*='menu_mode'] .menu-item_theme_islands,
-.menu_size_m .menu__group-title ~ .menu-item_theme_islands {
-  padding: 0 30px;
-}
-.menu_size_l .menu-item_theme_islands {
-  padding: 0 15px;
-  background-size: 15px 15px;
-  background-position: 15px 50%;
-}
-.menu_size_l .menu__group + .menu-item_theme_islands {
-  margin-top: 5px;
-}
-.menu_size_l[class*='menu_mode'] .menu-item_theme_islands,
-.menu_size_l .menu__group-title ~ .menu-item_theme_islands {
-  padding: 0 34px;
-}
-.menu_size_xl .menu-item_theme_islands {
-  padding: 0 20px;
-  background-size: 15px 15px;
-  background-position: 20px 50%;
-}
-.menu_size_xl .menu__group + .menu-item_theme_islands {
-  margin-top: 6px;
-}
-.menu_size_xl[class*='menu_mode'] .menu-item_theme_islands,
-.menu_size_xl .menu__group-title ~ .menu-item_theme_islands {
-  padding: 0 40px;
-}
-/* ../../libs/bem-components/design/common.blocks/menu-item/_theme/menu-item_theme_islands.styl end */
-/* ../../desktop.blocks/divider/divider.styl begin */
-.divider {
-  position: fixed;
-  top: 48px;
-  left: 49.4%;
-  width: 1%;
-}
-/* ../../desktop.blocks/divider/divider.styl end */
-/* ../../libs/bem-components/common.blocks/image/image.styl begin */
-.image {
-  border: 0;
-}
-/* ../../libs/bem-components/common.blocks/image/image.styl end */
-/* ../../common.blocks/disabler/disabler.styl begin */
-.disabler {
-  min-width: 120%;
-  min-height: 120%;
-  position: fixed;
-  z-index: 900;
-  top: 0;
-  transition: opacity 1.3s;
-  opacity: 0.83;
-  background-color: #555;
-  background-image: url("/images/disabler.png");
-  background-repeat: repeat repeat;
-}
-.disabler.disabler_disabled_true {
-  opacity: 0;
-  top: 3000px;
-}
-/* ../../common.blocks/disabler/disabler.styl end */
 /* ../../libs/bem-components/common.blocks/popup/popup.styl begin */
 .popup {
   position: absolute;
 }
 /* ../../libs/bem-components/common.blocks/popup/popup.styl end */
+/* ../../libs/bem-components/design/common.blocks/select/_theme/select_theme_islands.styl begin */
+.select_theme_islands {
+  max-width: 100%;
+  vertical-align: bottom;
+}
+.select_theme_islands .select__button {
+  width: 100%;
+  text-align: left;
+  vertical-align: top;
+}
+.select_theme_islands .select__button .button__text {
+  display: block;
+}
+.select_theme_islands .select__button .button__text:empty:before {
+  content: '\00a0';
+}
+.select_theme_islands .select__button.button_size_s .button__text {
+  padding-right: 27px;
+}
+.select_theme_islands .select__button.button_size_s .icon {
+  width: 25px;
+}
+.select_theme_islands .select__button.button_size_m .button__text {
+  padding-right: 28px;
+}
+.select_theme_islands .select__button.button_size_m .icon {
+  width: 29px;
+}
+.select_theme_islands .select__button.button_size_l .button__text {
+  padding-right: 32px;
+}
+.select_theme_islands .select__button.button_size_l .icon {
+  width: 33px;
+}
+.select_theme_islands .select__button.button_size_xl .button__text {
+  padding-right: 38px;
+}
+.select_theme_islands .select__button.button_size_xl .icon {
+  width: 39px;
+}
+.select_theme_islands .select__tick {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-image: url("../../libs/bem-components/design/common.blocks/theme/_islands/arrow.svg");
+  transition: transform 0.1s ease-out;
+}
+.select_theme_islands.select_size_s .select__tick {
+  background-image: url("../../libs/bem-components/design/common.blocks/theme/_islands/arrow-s.svg");
+}
+.select_theme_islands.select_opened .select__tick {
+  transform: rotate(-180deg);
+}
+/* ../../libs/bem-components/design/common.blocks/select/_theme/select_theme_islands.styl end */
 /* ../../libs/bem-components/design/common.blocks/popup/_theme/popup_theme_islands.styl begin */
 .popup_theme_islands {
   display: none;
@@ -1328,6 +1173,242 @@
   }
 }
 /* ../../libs/bem-components/design/common.blocks/popup/_theme/popup_theme_islands.styl end */
+/* ../../libs/bem-components/design/common.blocks/menu/_theme/menu_theme_islands.styl begin */
+.menu_theme_islands {
+  box-sizing: border-box;
+  user-select: none;
+  outline: 0;
+  background: #fff;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+/* Using pseudo-elements intead of paddings because of Firefox bug with bottom padding (#1158):
+     * https://bugzilla.mozilla.org/show_bug.cgi?id=748518 */
+}
+.menu_theme_islands:before,
+.menu_theme_islands:after {
+  display: block;
+  content: '';
+}
+.menu_theme_islands.menu_size_s {
+  font-size: 13px;
+  line-height: 24px;
+}
+.menu_theme_islands.menu_size_s:before,
+.menu_theme_islands.menu_size_s:after {
+  height: 3px;
+}
+.menu_theme_islands.menu_size_s .menu-item + .menu__group {
+  margin-top: 3px;
+}
+.menu_theme_islands.menu_size_s .menu__group {
+  padding: 3px 0;
+}
+.menu_theme_islands.menu_size_s .menu__group-title {
+  padding: 0 10px;
+}
+.menu_theme_islands.menu_size_m {
+  font-size: 13px;
+  line-height: 24px;
+}
+.menu_theme_islands.menu_size_m:before,
+.menu_theme_islands.menu_size_m:after {
+  height: 4px;
+}
+.menu_theme_islands.menu_size_m .menu-item + .menu__group {
+  margin-top: 4px;
+}
+.menu_theme_islands.menu_size_m .menu__group {
+  padding: 4px 0;
+}
+.menu_theme_islands.menu_size_m .menu__group-title {
+  padding: 0 13px;
+}
+.menu_theme_islands.menu_size_l {
+  font-size: 15px;
+  line-height: 28px;
+}
+.menu_theme_islands.menu_size_l:before,
+.menu_theme_islands.menu_size_l:after {
+  height: 5px;
+}
+.menu_theme_islands.menu_size_l .menu-item + .menu__group {
+  margin-top: 5px;
+}
+.menu_theme_islands.menu_size_l .menu__group {
+  padding: 5px 0;
+}
+.menu_theme_islands.menu_size_l .menu__group-title {
+  padding: 0 15px;
+}
+.menu_theme_islands.menu_size_xl {
+  font-size: 15px;
+  line-height: 32px;
+}
+.menu_theme_islands.menu_size_xl:before,
+.menu_theme_islands.menu_size_xl:after {
+  height: 6px;
+}
+.menu_theme_islands.menu_size_xl .menu-item + .menu__group {
+  margin-top: 6px;
+}
+.menu_theme_islands.menu_size_xl .menu__group {
+  padding: 6px 0;
+}
+.menu_theme_islands.menu_size_xl .menu__group-title {
+  padding: 0 20px;
+}
+.menu_theme_islands .menu__group {
+  border: 1px solid rgba(0,0,0,0.1);
+  border-width: 1px 0;
+}
+.menu_theme_islands .menu__group-title {
+  color: #999;
+}
+.menu_theme_islands .menu__group + .menu__group {
+  border-top: 0;
+}
+.menu_theme_islands .menu__group:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.menu_theme_islands .menu__group:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+/* ../../libs/bem-components/design/common.blocks/menu/_theme/menu_theme_islands.styl end */
+/* ../../libs/bem-components/design/common.blocks/menu-item/_theme/menu-item_theme_islands.styl begin */
+.menu-item_theme_islands {
+  position: relative;
+  white-space: nowrap;
+}
+.menu-item_theme_islands.menu-item_disabled {
+  opacity: 0.3;
+}
+.menu-item_theme_islands .link_disabled {
+  cursor: text;
+}
+.menu-item_theme_islands.menu-item_checked {
+  background: 0 50% no-repeat url("../../libs/bem-components/design/common.blocks/theme/_islands/tip.svg");
+}
+.menu-item_theme_islands.menu-item_hovered {
+  cursor: pointer;
+  background-color: #ffeba0;
+}
+.menu-item_theme_islands.menu-item_type_link .link {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+/* Fit clickable area to `menu-item` size */
+}
+.menu-item_theme_islands.menu-item_type_link .link:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  content: '';
+}
+.menu_size_s .menu-item_theme_islands {
+  padding: 0 10px;
+  background-size: 14px 14px;
+  background-position: 10px 50%;
+}
+.menu_size_s .menu__group + .menu-item_theme_islands {
+  margin-top: 3px;
+}
+.menu_size_s[class*='menu_mode'] .menu-item_theme_islands,
+.menu_size_s .menu__group-title ~ .menu-item_theme_islands {
+  padding: 0 30px;
+}
+.menu_size_m .menu-item_theme_islands {
+  padding: 0 13px;
+  background-size: 14px 14px;
+  background-position: 13px 50%;
+}
+.menu_size_m .menu__group + .menu-item_theme_islands {
+  margin-top: 4px;
+}
+.menu_size_m[class*='menu_mode'] .menu-item_theme_islands,
+.menu_size_m .menu__group-title ~ .menu-item_theme_islands {
+  padding: 0 30px;
+}
+.menu_size_l .menu-item_theme_islands {
+  padding: 0 15px;
+  background-size: 15px 15px;
+  background-position: 15px 50%;
+}
+.menu_size_l .menu__group + .menu-item_theme_islands {
+  margin-top: 5px;
+}
+.menu_size_l[class*='menu_mode'] .menu-item_theme_islands,
+.menu_size_l .menu__group-title ~ .menu-item_theme_islands {
+  padding: 0 34px;
+}
+.menu_size_xl .menu-item_theme_islands {
+  padding: 0 20px;
+  background-size: 15px 15px;
+  background-position: 20px 50%;
+}
+.menu_size_xl .menu__group + .menu-item_theme_islands {
+  margin-top: 6px;
+}
+.menu_size_xl[class*='menu_mode'] .menu-item_theme_islands,
+.menu_size_xl .menu__group-title ~ .menu-item_theme_islands {
+  padding: 0 40px;
+}
+/* ../../libs/bem-components/design/common.blocks/menu-item/_theme/menu-item_theme_islands.styl end */
+/* ../../libs/bem-components/common.blocks/icon/icon.styl begin */
+.icon {
+  display: inline-block;
+  text-align: center;
+  background: 50% no-repeat;
+/* Hack for correct baseline positioning */
+/*
+     * Чтобы иконка правильно позиционировалась внутри блочного контекста,
+     * нужно прописать родителю свойство line-height со значением, равным высоте иконки
+     */
+}
+.icon:empty:after {
+  visibility: hidden;
+  content: '\00A0';
+}
+.icon > img,
+.icon > svg {
+  margin: -5.15em 0 -5em;
+/* 0.15 — magic number, empirically found */
+  vertical-align: middle;
+}
+/* ../../libs/bem-components/common.blocks/icon/icon.styl end */
+/* ../../desktop.blocks/divider/divider.styl begin */
+.divider {
+  position: fixed;
+  top: 48px;
+  left: 49.4%;
+  width: 1%;
+}
+/* ../../desktop.blocks/divider/divider.styl end */
+/* ../../libs/bem-components/common.blocks/image/image.styl begin */
+.image {
+  border: 0;
+}
+/* ../../libs/bem-components/common.blocks/image/image.styl end */
+/* ../../common.blocks/disabler/disabler.styl begin */
+.disabler {
+  min-width: 120%;
+  min-height: 120%;
+  position: fixed;
+  z-index: 900;
+  top: 0;
+  transition: opacity 1.3s;
+  opacity: 0.83;
+  background-color: #555;
+  background-image: url("/images/disabler.png");
+  background-repeat: repeat repeat;
+}
+.disabler.disabler_disabled_true {
+  opacity: 0;
+  top: 3000px;
+}
+/* ../../common.blocks/disabler/disabler.styl end */
 /* ../../common.blocks/question/question.styl begin */
 .question {
   padding: 1, 5em;

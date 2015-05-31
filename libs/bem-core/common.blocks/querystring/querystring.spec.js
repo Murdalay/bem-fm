@@ -30,7 +30,7 @@ describe('querystring', function() {
             qs.parse('=&=').should.eql({ '' : ['', ''] });
         });
 
-        it('should support empty values', function (){
+        it('should support empty values', function(){
             qs.parse('').should.eql({});
             qs.parse(undefined).should.eql({});
             qs.parse(null).should.eql({});
@@ -51,7 +51,7 @@ describe('querystring', function() {
 
     describe('stringify()', function() {
         function test(cases) {
-            cases.forEach(function (testCase) {
+            cases.forEach(function(testCase) {
                 qs.stringify(testCase.obj).should.eq(testCase.str);
             });
         }
@@ -65,7 +65,7 @@ describe('querystring', function() {
                 { str : 'foo=1&bar=2', obj : { 'foo' : '1', 'bar' : '2' } },
                 {
                     str : 'my%20weird%20field=q1!2%22\'w%245%267%2Fz8)%3F',
-                    obj : { 'my weird field' : "q1!2\"'w$5&7/z8)?"  }
+                    obj : { 'my weird field' : 'q1!2"\'w$5&7/z8)?' }
                 },
                 { str : 'foo%3Dbaz=bar', obj : { 'foo=baz' : 'bar' } },
                 { str : 'foo=bar&bar=baz', obj : { foo : 'bar', bar : 'baz' } },

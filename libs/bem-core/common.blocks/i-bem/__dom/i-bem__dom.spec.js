@@ -165,6 +165,62 @@ describe('i-bem__dom', function() {
         });
     });
 
+    describe('elem', function() {
+        var rootNode, instance, e1Elems;
+        function areElemsEqual(e1, e2) {
+            if(e1.length !== e2.length) return false;
+
+            var res = false;
+            e1.each(function(i) {
+                return res = e1[i] === e2[i];
+            });
+            return res;
+        }
+
+        beforeEach(function() {
+            DOM.decl('block', {});
+            rootNode = DOM.init($(BEMHTML.apply({
+                block : 'block',
+                js : true,
+                content : [
+                    { elem : 'e1' },
+                    { elem : 'e1', mods : { m1 : 'v1' } },
+                    { elem : 'e1', mods : { m1 : 'v2' } },
+                    { elem : 'e1', mods : { m1 : 'v1' } },
+                    { elem : 'e1', mods : { m1 : true } },
+                    { elem : 'e2' }
+                ]
+            })));
+            instance = rootNode.bem('block');
+            e1Elems = instance.domElem.find('.block__e1');
+        });
+
+        afterEach(function() {
+            DOM.destruct(rootNode);
+            delete DOM.blocks['block'];
+        });
+
+        it('should properly find elem by given name', function() {
+            areElemsEqual(instance.elem('e1'), [e1Elems[0], e1Elems[1], e1Elems[2], e1Elems[3], e1Elems[4]])
+                .should.be.true;
+        });
+
+        it('should properly find elem by given mod', function() {
+            areElemsEqual(instance.elem('e1', 'm1', 'v1'), [e1Elems[1], e1Elems[3]])
+                .should.be.true;
+        });
+
+        it('should properly find elem by given boolean mod with modVal', function() {
+            areElemsEqual(instance.elem('e1', 'm1', true), [e1Elems[4]])
+                .should.be.true;
+        });
+
+        it('should properly find elem by given boolean mod without modVal', function() {
+            areElemsEqual(instance.elem('e1', 'm1'), [e1Elems[4]])
+                .should.be.true;
+        });
+    });
+
     describe('elemify', function() {
         var rootNode, instance;
         beforeEach(function() {
@@ -252,6 +308,35 @@ describe('i-bem__dom', function() {
             getBlockIds(rootBlock.findBlocksInside({ block : 'b1', modName : 'm1', modVal : true }))
                 .should.be.eql(['4']);
         });
+
+        it('should force init for found blocks', function(done) {
+            DOM.decl('block', {
+                onSetMod : {
+                    'js' : {
+                        'inited' : function() {
+                            this.findBlocksInside('block2').map(function(block) {
+                                return block.hasMod('js', 'inited');
+                            }).should.be.eql([true, true]);
+                            done();
+                        }
+                    }
+                }
+            });
+
+            DOM.decl('block2');
+
+            DOM.init(BEMHTML.apply({
+                block : 'block',
+                js : true,
+                content : [
+                    { block : 'block2', js : true },
+                    { block : 'block2', js : true }
+                ]
+            }));
+
+            delete DOM.blocks['block'];
+            delete DOM.blocks['block2'];
+        });
     });
 
     describe('DOM.init', function() {
@@ -270,6 +355,23 @@ describe('i-bem__dom', function() {
                     content : { block : 'block', js : true } })));
 
             spy.called.should.be.true;
+
+            DOM.destruct(rootNode);
+            delete DOM.blocks['block'];
+        });
+
+        it('should call live function for block', function() {
+            var spy = sinon.spy();
+            DOM.decl('block', {}, {
+                live : spy
+            });
+
+            var rootNode = DOM.init($(BEMHTML.apply({
+                    tag : 'div',
+                    content : { block : 'block', js : true } })));
+
+            DOM.init(rootNode);
+            spy.should.have.been.calledOnce;
 
             DOM.destruct(rootNode);
             delete DOM.blocks['block'];
@@ -808,6 +910,88 @@ describe('i-bem__dom', function() {
 
             DOM.destruct(rootNode);
             delete DOM.blocks['block'];
+        });
+    });
+
+    describe('live', function() {
+        it('should properly use live of base block', function() {
+            var spy1 = sinon.spy(),
+                spy2 = sinon.spy();
+
+            DOM.decl('block1', {}, { live : spy1 });
+            DOM.decl({ block : 'block2', baseBlock : 'block1' }, {}, {
+                live : function() {
+                    this.__base.apply(this, arguments);
+                    spy2();
+                }
+            });
+
+            DOM.init(BEMHTML.apply([
+                { block : 'block1', js : true },
+                { block : 'block2', js : true }
+            ]));
+
+            spy1.should.have.been.calledTwice;
+            spy2.should.have.been.calledOnce;
+
+            delete DOM.blocks['block1'];
+            delete DOM.blocks['block2'];
+        });
+
+        it('should properly use live after adding a new block', function() {
+            var spy1 = sinon.spy(),
+                spy2 = sinon.spy();
+
+            DOM.decl('block1', {}, { live : spy1 });
+
+            DOM.init(BEMHTML.apply({ block : 'block1', js : true }));
+
+            spy1.should.have.been.calledOnce;
+
+            DOM.decl({ block : 'block2', baseBlock : 'block1' }, {}, {
+                live : function() {
+                    this.__base.apply(this, arguments);
+                    spy2();
+                }
+            });
+
+            spy2.should.not.have.been.called;
+
+            DOM.init(BEMHTML.apply({ block : 'block2', js : true }));
+
+            spy1.should.have.been.calledTwice;
+            spy2.should.have.been.calledOnce;
+
+            delete DOM.blocks['block1'];
+            delete DOM.blocks['block2'];
+        });
+
+        it('should properly use live after adding declaration', function() {
+            var spy1 = sinon.spy(),
+                spy2 = sinon.spy();
+
+            DOM.decl('block1', {}, { live : spy1 });
+
+            DOM.init(BEMHTML.apply({ block : 'block1', js : true }));
+
+            spy1.should.have.been.calledOnce;
+
+            DOM.decl('block1', {}, {
+                live : function() {
+                    this.__base.apply(this, arguments);
+                    spy2();
+                }
+            });
+
+            spy1.should.have.been.calledOnce;
+            spy2.should.have.been.calledOnce;
+
+            DOM.init(BEMHTML.apply({ block : 'block1', js : true }));
+
+            spy1.should.have.been.calledOnce;
+            spy2.should.have.been.calledOnce;
+
+            delete DOM.blocks['block1'];
         });
     });
 

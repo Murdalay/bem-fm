@@ -78,15 +78,17 @@ provide(BEMDOM.decl(this.name, {
     },
 
     _stubMenusState : function(e) {
-		this._activeMenu = e.target;
-		this._activeMenuPosition = this._activeMenu.getMod('position');
-		this._activeMenu.setMod('active');
+    	if(e.target.hasMod('panel')) {
+			this._activeMenu = e.target;
+			this._activeMenuPosition = this._activeMenu.getMod('position');
+			this._activeMenu.setMod('active');
 
-		this._inactiveMenuPosition = this._activeMenuPosition === 'left' ? 'right' : 'left';
-		this._inactiveMenuPath = state.getCurPath(this._inactiveMenuPosition);
-		this._inactiveMenu = this.getInactiveMenu();
+			this._inactiveMenuPosition = this._activeMenuPosition === 'left' ? 'right' : 'left';
+			this._inactiveMenuPath = state.getCurPath(this._inactiveMenuPosition);
+			this._inactiveMenu = this.getInactiveMenu();
 
-		this._inactiveMenu && this._inactiveMenu.hasMod('active') && this._inactiveMenu.delMod('active');
+			this._inactiveMenu && this._inactiveMenu.hasMod('active') && this._inactiveMenu.delMod('active');
+    	}
 
     },
 
@@ -167,7 +169,7 @@ provide(BEMDOM.decl(this.name, {
 
 
     /*
-    * Displays the dialog window and executes the provided callback if user confirmed the action.
+    * Displays the dialog window and executes the provided callback if user confirmes the action.
     * @exports
     * @param {Function} cb Callback to run on confirmation. It will receives as first arguments array of items and answer object as second.
     * @param {String} action Action type for the confirmation dialog. 

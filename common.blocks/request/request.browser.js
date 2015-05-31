@@ -120,6 +120,12 @@ var com = channels('116'),
 				action: 'list' }, cb, onFail);
 	    },
 
+		ping: function(item, cb, onFail) {
+			_formRequest({ 
+				item: item, 
+				action: 'ping' }, cb, onFail);
+	    },
+
 		getConfig: function(item, cb, onFail) {
 			_formRequest({ 
 				item: item, 

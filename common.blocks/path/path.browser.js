@@ -26,7 +26,6 @@ provide(BEMDOM.decl(this.name, {
             }
         },
         'ready' : function() {
-            console.log('message');
             this.serveAsPathfinder(this._position);
         }        
     },
@@ -39,6 +38,14 @@ provide(BEMDOM.decl(this.name, {
         this._control.domElem.val(value);
         this._lastVal = value;
         this._input.setMod('focused');
+    },
+
+    setFocus : function(value) {
+        this._input.setMod('focused');
+    },
+
+    delFocus : function(value) {
+        this._input.delMod('focused');
     },
 
     getVal: function() { return this._control.domElem.val() },
@@ -96,6 +103,25 @@ provide(BEMDOM.decl(this.name, {
         this._curPath = data;
     },
 
+    detectMountpoint : function() {
+        var drives = state.getDisks(),
+            activeDriveIndex = 0;
+
+        if(drives) {
+            drives.forEach(function (item, index) {
+                if(index > 0){
+                    state.getCurPath(this._position).indexOf(normalize(item.mountpoint)) !== -1 && (activeDriveIndex = index);
+                }
+            }.bind(this));
+
+            state.setActiveDriveIndex(this._position, activeDriveIndex);
+            com.emit(this._position +'-drive-changed');
+        } else {
+            setTimeout(this.detectMountpoint.bind(this), 150);
+            console.log('not yet');
+        }
+    },
+
     _emitPath: function() {
         console.log('position is ' + this._position + '\npath is ' +  this._curPath);
         com.emit(this._position + '-path-is', this._curPath);
@@ -115,7 +141,6 @@ provide(BEMDOM.decl(this.name, {
         this._curPath || (this._curPath = conf()[this._position]);
 
         this._checkPath(this._curPath);
-        console.log(conf()[this._position]);
     },
 
    _checkPath: function(path, cb) {
@@ -141,15 +166,18 @@ provide(BEMDOM.decl(this.name, {
         var _res = JSON.parse(result);
             
         if(_res.exist) {
-            this.setAll(normalize(_res.path));
+            this.detectMountpoint();
+
+            _res.path = normalize(_res.path);
+            this.setAll(_res.path);
             com.emit('path-' + this._position, _res.path);
-            com.emit('curPath', { position: this._position, path: _res.path});
         }
         else {
             this._curPath ? 
                 this.setAll(this._curPath) :
                     this.setAll('/');
         };
+
     },
 
     _setCook : function(path) {

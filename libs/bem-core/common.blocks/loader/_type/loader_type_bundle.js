@@ -5,15 +5,19 @@
 
 modules.define('loader_type_bundle', function(provide) {
 
-var LOADING_TIMEOUT = 20000,
+var LOADING_TIMEOUT = 30000,
     global = this.global,
     doc = document,
     head,
     bundles = {},
 
     handleError = function(bundleId) {
-        var bundleDesc = bundles[bundleId],
-            fns = bundleDesc.errorFns, fn;
+        var bundleDesc = bundles[bundleId];
+
+        if(!bundleDesc) return;
+
+        var fns = bundleDesc.errorFns,
+            fn;
 
         clearTimeout(bundleDesc.timer);
 
@@ -24,7 +28,7 @@ var LOADING_TIMEOUT = 20000,
     appendCss = function(css) {
         var style = doc.createElement('style');
         style.type = 'text/css';
-        head.insertBefore(style, head.firstChild); // ie needs to insert style before setting content
+        head.appendChild(style); // ie needs to insert style before setting content
         style.styleSheet?
             style.styleSheet.cssText = css :
             style.appendChild(doc.createTextNode(css));
@@ -72,6 +76,8 @@ var LOADING_TIMEOUT = 20000,
 
 load._loaded = function(bundle) {
     var bundleDesc = bundles[bundle.id];
+
+    if(!bundleDesc) return;
 
     clearTimeout(bundleDesc.timer);
 

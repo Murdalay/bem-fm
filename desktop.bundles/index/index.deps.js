@@ -255,13 +255,13 @@ exports.deps = [
         "block": "router"
     },
     {
+        "block": "vow"
+    },
+    {
         "block": "manager"
     },
     {
         "block": "path-normalizer"
-    },
-    {
-        "block": "vow"
     },
     {
         "block": "state"
@@ -326,10 +326,10 @@ exports.deps = [
         "block": "panel"
     },
     {
-        "block": "cookie"
+        "block": "path"
     },
     {
-        "block": "path"
+        "block": "cookie"
     },
     {
         "block": "functions",
@@ -349,6 +349,30 @@ exports.deps = [
     },
     {
         "block": "list"
+    },
+    {
+        "block": "select"
+    },
+    {
+        "block": "select",
+        "mod": "focused"
+    },
+    {
+        "block": "select",
+        "mod": "focused",
+        "val": true
+    },
+    {
+        "block": "select",
+        "elem": "control"
+    },
+    {
+        "block": "select",
+        "elem": "button"
+    },
+    {
+        "block": "select",
+        "elem": "menu"
     },
     {
         "block": "menu"
@@ -388,22 +412,51 @@ exports.deps = [
         "val": true
     },
     {
-        "block": "menu",
-        "mod": "theme"
+        "block": "popup"
     },
     {
-        "block": "menu",
-        "mod": "theme",
-        "val": "islands"
+        "block": "functions",
+        "elem": "throttle"
     },
     {
-        "block": "menu-item",
-        "mod": "theme"
+        "block": "popup",
+        "mod": "visible"
     },
     {
-        "block": "menu-item",
-        "mod": "theme",
-        "val": "islands"
+        "block": "popup",
+        "mod": "visible",
+        "val": true
+    },
+    {
+        "block": "popup",
+        "mod": "autoclosable"
+    },
+    {
+        "block": "popup",
+        "mod": "target"
+    },
+    {
+        "block": "popup",
+        "mod": "target",
+        "val": "anchor"
+    },
+    {
+        "block": "popup",
+        "mod": "autoclosable",
+        "val": true
+    },
+    {
+        "block": "strings",
+        "elem": "escape"
+    },
+    {
+        "block": "select",
+        "mod": "mode"
+    },
+    {
+        "block": "select",
+        "mod": "mode",
+        "val": "radio"
     },
     {
         "block": "menu",
@@ -412,7 +465,72 @@ exports.deps = [
     {
         "block": "menu",
         "mod": "mode",
+        "val": "radio"
+    },
+    {
+        "block": "select",
+        "mod": "theme"
+    },
+    {
+        "block": "select",
+        "mod": "theme",
+        "val": "islands"
+    },
+    {
+        "block": "popup",
+        "mod": "theme"
+    },
+    {
+        "block": "popup",
+        "mod": "theme",
+        "val": "islands"
+    },
+    {
+        "block": "menu",
+        "mod": "theme"
+    },
+    {
+        "block": "menu",
+        "mod": "theme",
+        "val": "islands"
+    },
+    {
+        "block": "menu-item",
+        "mod": "theme"
+    },
+    {
+        "block": "menu-item",
+        "mod": "theme",
+        "val": "islands"
+    },
+    {
+        "block": "icon"
+    },
+    {
+        "block": "menu",
+        "mod": "panel"
+    },
+    {
+        "block": "menu",
+        "mod": "panel",
+        "val": true
+    },
+    {
+        "block": "menu",
+        "mod": "mode",
         "val": "check"
+    },
+    {
+        "block": "menu-tems"
+    },
+    {
+        "block": "menu-tems",
+        "mod": "pathfinder"
+    },
+    {
+        "block": "menu-tems",
+        "mod": "pathfinder",
+        "val": true
     },
     {
         "block": "panel",
@@ -451,35 +569,6 @@ exports.deps = [
     },
     {
         "block": "keyboard"
-    },
-    {
-        "block": "popup"
-    },
-    {
-        "block": "functions",
-        "elem": "throttle"
-    },
-    {
-        "block": "popup",
-        "mod": "visible"
-    },
-    {
-        "block": "popup",
-        "mod": "visible",
-        "val": true
-    },
-    {
-        "block": "popup",
-        "mod": "theme"
-    },
-    {
-        "block": "popup",
-        "mod": "theme",
-        "val": "islands"
-    },
-    {
-        "block": "popup",
-        "mod": "target"
     },
     {
         "block": "popup",
@@ -534,6 +623,1206 @@ exports.deps = [
 ];
 exports.depsByTechs = {
     "": {},
+    "tmpl-spec.js": {
+        "tmpl-spec.js": [
+            {
+                "tech": "tmpl-spec.js",
+                "block": "i-bem"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "i-bem",
+                "elem": "internal"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "inherit"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "identify"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "next-tick"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "objects"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "functions"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "events"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "page"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "page"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "page",
+                "elem": "conditional-comment"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "i-bem",
+                "elem": "dom"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "loader"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "loader",
+                "mod": "type"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "loader",
+                "mod": "type",
+                "val": "js"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "config"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "ua"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "dom"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "i-bem",
+                "elem": "dom",
+                "mod": "init"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "i-bem",
+                "elem": "dom",
+                "mod": "init",
+                "val": "auto"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "page",
+                "elem": "css"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "page",
+                "elem": "js"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio-group"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "elem": "box"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "elem": "control"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "disabled"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "disabled",
+                "val": true
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "checked"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "checked",
+                "val": true
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "focused"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointer"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointerclick"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointernative"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointerpressrelease"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "control"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio-group",
+                "mod": "type"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio-group",
+                "mod": "type",
+                "val": "button"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "type"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "type",
+                "val": "button"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "elem": "text"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "focused"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "focused",
+                "val": "yes"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "hovered"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "hovered",
+                "val": "yes"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "disabled"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "disabled",
+                "val": "yes"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "pressed"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "pressed",
+                "val": "yes"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "keyboard",
+                "elem": "codes"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "togglable"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button",
+                "mod": "togglable",
+                "val": "radio"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input",
+                "elem": "box"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input",
+                "elem": "control"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input",
+                "mod": "disabled"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input",
+                "mod": "focused"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "tick"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "idle"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "router"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "vow"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "button"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio-group"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select",
+                "mod": "focused"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select",
+                "elem": "control"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu-item"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "config"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "details"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "size"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "state"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "events",
+                "elem": "channels"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu",
+                "mod": "focused"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu",
+                "elem": "group"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu",
+                "elem": "group-title"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu",
+                "elem": "group",
+                "mod": "has-title"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu",
+                "elem": "group",
+                "mod": "has-title",
+                "val": true
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "functions",
+                "elem": "throttle"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup",
+                "mod": "visible"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup",
+                "mod": "visible",
+                "val": true
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup",
+                "mod": "target"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup",
+                "mod": "target",
+                "val": "anchor"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup",
+                "mod": "autoclosable",
+                "val": true
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "strings",
+                "elem": "escape"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "i-bem"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "i-bem",
+                "elem": "dom"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "i-bem",
+                "elem": "dom",
+                "mod": "init",
+                "val": "auto"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio-group",
+                "mod": "type",
+                "val": "button"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "router"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointer"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "events"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "control"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "link"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "link",
+                "mod": "disabled"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "dom"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "radio",
+                "mod": "type",
+                "val": "button"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointerclick"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointerpressrelease"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "tick"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "idle"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu-item"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "menu",
+                "elem": "group"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "events",
+                "elem": "channels"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "config"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointernative"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "state"
+            }
+        ],
+        "bemhtml": [
+            {
+                "tech": "bemhtml",
+                "block": "i-bem"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "i-bem",
+                "elem": "internal"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "inherit"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "identify"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "next-tick"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "objects"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "functions"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "events"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "i-bem",
+                "elem": "dom"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "loader"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "loader",
+                "mod": "type"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "loader",
+                "mod": "type",
+                "val": "js"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "config"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "ua"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "dom"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "i-bem",
+                "elem": "dom",
+                "mod": "init"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio-group"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "elem": "box"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "elem": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "disabled"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "disabled",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "checked"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "checked",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointer"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointerclick"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointernative"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointerpressrelease"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio-group",
+                "mod": "type"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio-group",
+                "mod": "type",
+                "val": "button"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "type"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "type",
+                "val": "button"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "elem": "text"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "focused",
+                "val": "yes"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "hovered"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "hovered",
+                "val": "yes"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "disabled"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "disabled",
+                "val": "yes"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "pressed"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "pressed",
+                "val": "yes"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "keyboard",
+                "elem": "codes"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "togglable"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "togglable",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "icon"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "type"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "type",
+                "val": "link"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "elem": "box"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "elem": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "disabled"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "tick"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "idle"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "type"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "type",
+                "val": "textarea"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "type",
+                "val": "password"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "type",
+                "val": "search"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "has-clear"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "elem": "clear"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "has-clear",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "config"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "details"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "state"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "events",
+                "elem": "channels"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group-title"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group",
+                "mod": "has-title"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group",
+                "mod": "has-title",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "functions",
+                "elem": "throttle"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "visible"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "visible",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "target"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "target",
+                "val": "anchor"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "strings",
+                "elem": "escape"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio-check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio-check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "link"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "link",
+                "mod": "disabled"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item",
+                "mod": "type"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item",
+                "mod": "type",
+                "val": "link"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "link",
+                "mod": "pseudo"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "link",
+                "mod": "pseudo",
+                "val": true
+            }
+        ]
+    },
     "spec.js": {
         "bemhtml": [
             {
@@ -818,6 +2107,36 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
+                "block": "select"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "bemhtml",
                 "block": "menu"
             },
             {
@@ -881,6 +2200,50 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "target"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "target",
+                "val": "anchor"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "strings",
+                "elem": "escape"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
                 "block": "button",
                 "mod": "type"
             },
@@ -917,6 +2280,30 @@ exports.depsByTechs = {
                 "block": "input",
                 "mod": "has-clear",
                 "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio-check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio-check"
             },
             {
                 "tech": "bemhtml",
@@ -1242,6 +2629,40 @@ exports.depsByTechs = {
             },
             {
                 "tech": "spec.js",
+                "block": "select"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "mod": "focused"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "elem": "control"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "spec.js",
                 "block": "menu"
             },
             {
@@ -1268,10 +2689,6 @@ exports.depsByTechs = {
                 "tech": "spec.js",
                 "block": "events",
                 "elem": "channels"
-            },
-            {
-                "tech": "spec.js",
-                "block": "menu"
             },
             {
                 "tech": "spec.js",
@@ -1309,6 +2726,54 @@ exports.depsByTechs = {
             },
             {
                 "tech": "spec.js",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "spec.js",
+                "block": "popup",
+                "mod": "target"
+            },
+            {
+                "tech": "spec.js",
+                "block": "popup",
+                "mod": "target",
+                "val": "anchor"
+            },
+            {
+                "tech": "spec.js",
+                "block": "popup",
+                "mod": "autoclosable",
+                "val": true
+            },
+            {
+                "tech": "spec.js",
+                "block": "strings",
+                "elem": "escape"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "spec.js",
+                "block": "menu",
+                "mod": "mode"
+            },
+            {
+                "tech": "spec.js",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "spec.js",
+                "block": "menu"
+            },
+            {
+                "tech": "spec.js",
                 "block": "button",
                 "mod": "type",
                 "val": "link"
@@ -1336,7 +2801,22 @@ exports.depsByTechs = {
             },
             {
                 "tech": "spec.js",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "spec.js",
                 "block": "menu-item"
+            },
+            {
+                "tech": "spec.js",
+                "block": "input",
+                "mod": "has-clear"
+            },
+            {
+                "tech": "spec.js",
+                "block": "input",
+                "elem": "clear"
             },
             {
                 "tech": "spec.js",
@@ -1363,13 +2843,27 @@ exports.depsByTechs = {
             },
             {
                 "tech": "spec.js",
-                "block": "input",
-                "mod": "has-clear"
+                "block": "select",
+                "mod": "mode",
+                "val": "check"
             },
             {
                 "tech": "spec.js",
-                "block": "input",
-                "elem": "clear"
+                "block": "menu",
+                "mod": "mode",
+                "val": "check"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio-check"
+            },
+            {
+                "tech": "spec.js",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio-check"
             },
             {
                 "tech": "spec.js",
@@ -1416,6 +2910,16 @@ exports.depsByTechs = {
             {
                 "tech": "spec.js",
                 "block": "idle"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "spec.js",
+                "block": "select",
+                "elem": "menu"
             },
             {
                 "tech": "spec.js",
@@ -1475,896 +2979,66 @@ exports.depsByTechs = {
             {
                 "tech": "js",
                 "block": "objects"
-            }
-        ]
-    },
-    "tmpl-spec.js": {
-        "bemhtml": [
-            {
-                "tech": "bemhtml",
-                "block": "i-bem"
             },
             {
-                "tech": "bemhtml",
-                "block": "i-bem",
-                "elem": "internal"
+                "tech": "js",
+                "block": "popup",
+                "mod": "autoclosable"
             },
             {
-                "tech": "bemhtml",
-                "block": "inherit"
+                "tech": "js",
+                "block": "popup",
+                "mod": "target"
             },
             {
-                "tech": "bemhtml",
-                "block": "identify"
+                "tech": "js",
+                "block": "popup",
+                "mod": "target",
+                "val": "anchor"
             },
             {
-                "tech": "bemhtml",
-                "block": "next-tick"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "objects"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "functions"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "events"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "i-bem",
-                "elem": "dom"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "loader"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "loader",
-                "mod": "type"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "loader",
-                "mod": "type",
-                "val": "js"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery",
-                "elem": "config"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "ua"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "dom"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "i-bem",
-                "elem": "dom",
-                "mod": "init"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "elem": "text"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "focused"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "focused",
-                "val": "yes"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "hovered"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "hovered",
-                "val": "yes"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "disabled"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "disabled",
-                "val": "yes"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "pressed"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "pressed",
-                "val": "yes"
-            },
-            {
-                "tech": "bemhtml",
+                "tech": "js",
                 "block": "jquery",
                 "elem": "event"
             },
             {
-                "tech": "bemhtml",
+                "tech": "js",
                 "block": "jquery",
                 "elem": "event",
                 "mod": "type"
             },
             {
-                "tech": "bemhtml",
+                "tech": "js",
                 "block": "jquery",
                 "elem": "event",
                 "mod": "type",
                 "val": "pointer"
             },
             {
-                "tech": "bemhtml",
+                "tech": "js",
                 "block": "jquery",
                 "elem": "event",
                 "mod": "type",
                 "val": "pointerclick"
             },
             {
-                "tech": "bemhtml",
+                "tech": "js",
                 "block": "jquery",
                 "elem": "event",
                 "mod": "type",
                 "val": "pointernative"
             },
             {
-                "tech": "bemhtml",
+                "tech": "js",
                 "block": "jquery",
                 "elem": "event",
                 "mod": "type",
                 "val": "pointerpressrelease"
             },
             {
-                "tech": "bemhtml",
+                "tech": "js",
                 "block": "keyboard",
                 "elem": "codes"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "control"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "type"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "type",
-                "val": "link"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "icon"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio-group"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "elem": "box"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "elem": "control"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "disabled"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "disabled",
-                "val": true
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "checked"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "checked",
-                "val": true
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "focused"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "focused",
-                "val": true
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio-group",
-                "mod": "type"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio-group",
-                "mod": "type",
-                "val": "button"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "type"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "type",
-                "val": "button"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "togglable"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "button",
-                "mod": "togglable",
-                "val": "radio"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "elem": "box"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "elem": "control"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "disabled"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "focused"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "tick"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "idle"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "type"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "type",
-                "val": "textarea"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "type",
-                "val": "password"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "type",
-                "val": "search"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "has-clear"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "elem": "clear"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "has-clear",
-                "val": true
-            },
-            {
-                "tech": "bemhtml",
-                "block": "link"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "link",
-                "mod": "disabled"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu-item"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "config"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "details"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "size"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "state"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "events",
-                "elem": "channels"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu-item",
-                "mod": "type"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu-item",
-                "mod": "type",
-                "val": "link"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "mod": "focused"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "mod": "focused",
-                "val": true
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group-title"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group",
-                "mod": "has-title"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group",
-                "mod": "has-title",
-                "val": true
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "mod": "mode"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "mod": "mode",
-                "val": "radio"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "link",
-                "mod": "pseudo"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "link",
-                "mod": "pseudo",
-                "val": true
-            }
-        ],
-        "tmpl-spec.js": [
-            {
-                "tech": "tmpl-spec.js",
-                "block": "i-bem"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "i-bem",
-                "elem": "internal"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "inherit"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "identify"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "next-tick"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "objects"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "functions"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "events"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "i-bem",
-                "elem": "dom"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "loader"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "loader",
-                "mod": "type"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "loader",
-                "mod": "type",
-                "val": "js"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "config"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "ua"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "dom"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "i-bem",
-                "elem": "dom",
-                "mod": "init"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "elem": "text"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "mod": "focused"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "mod": "focused",
-                "val": "yes"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "mod": "hovered"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "mod": "hovered",
-                "val": "yes"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "mod": "disabled"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "mod": "disabled",
-                "val": "yes"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "mod": "pressed"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "button",
-                "mod": "pressed",
-                "val": "yes"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointer"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointerclick"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointernative"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointerpressrelease"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "keyboard",
-                "elem": "codes"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "control"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio-group"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio",
-                "elem": "box"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio",
-                "elem": "control"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio",
-                "mod": "disabled"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio",
-                "mod": "disabled",
-                "val": true
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio",
-                "mod": "checked"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio",
-                "mod": "checked",
-                "val": true
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio",
-                "mod": "focused"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio",
-                "mod": "focused",
-                "val": true
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "input"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "input"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "input",
-                "elem": "box"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "input",
-                "elem": "control"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "input",
-                "mod": "disabled"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "input",
-                "mod": "focused"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "tick"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "idle"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu-item"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "config"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "details"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "size"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "state"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "events",
-                "elem": "channels"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu",
-                "mod": "focused"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu",
-                "mod": "focused",
-                "val": true
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu",
-                "elem": "group"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu",
-                "elem": "group-title"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu",
-                "elem": "group",
-                "mod": "has-title"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu",
-                "elem": "group",
-                "mod": "has-title",
-                "val": true
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "radio"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "i-bem"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "i-bem",
-                "elem": "dom"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointer"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "events"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "control"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "link"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "link",
-                "mod": "disabled"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "dom"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointerclick"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointerpressrelease"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "tick"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "idle"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu-item"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "menu",
-                "elem": "group"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "events",
-                "elem": "channels"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "config"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointernative"
-            },
-            {
-                "tech": "tmpl-spec.js",
-                "block": "state"
             }
         ]
     },
@@ -2448,118 +3122,28 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
-                "block": "menu"
+                "block": "select"
             },
             {
                 "tech": "bemhtml",
-                "block": "control"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery",
-                "elem": "event"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointer"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointerclick"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointernative"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointerpressrelease"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu-item"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "config"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "details"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "size"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "state"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "events",
-                "elem": "channels"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "keyboard",
-                "elem": "codes"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
+                "block": "select",
                 "mod": "focused"
             },
             {
                 "tech": "bemhtml",
-                "block": "menu",
+                "block": "select",
                 "mod": "focused",
                 "val": true
             },
             {
                 "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group"
+                "block": "select",
+                "elem": "control"
             },
             {
                 "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group-title"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group",
-                "mod": "has-title"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group",
-                "mod": "has-title",
-                "val": true
-            },
-            {
-                "tech": "bemhtml",
-                "block": "question"
+                "block": "select",
+                "elem": "button"
             },
             {
                 "tech": "bemhtml",
@@ -2616,6 +3200,196 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointer"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointerclick"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointernative"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointerpressrelease"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "keyboard",
+                "elem": "codes"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "config"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "details"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "state"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "events",
+                "elem": "channels"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group-title"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group",
+                "mod": "has-title"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group",
+                "mod": "has-title",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "functions",
+                "elem": "throttle"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "visible"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "visible",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "target"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "target",
+                "val": "anchor"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "strings",
+                "elem": "escape"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
                 "block": "button",
                 "mod": "theme"
             },
@@ -2624,6 +3398,92 @@ exports.depsByTechs = {
                 "block": "button",
                 "mod": "theme",
                 "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "icon"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "size",
+                "val": "l"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "panel"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "panel",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "size",
+                "val": "l"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "question"
             },
             {
                 "tech": "bemhtml",
@@ -2780,14 +3640,6 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
-                "block": "cookie"
-            },
-            {
-                "tech": "js",
-                "block": "config"
-            },
-            {
-                "tech": "js",
                 "block": "state"
             },
             {
@@ -2802,6 +3654,10 @@ exports.depsByTechs = {
             {
                 "tech": "js",
                 "block": "path"
+            },
+            {
+                "tech": "js",
+                "block": "cookie"
             },
             {
                 "tech": "js",
@@ -2908,6 +3764,94 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
+                "block": "select"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "mod": "focused"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "elem": "control"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "js",
+                "block": "button"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "elem": "text"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "focused"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "focused",
+                "val": "yes"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "hovered"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "hovered",
+                "val": "yes"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "disabled"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "disabled",
+                "val": "yes"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "pressed"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "pressed",
+                "val": "yes"
+            },
+            {
+                "tech": "js",
+                "block": "keyboard",
+                "elem": "codes"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "js",
                 "block": "menu"
             },
             {
@@ -2916,12 +3860,11 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
-                "block": "details"
+                "block": "config"
             },
             {
                 "tech": "js",
-                "block": "keyboard",
-                "elem": "codes"
+                "block": "details"
             },
             {
                 "tech": "js",
@@ -2959,25 +3902,61 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
-                "block": "menu",
-                "mod": "theme"
+                "block": "popup"
             },
             {
                 "tech": "js",
-                "block": "menu",
-                "mod": "theme",
-                "val": "islands"
+                "block": "functions",
+                "elem": "throttle"
             },
             {
                 "tech": "js",
-                "block": "menu-item",
-                "mod": "theme"
+                "block": "popup",
+                "mod": "visible"
             },
             {
                 "tech": "js",
-                "block": "menu-item",
-                "mod": "theme",
-                "val": "islands"
+                "block": "popup",
+                "mod": "visible",
+                "val": true
+            },
+            {
+                "tech": "js",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "js",
+                "block": "popup",
+                "mod": "target"
+            },
+            {
+                "tech": "js",
+                "block": "popup",
+                "mod": "target",
+                "val": "anchor"
+            },
+            {
+                "tech": "js",
+                "block": "popup",
+                "mod": "autoclosable",
+                "val": true
+            },
+            {
+                "tech": "js",
+                "block": "strings",
+                "elem": "escape"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "mod": "mode"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio"
             },
             {
                 "tech": "js",
@@ -2988,7 +3967,98 @@ exports.depsByTechs = {
                 "tech": "js",
                 "block": "menu",
                 "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "mod": "theme"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "theme"
+            },
+            {
+                "tech": "js",
+                "block": "button",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "js",
+                "block": "popup",
+                "mod": "theme"
+            },
+            {
+                "tech": "js",
+                "block": "popup",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "js",
+                "block": "menu",
+                "mod": "theme"
+            },
+            {
+                "tech": "js",
+                "block": "menu",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "js",
+                "block": "menu-item",
+                "mod": "theme"
+            },
+            {
+                "tech": "js",
+                "block": "menu-item",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "js",
+                "block": "icon"
+            },
+            {
+                "tech": "js",
+                "block": "menu",
+                "mod": "panel"
+            },
+            {
+                "tech": "js",
+                "block": "menu",
+                "mod": "panel",
+                "val": true
+            },
+            {
+                "tech": "js",
+                "block": "menu",
+                "mod": "mode",
                 "val": "check"
+            },
+            {
+                "tech": "js",
+                "block": "menu-tems"
+            },
+            {
+                "tech": "js",
+                "block": "menu-tems",
+                "mod": "pathfinder"
+            },
+            {
+                "tech": "js",
+                "block": "menu-tems",
+                "mod": "pathfinder",
+                "val": true
             },
             {
                 "tech": "js",
@@ -3034,13 +4104,23 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
-                "block": "menu"
+                "block": "select"
             },
             {
                 "tech": "js",
-                "block": "menu",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "js",
+                "block": "select",
                 "mod": "theme",
                 "val": "islands"
+            },
+            {
+                "tech": "js",
+                "block": "menu"
             },
             {
                 "tech": "js",
@@ -3057,6 +4137,25 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "js",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "js",
+                "block": "popup"
+            },
+            {
+                "tech": "js",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "js",
                 "block": "control"
             },
             {
@@ -3067,6 +4166,26 @@ exports.depsByTechs = {
                 "tech": "js",
                 "block": "menu",
                 "elem": "group"
+            },
+            {
+                "tech": "js",
+                "block": "button"
+            },
+            {
+                "tech": "js",
+                "block": "popup",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "js",
+                "block": "menu",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "js",
+                "block": "icon"
             },
             {
                 "tech": "js",
@@ -3299,6 +4418,40 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
+                "block": "select"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "focused",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "bemhtml",
                 "block": "menu"
             },
             {
@@ -3325,10 +4478,6 @@ exports.depsByTechs = {
                 "tech": "bemhtml",
                 "block": "events",
                 "elem": "channels"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu"
             },
             {
                 "tech": "bemhtml",
@@ -3366,20 +4515,12 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
-                "block": "question"
-            },
-            {
-                "tech": "bemhtml",
                 "block": "popup"
             },
             {
                 "tech": "bemhtml",
                 "block": "functions",
                 "elem": "throttle"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "popup"
             },
             {
                 "tech": "bemhtml",
@@ -3391,6 +4532,122 @@ exports.depsByTechs = {
                 "block": "popup",
                 "mod": "visible",
                 "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "target"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "target",
+                "val": "anchor"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable",
+                "val": true
+            },
+            {
+                "tech": "bemhtml",
+                "block": "strings",
+                "elem": "escape"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "button",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "icon"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "question"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup"
             },
             {
                 "tech": "bemhtml",
@@ -3451,60 +4708,6 @@ exports.depsByTechs = {
                 "block": "input",
                 "mod": "theme",
                 "val": "islands"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "i-bem"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "i-bem",
-                "elem": "dom"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery",
-                "elem": "event",
-                "mod": "type",
-                "val": "pointer"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "events"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "control"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu-item"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "menu",
-                "elem": "group"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "jquery"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "events",
-                "elem": "channels"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "dom"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "state"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input"
             },
             {
                 "tech": "bemhtml",
@@ -3587,6 +4790,14 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
+                "block": "i-bem"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input"
+            },
+            {
+                "tech": "bemhtml",
                 "block": "input",
                 "mod": "has-clear"
             },
@@ -3594,6 +4805,97 @@ exports.depsByTechs = {
                 "tech": "bemhtml",
                 "block": "input",
                 "elem": "clear"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "i-bem",
+                "elem": "dom"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery",
+                "elem": "event",
+                "mod": "type",
+                "val": "pointer"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "events"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "button"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "elem": "menu"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "jquery"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "dom"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "autoclosable"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu-item"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "elem": "group"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "events",
+                "elem": "channels"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "popup",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "state"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "select",
+                "mod": "mode",
+                "val": "radio-check"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "menu",
+                "mod": "mode",
+                "val": "radio-check"
             },
             {
                 "tech": "bemhtml",
@@ -3621,6 +4923,16 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
+                "block": "radio"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "radio",
+                "mod": "type",
+                "val": "button"
+            },
+            {
+                "tech": "bemhtml",
                 "block": "jquery",
                 "elem": "event",
                 "mod": "type",
@@ -3640,16 +4952,6 @@ exports.depsByTechs = {
             {
                 "tech": "bemhtml",
                 "block": "idle"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "radio",
-                "mod": "type",
-                "val": "button"
             },
             {
                 "tech": "bemhtml",

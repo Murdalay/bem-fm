@@ -29,13 +29,13 @@ modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state
 		var timer,
 			com = channels('116');
 
-provide(MenuItem.decl( /** @lends menu-item.prototype */{
+provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu-item.prototype */{
     onSetMod : {
         'js' : {
             'inited' : function() {
-				this._position = this.hasMod('position', 'left') ?
-					'left' : 'right';
+				this._position = this.getMod('position');
                 this._path = this.getVal();
+
                 this._id = state.getId(this._path);
                 this._stat = state.getReadableStates(this._path);
                 this._name = state.getName(this._path);
@@ -53,14 +53,15 @@ provide(MenuItem.decl( /** @lends menu-item.prototype */{
                 this.__base.apply(this, arguments);
                 !this.hasMod('toplevel') && this._isdir === null && this._isdir === null && this._isDir();
                 this._stat && this.updateContent(this._stat);
+            },
+            '' : function() {
+                com.un(this._id + '-update', this._statesReady);
             }
         },
 
         'hovered' : {
             'true' : function() {
                 this._stat && !this.hasMod('toplevel') && this._details.setMod('hovered');
-                this.emit('focusin');
-                
                 this.__base.apply(this, arguments);
             },
             '' : function() {
@@ -91,7 +92,7 @@ provide(MenuItem.decl( /** @lends menu-item.prototype */{
     _onPointerClick: function() {
         var base = this.__base,
             _old = function(){ 
-                base.apply(this, arguments) 
+                base.apply(this, arguments);
                 timer = false;
             };
 

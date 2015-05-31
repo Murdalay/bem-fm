@@ -7,6 +7,7 @@
         { block : 'details' },
         { block : 'size' },
         { block : 'state' },
+        { block : 'menu-item' },
         { block : 'events', elems : 'channels' }
     ]
 }]

@@ -4,7 +4,14 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 	function(provide, channels, size, identify, objects, normalizer) {
 	var com = channels('116'),
         normalize = normalizer.normalize,
-		state = { curList: {}, curPath: {}, lists: {}, config: null },
+		state = { 
+			curList: {}, 
+			curPath: {}, 
+			lists: {}, 
+			config: null, 
+			disks:  null, 
+			activeDriveIndex : { 'left' : 0, 'right' : 0 } 
+		},
 		ids = {},
 		paths = {},
 
@@ -122,12 +129,28 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 				state.curList[align] = list;
 			},
 
-			getCurPath: function(align){ 
-				return state.curPath[align];
+			getDisks: function(){ 
+				return state.disks;
 			},
 
-			setCurPath: function(path, align){ 
-				state.curPath[align] = path;
+			setDisks: function(disks){ 
+				state.disks = disks;
+			},
+			
+			getActiveDriveIndex: function(position){ 
+				return state.activeDriveIndex[position];
+			},
+
+			setActiveDriveIndex: function(position, index){ 
+				state.activeDriveIndex[position] = index;
+			},
+
+			getCurPath: function(position){ 
+				return state.curPath[position];
+			},
+
+			setCurPath: function(path, position){ 
+				state.curPath[position] = path;
 			},
 
 			getConfig: function(){ 
@@ -194,4 +217,5 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 		};
 
 provide(api);
+
 });

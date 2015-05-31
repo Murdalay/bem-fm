@@ -214,12 +214,25 @@ function storeDomNodeParents(domElem) {
 }
 
 /**
+ * Returns jQuery collection for provided HTML
+ * @param {jQuery|String} html
+ * @returns {jQuery}
+ */
+function getJqueryCollection(html) {
+    return $(typeof html === 'string'? $.parseHTML(html, null, true) : html);
+}
+
+var DOM;
+
+$(function() {
+
+/**
  * @class BEMDOM
  * @description Base block for creating BEM blocks that have DOM representation
  * @exports
  */
 
-var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
+DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
     /**
      * @constructor
      * @private
@@ -347,14 +360,14 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
         select && (domElems = domElems.add(ctxElem[select](selector)));
 
         if(onlyFirst) {
-            return domElems[0]? initBlock(blockName, domElems.eq(0), undef, true) : null;
+            return domElems[0]? initBlock(blockName, domElems.eq(0), undef, true)._init() : null;
         }
 
         var res = [],
             uniqIds = {};
 
         domElems.each(function(i, domElem) {
-            var block = initBlock(blockName, $(domElem), undef, true);
+            var block = initBlock(blockName, $(domElem), undef, true)._init();
             if(!uniqIds[block._uniqId]) {
                 uniqIds[block._uniqId] = true;
                 res.push(block);
@@ -751,7 +764,7 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
      * @private
      * @param {String} name Nested element name
      * @param {String} [modName] Modifier name
-     * @param {String} [modVal] Modifier value
+     * @param {String|Boolean} [modVal] Modifier value
      * @returns {jQuery} DOM elements
      */
     _elem : function(name, modName, modVal) {
@@ -770,10 +783,14 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
      * Lazy search for elements nested in a block (caches results)
      * @param {String} names Nested element name (or names separated by spaces)
      * @param {String} [modName] Modifier name
-     * @param {String} [modVal] Modifier value
+     * @param {String|Boolean} [modVal=true] Modifier value
      * @returns {jQuery} DOM elements
      */
     elem : function(names, modName, modVal) {
+        if(arguments.length === 2) {
+            modVal = true;
+        }
+
         if(modName && typeof modName !== 'string') {
             modName.__bemElemName = names;
             return modName;
@@ -896,10 +913,10 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
 }, /** @lends BEMDOM */{
 
     /**
-     * Scope, will be set on onDomReady to `<body>`
+     * Scope
      * @type jQuery
      */
-    scope : null,
+    scope : $('body'),
 
     /**
      * Document shortcut
@@ -925,9 +942,17 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
         if('live' in this) {
             var noLive = typeof res === 'undefined';
 
-            if(noLive ^ heedLive) {
+            if(noLive ^ heedLive) { // should be opposite to each other
                 res = this.live() !== false;
-                this.live = functions.noop;
+
+                var blockName = this.getName(),
+                    origLive = this.live;
+
+                this.live = function() {
+                    return this.getName() === blockName?
+                        res :
+                        origLive.apply(this, arguments);
+                };
             }
         }
 
@@ -940,8 +965,9 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
      * @returns {jQuery} ctx Initialization context
      */
     init : function(ctx) {
-        if(typeof ctx === 'string') ctx = $(ctx);
-        else if(!ctx) ctx = DOM.scope;
+        if(typeof ctx === 'string') {
+            ctx = $(ctx);
+        } else if(!ctx) ctx = DOM.scope;
 
         var uniqInitId = identify();
         findDomElem(ctx, BEM_SELECTOR).each(function() {
@@ -1006,11 +1032,13 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
         var prev = ctx.prev(),
             parent = ctx.parent();
 
+        content = getJqueryCollection(content);
+
         this.destruct(ctx);
 
         return this.init(prev.length?
-            $(content).insertAfter(prev) :
-            $(content).prependTo(parent));
+            content.insertAfter(prev) :
+            content.prependTo(parent));
     },
 
     /**
@@ -1020,7 +1048,7 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
      * @returns {jQuery} New content
      */
     append : function(ctx, content) {
-        return this.init($(content).appendTo(ctx));
+        return this.init(getJqueryCollection(content).appendTo(ctx));
     },
 
     /**
@@ -1030,7 +1058,7 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
      * @returns {jQuery} New content
      */
     prepend : function(ctx, content) {
-        return this.init($(content).prependTo(ctx));
+        return this.init(getJqueryCollection(content).prependTo(ctx));
     },
 
     /**
@@ -1040,7 +1068,7 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
      * @returns {jQuery} New content
      */
     before : function(ctx, content) {
-        return this.init($(content).insertBefore(ctx));
+        return this.init(getJqueryCollection(content).insertBefore(ctx));
     },
 
     /**
@@ -1050,7 +1078,7 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
      * @returns {jQuery} New content
      */
     after : function(ctx, content) {
-        return this.init($(content).insertAfter(ctx));
+        return this.init(getJqueryCollection(content).insertAfter(ctx));
     },
 
     /**
@@ -1471,15 +1499,12 @@ var DOM = BEM.decl('i-bem__dom',/** @lends BEMDOM.prototype */{
  * @returns {BEMDOM}
  */
 $.fn.bem = function(blockName, params) {
-    return initBlock(blockName, this, params, true);
+    return initBlock(blockName, this, params, true)._init();
 };
 
-// Set default scope after DOM ready
-$(function() {
-    DOM.scope = $('body');
-});
-
 provide(DOM);
+
+});
 
 });
 

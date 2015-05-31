@@ -1,5 +1,102 @@
 # История изменений
 
+## 2.6.0
+
+### Крупные изменения
+
+- Предоставление модуля `i-bem__dom` теперь происходит после наступления события DOM ready ([#859](https://github.com/bem/bem-core/issues/859)).
+- Методы `setMod` и `hasMod` модуля `i-bem__dom` теперь явно преобразуют параметр `modVal` к строке,
+  если переданное значение не типа string или boolean ([#890](https://github.com/bem/bem-core/is/sues/890)).
+- В блок `page` добавлена возможность прокидывать атрибут `nonce`, для корректной работы инлайн-скриптов, в соответствии
+  со спецификацией Content Security Policy ([#882](https://github.com/bem/bem-core/issues/882)).
+- Добавлены шаблоны `page__conditional-comment` ([#551](https://github.com/bem/bem-core/issues/511)).
+- Модуль `vow` обновлен до версии 0.4.8 ([#837](https://github.com/bem/bem-core/issues/837)).
+
+### В релиз вошли следующие исправления ошибок
+
+- Исправлена ошибка в `i-bem.bemhtml`, из-за которой CSS-класс блока дублировался, в случае микса с этим же блоком
+  ([#792](https://github.com/bem/bem-core/issues/792)).
+- Исправлена ошибка в `loader_type_bundle`, из-за которой функция-обработчик успешного результата могла выполняться
+  после наступления таймаута ([67ff55f](https://github.com/bem/bem-core/commit/da5fdb9923e7e83e3ef9cd31aefc3967ff55fd3c)).
+- Исправлена ошибка в `i-bem__dom`, в некоторых случаях, приводящая к неправильной интерпретации строковых аргументов
+  в методах `append`, `prepend` и др. ([#852](https://github.com/bem/bem-core/issues/852)).
+- Исправлена ошибка в `jquery__event_type_winresize`, из-за которой неправильно определятся браузер MSIE ([#862](https://github.com/bem/bem-core/issues/862)).
+- Исправлена ошибка в `object`, из-за которой метод `extend` неправильно обрабатывал `null` в качестве значения
+  аргумента `target` ([#910](https://github.com/bem/bem-core/issues/910)).
+- Исправлена ошибка в `page`. Из BEMJSON было невозможно отключить добавление meta-тега `x-ua-compatible` ([#794](https://github.com/bem/bem-core/issues/794)).
+
+### Также в релиз вошли следующие изменения
+
+- Таймаут в `loader_type_bundle` увеличен до 30000 мс ([4e27422](https://github.com/bem/bem-core/commit/000c6af02bfae4506fa460168de16d4e27422393)).
+- Исправлены незначительные ошибки в русской документации блоков.
+
+## 2.5.1
+
+### В релиз вошли следующие исправления ошибок
+
+- Исправлена ошибка в `jquery__pointerpress` и `jquery__pointerrelease` из-за которой события не работали в браузере
+  Internet Explorer 8 ([#792](https://github.com/bem/bem-core/issues/792)).
+- Исправлена ошибка в `jquery__pointernative`. События `pointerenter` и `pointerleave` не должны всплывать
+  по DOM-дереву ([#801](https://github.com/bem/bem-core/issues/801)).
+- Исправлена ошибка в `loader_type_bundle`. После загрузки, CSS-бандл добавлялся в самый верх HTML-тега `<head>`, из-за чего
+  CSS-правила из содержимого бандла могли работать не корректно ([#808](https://github.com/bem/bem-core/issues/808)).
+- Исправлена ошибка в BH-шаблоне `ua`. Шаблон не позволял вставить содержимое блока из входного
+  BEMJSON ([#734](https://github.com/bem/bem-core/pull/734)).
+- Исправлена ошибка в `page`, приводящая к неработоспособности добавленных на страницу условных комментариев для браузера
+  Internet Explorer ([#781](https://github.com/bem/bem-core/pull/781)).
+
+### Также в релиз вошли следующие изменения
+
+- `jquery` обновлен до версий 2.1.3 и 1.11.2 ([#778](https://github.com/bem/bem-core/pull/788)).
+- Добавлена документация на русском языке для модулей: `clearfix`, `cookie`, `identify`, `idle`, `inherit`, `keyboard`,
+`loader`, `next-tick`, `string` and `tick`.
+- Исправлена документация на русском языке для `i-bem.js`.
+- Обновлено руководство на английском языке по технологиям BEMHTML и BEMJSON.
+
+## 2.5.0
+
+### Крупные изменения
+
+- Код библиотеки переведен на использование лицензии [MPL 2.0](https://www.mozilla.org/MPL/2.0/) ([#443](https://github.com/bem/bem-core/issues/443)).
+- В модуль `loader_type_js` добавлена возможность указывать функцию-обработчик ошибок ([#672](https://github.com/bem/bem-core/issues/672)).
+- Класс `BEMContext` добавлен в export-параметры функции `oninit` в базовых шаблонах `i-bem.bemtree` ([#602](https://github.com/bem/bem-core/issues/602)).
+- В `BEMContext` BEMTREE добавлен статический метод `reapply` по аналогии с BEMHTML ([#706](https://github.com/bem/bem-core/pull/706)).
+- Добавлены bh-шаблоны блока `page` для уровней touch ([#689](https://github.com/bem/bem-core/pull/689)).
+- npm-модуль [bem-xjst](https://github.com/bem/bem-xjst) обновлен до версии 0.9.0 ([#709](https://github.com/bem/bem-core/pull/709)).
+
+### В релиз вошли следующие исправления ошибок
+
+- Исправлена ошибка в `i-bem__dom`, из-за которой метод `findBlocksInside` мог возвращать блоки, которые еще не были
+  инициализированы ([#699](https://github.com/bem/bem-core/issues/699)).
+- Исправлена ошибка в `tick`, позволявшая вызвать метод `stop` без освобождения внутреннего таймера ([#694](https://github.com/bem/bem-core/issues/694)).
+- Исправлена ошибка в `i-bem.bemhtml`, из-за которой на элементы блока добавлялся CSS-класс `i-bem` ([#633](https://github.com/bem/bem-core/issues/633)).
+- Исправлена ошибка в технологии `html-from-bemtree`, из-за которой в контексте BEMTREE-шаблонов не было глобальных объектов
+  `vow`, `console`, `setTimeout` ([#438ebb8](https://github.com/bem/bem-core/commit/438ebb8f828e26977592e26511e8aad15176d7a4)).
+
+### Также в релиз вошли следующие изменения
+
+- Добавлено английское руководство по технологии BEMJSON.
+- Обновлена русская документация для i-bem.js. Теперь документация соответсвует текущему API библиотеки.
+- Обновлена документация для технологий BEMHTML/BEMTREE.
+
+## 2.4.0
+
+### Крупные изменения
+
+- npm-модуль [bem-xjst](https://github.com/bem/bem-xjst) обновлен до версии 0.8.0; [bemhtml-compat](https://github.com/bem/bemhtml-compat)
+  обновлен до 0.0.11.
+
+### В релиз вошли следующие исправления ошибок
+
+- Исправлена ошибка в `jquery__event_type_pointerpressrelease`, из-за которой события `pointerpress` / `pointerrelease` генерировались
+  на нажатие любой кнопки мыши ([#607](https://github.com/bem/bem-core/issues/607)).
+- Исправлена ошибка в `i-bem__dom.js`, из-за которой в некоторых случаях не происходил вызов базового метода
+  `live` ([#608](https://github.com/bem/bem-core/issues/608)).
+
+### Также в релиз вошли следующие изменения
+
+- Добавлена английская документация на JS-синтаксис BEMHTML.
+
 ## 2.3.0
 
 ### Крупные изменения
@@ -10,6 +107,7 @@
 ### В релиз вошли следующие исправления ошибок
 
 - Исправлена ошибка в `i-bem.bemhtml`, из-за которой было невозможно использовать микс в виде одного объекта (не массива) одновременно в BEMJSON и BEMHTML ([#555](https://github.com/bem/bem-core/issues/555)).
+- Исправлена ошибка в BEMHTML-шаблоне блока `page`, из-за которой не выполнялись стандартные моды, и исправлена регрессия в шаблоне на touch-уровне ([516](https://github.com/bem/bem-core/issues/516)).
 
 ## 2.2.4
 
@@ -56,11 +154,11 @@
 - Добавлена возможность декларировать инстанс элемента используя класс блока ([#481](https://github.com/bem/bem-core/issues/481)).
 - Исправлено поведение метода `isSimple` класса BEMContext в  в базовых шаблонах `i-bem.bemhtml` ([#432](https://github.com/bem/bem-core/pull/432)).
 - Исправлена ошибка в методе `liveUnbindFrom` модуля `BEMDOM` ([#476](https://github.com/bem/bem-core/pull/476)).
-- Исправлена ошибка в методе `isFocusable` модуля `dom`, возникающая если переданный `domElem` является сслыкой
+- Исправлена ошибка в методе `isFocusable` модуля `dom`, возникающая если переданный `domElem` является ссылкой
   с атрибутом `tabindex`, но без атрибута `href` ([#501](https://github.com/bem/bem-core/issues/501)).
 - Исправлена ошибка возникающая в процессе декларации БЭМ-блока как модуля, если был подключен
   модуль `i-bem__dom_elem-instances` ([#479](https://github.com/bem/bem-core/issues/479)).
-- В модуле `i-bem__dom_init_auto` добавлено временное решение для проблем с производительностью ренедеринга при инициализции блоков
+- В модуле `i-bem__dom_init_auto` добавлено временное решение для проблем с производительностью ренедеринга при инициализации блоков
   в Chrome-браузерах ([#486](https://github.com/bem/bem-core/issues/486)).
 - Модуль `vow.js` перенесен в `vow.vanilla.js` ([#412](https://github.com/bem/bem-core/issues/412)).
 
@@ -127,7 +225,7 @@
 ### Также в релиз вошли следующие изменения
 
 - Базовые шаблоны в `i-bem.bemhtml` используют конкатенацию строк вместо наполнения внутреннего буфера ([#401](https://github.com/bem/bem-core/issues/401)).
-- jQuery больше не удаляет себя из глобавльной области видимости, если присутствует на странице ([#349](https://github.com/bem/bem-core/issues/349)).
+- jQuery больше не удаляет себя из глобальной области видимости, если присутствует на странице ([#349](https://github.com/bem/bem-core/issues/349)).
 - `jquery__event_type_pointerclick.js` перемещен с уровня `touch.blocks` на уровень `common.blocks` ([#393](https://github.com/bem/bem-core/issues/393)).
 - Модификаторы `i-bem_elem-instances_yes` и `i-bem__dom_elem-instances_yes` приведены к булевому стилю ([#352](https://github.com/bem/bem-core/issues/352)).
 - Исправлена ошибка в шаблоне блока `page`, возникающая при использовании development-режима BEMHTML ([#417](https://github.com/bem/bem-core/issues/417)).

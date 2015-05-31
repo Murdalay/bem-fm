@@ -1,21 +1,33 @@
 block('panel')(
 	js()(true),
-	content()([
-			{ block : 'path' },
-			{
-			    block : 'radio-group',
-			    mods : { theme : 'islands', size : 'l', type : 'button' },
-			    val : 'name',
-			    options : [
-			        { val : 'name', text : 'Name' },
-			        { val : 'type', text : 'Type' },
-			        { val : 'size', text : 'Size' },
-			        { val : 'owner', text : 'Owner' },
-			        { val : 'date', text : 'Creation date' }
-			    ]
-			},
-			{
-				block : 'list'
-			}
-	])
+	content()(function(){
+		return [{ block : 'path' },
+				{
+				    block : 'radio-group',
+				    mods : { theme : 'islands', size : 'l', type : 'button' },
+				    val : 'name',
+				    options : [
+				        { val : 'name', text : 'Name' },
+				        { val : 'type', text : 'Type' },
+				        { val : 'size', text : 'Size' },
+				        { val : 'owner', text : 'Owner' },
+				        { val : 'date', text : 'Creation date' }
+				    ]
+				},
+				{
+				    block : 'select',
+				    mods : { mode : 'radio', theme : 'islands', size : 'l', disabled : true },
+				    name : 'select1',
+				    val : 1,
+				    options : [
+				        { val : 1, text : 'Drive data is unavailable' }
+				    ]
+				},
+
+				{
+					block : 'list'
+				}
+		]
+
+	})
 )

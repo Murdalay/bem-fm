@@ -260,7 +260,7 @@ var BEM = inherit(events.Emitter, /** @lends BEM.prototype */ {
      * Checks whether a block or nested element has a modifier
      * @param {Object} [elem] Nested element
      * @param {String} modName Modifier name
-     * @param {String} [modVal] Modifier value
+     * @param {String|Boolean} [modVal] Modifier value. If defined and not of type String or Boolean, it is casted to String
      * @returns {Boolean}
      */
     hasMod : function(elem, modName, modVal) {
@@ -282,6 +282,11 @@ var BEM = inherit(events.Emitter, /** @lends BEM.prototype */ {
                 invert = true;
             }
         }
+
+        var typeModVal = typeof modVal;
+        typeModVal === 'string' ||
+            typeModVal === 'boolean' ||
+            typeModVal === 'undefined' || (modVal = modVal.toString());
 
         var res = this.getMod(elem, modName) === modVal;
         return invert? !res : res;
@@ -344,7 +349,7 @@ var BEM = inherit(events.Emitter, /** @lends BEM.prototype */ {
      * Sets the modifier for a block/nested element
      * @param {Object} [elem] Nested element
      * @param {String} modName Modifier name
-     * @param {String} modVal Modifier value
+     * @param {String|Boolean} [modVal=true] Modifier value. If not of type String or Boolean, it is casted to String
      * @returns {BEM} this
      */
     setMod : function(elem, modName, modVal) {
@@ -361,7 +366,11 @@ var BEM = inherit(events.Emitter, /** @lends BEM.prototype */ {
         }
 
         if(!elem || elem[0]) {
-            modVal === false && (modVal = '');
+            if(modVal === false) {
+                modVal = '';
+            } else if(typeof modVal !== 'boolean') {
+                modVal = modVal.toString();
+            }
 
             var modId = (elem && elem[0]? identify(elem[0]) : '') + '_' + modName;
 
@@ -593,9 +602,9 @@ var BEM = inherit(events.Emitter, /** @lends BEM.prototype */ {
         typeof decl.block === 'undefined' && (decl.block = this.getName());
 
         var baseBlock;
-        if(typeof decl.baseBlock === 'undefined')
+        if(typeof decl.baseBlock === 'undefined') {
             baseBlock = blocks[decl.block] || this;
-        else if(typeof decl.baseBlock === 'string') {
+        } else if(typeof decl.baseBlock === 'string') {
             baseBlock = blocks[decl.baseBlock];
             if(!baseBlock)
                 throw('baseBlock "' + decl.baseBlock + '" for "' + decl.block + '" is undefined');
@@ -643,10 +652,13 @@ var BEM = inherit(events.Emitter, /** @lends BEM.prototype */ {
             });
         }
 
-        decl.block === baseBlock.getName()?
+        if(decl.block === baseBlock.getName()) {
             // makes a new "live" if the old one was already executed
-            (block = inherit.self(baseBlocks, props, staticProps))._processLive(true) :
+            (block = inherit.self(baseBlocks, props, staticProps))._processLive(true);
+        } else {
             (block = blocks[decl.block] = inherit(baseBlocks, props, staticProps))._name = decl.block;
+            delete block._liveInitable;
+        }
 
         return block;
     },

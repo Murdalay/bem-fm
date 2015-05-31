@@ -1,28 +1,29 @@
 block('details')(
 	tag()('tr'),
-	content()([
-		{
-			elem: 'name',
-			content: this.ctx.name,
-			mods: { type: this.ctx.type }
-		},		
-		{
-			elem: 'type',
-			content: this.ctx.type
-		},
-		{
-			elem: 'size',
-			content: this.ctx.stats.size
-		},
-		{
-			elem: 'owner',
-			content: this.ctx.stats.uid
-		},
-		{
-			elem: 'date',
-			content: this.ctx.stats.ctime
-		}
-	]),
+	content()(function(){
+		return [
+			{
+				elem: 'name',
+				content: this.ctx.name,
+				mods: { type: this.ctx.type }
+			},		
+			{
+				elem: 'type',
+				content: this.ctx.type
+			},
+			{
+				elem: 'size',
+				content: this.ctx.stats.size
+			},
+			{
+				elem: 'owner',
+				content: this.ctx.stats.uid
+			},
+			{
+				elem: 'date',
+				content: this.ctx.stats.ctime
+			}
+	]}),
 
 	elem('name')(tag()('td')),
 	

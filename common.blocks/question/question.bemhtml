@@ -1,20 +1,6 @@
 block('question')(
-    content()([
-        {
-            elem : 'message', 
-            content: this.ctx.message ? this.ctx.message : 'blah'
-        },
-        {
-            block : 'path',
-            mods : { source : 'true' }
-        },                                    
-        {
-            block : 'button-wrapper',
-            mods : { yesno : 'true' }
-        }
-    ]),
-    mod('with-destination', 'true')(
-        content()([
+    content()(function() {
+        return [
             {
                 elem : 'message', 
                 content: this.ctx.message ? this.ctx.message : 'blah'
@@ -22,67 +8,85 @@ block('question')(
             {
                 block : 'path',
                 mods : { source : 'true' }
-            },
-            {
-                elem : 'destination-message',
-                content: 'to the following destination folder:'
-            },
-            {
-                block : 'path',
-                mods : { destination : 'true' }
-            },
-            {
-                elem : 'hint',
-                content: 'Choose an existing destination by typing the path.'
-            },
+            },                                    
             {
                 block : 'button-wrapper',
                 mods : { yesno : 'true' }
             }
-        ])
+    ]}),
+    mod('with-destination', 'true')(
+        content()(function() {
+            return [
+                {
+                    elem : 'message', 
+                    content: this.ctx.message ? this.ctx.message : 'blah'
+                },
+                {
+                    block : 'path',
+                    mods : { source : 'true' }
+                },
+                {
+                    elem : 'destination-message',
+                    content: 'to the following destination folder:'
+                },
+                {
+                    block : 'path',
+                    mods : { destination : 'true' }
+                },
+                {
+                    elem : 'hint',
+                    content: 'Choose an existing destination by typing the path.'
+                },
+                {
+                    block : 'button-wrapper',
+                    mods : { yesno : 'true' }
+                }
+        ]})
     ),
     mod('simple', 'true')(
-        content()([
-            {
-                elem : 'message'
-            },
-            {
-                block : 'path',
-                mods : { simple : 'true' }
-            },
-            {
-                elem : 'hint',
-                content: 'Choose an existing destination by typing the path.'
-            },
-            {
-                block : 'button-wrapper',
-                mods : { yesno : 'true' }
-            }
-        ])
+        content()(function() {
+            return [
+                {
+                    elem : 'message'
+                },
+                {
+                    block : 'path',
+                    mods : { simple : 'true' }
+                },
+                {
+                    elem : 'hint',
+                    content: 'Choose an existing destination by typing the path.'
+                },
+                {
+                    block : 'button-wrapper',
+                    mods : { yesno : 'true' }
+                }
+        ]})
     )
 )
 
 block('button-wrapper')(
     mod('yesno', 'true')(
-        content()([
-            {
-                block : 'button',
-                mods : { theme : 'islands', size : 'xl', yes: 'true' },
-                name : 'yes',
-                val : 'true',
-                text : 'Yes'
-            },
-            {
-                block : 'gap'
-            },                                  
-            {
-                block : 'button',
-                mods : { theme : 'islands', size : 'xl', no: 'true' },
-                name : 'no',
-                val : 'false',
-                text : 'No'
-            }
-        ])
+        content()(function() {
+            return [
+                {
+                    block : 'button',
+                    mods : { theme : 'islands', size : 'xl', yes: 'true' },
+                    name : 'yes',
+                    val : 'true',
+                    text : 'Yes'
+                },
+                {
+                    block : 'gap'
+                },                                  
+                {
+                    block : 'button',
+                    mods : { theme : 'islands', size : 'xl', no: 'true' },
+                    name : 'no',
+                    val : 'false',
+                    text : 'No'
+                }
+        ]})
     )
 )
 

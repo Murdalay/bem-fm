@@ -11,11 +11,11 @@ provide(/** @exports */{
     /**
      * Extends a given target by
      * @param {Object} target object to extend
-     * @param {...Object} source
+     * @param {Object} source
      * @returns {Object}
      */
     extend : function(target, source) {
-        typeof target !== 'object' && (target = {});
+        (typeof target !== 'object' || target === null) && (target = {});
 
         for(var i = 1, len = arguments.length; i < len; i++) {
             var obj = arguments[i];

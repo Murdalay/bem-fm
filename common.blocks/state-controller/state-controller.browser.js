@@ -77,23 +77,25 @@ var com = channels('116'),
 		}
     },
 
-	_refreshList = function(e, data) {
+	_updateState = function(e, data) {
 		var position = _lastPosition === 'left' ? 'right' : 'left',
 			path = state.getCurPath(position),
 			oldList = state.getCurList(position),
 
 		    _listSuccess = function(resp) {
-		    	var stillTheSame = resp.every(function(elem, index){
+		    	resp.disks && state.setDisks(resp.disks) && com.emit('disks-changed');
+
+		    	var stillTheSame = resp.list.every(function(elem, index){
 		    		return elem === oldList[index];
 		    	});
 
-		    	if(stillTheSame && oldList.length === resp.length){
+		    	if(stillTheSame && oldList.length === resp.list.length){
 		    		return
 		    	} else {
-			    	state.setCurList(position, resp);
-			    	state.setList(path, resp);
+			    	state.setCurList(position, resp.list);
+			    	state.setList(path, resp.list);
 
-				   	com.emit(position + '-list-is', resp);
+				   	com.emit(position + '-list-is', resp.list);
 		    	}
 		    },
 
@@ -102,7 +104,7 @@ var com = channels('116'),
 		    };
 
 		_lastPosition = position;
-		request.getList(path, _listSuccess, _fail);
+		request.ping(path, _listSuccess, _fail);
     },
 
     boundToTick,
@@ -131,7 +133,7 @@ var com = channels('116'),
     		tickCount += 1;
 	    } else {
     		tickCount = 0;
-    		_refreshList();
+    		_updateState();
 	    }
 	},
 

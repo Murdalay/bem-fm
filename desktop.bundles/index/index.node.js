@@ -20,3 +20,4 @@ require('../../libs/bem-core/common.blocks/querystring/__uri/querystring__uri.va
 require('../../common.blocks/vow-queue/vow-queue.vanilla.js');
 require('../../libs/bem-core/common.blocks/functions/__debounce/functions__debounce.vanilla.js');
 require('../../libs/bem-core/common.blocks/functions/__throttle/functions__throttle.vanilla.js');
+require('../../libs/bem-core/common.blocks/strings/__escape/strings__escape.vanilla.js');
