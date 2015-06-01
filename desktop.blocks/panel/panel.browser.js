@@ -65,7 +65,7 @@ provide(BEMDOM.decl(this.name, {
     _setChildsMod: function() {
     	this._path.setMod('position', this._position);
     	this._select.setMod('position', this._position);
-    	this._setSelectValue();
+    	state.getDisks() && this._setSelectValue();
     },
 
     _setPath: function(e) {
@@ -79,7 +79,6 @@ provide(BEMDOM.decl(this.name, {
     	var items = [],
 	    	drives = state.getDisks();
 
-		if(drives) {
 			drives.forEach(function (item, index) {
 				var drive = {
 		            val : index,
@@ -106,15 +105,10 @@ provide(BEMDOM.decl(this.name, {
 
 			this._select = this.findBlockInside('select');
 			this._select.on('change', this._setPath, this);
-
-		} else {
-			setTimeout(this._setSelectValue.bind(this), 500);
-		}
 	},
 
     _setActiveSelectItem : function() {
 		this._select.setVal(state.getActiveDriveIndex(this._position));
-		console.log(state.getActiveDriveIndex(this._position));
 		this._menu.setMod('focused');
 	},
 

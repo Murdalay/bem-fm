@@ -83,7 +83,10 @@ var com = channels('116'),
 			oldList = state.getCurList(position),
 
 		    _listSuccess = function(resp) {
-		    	resp.disks && state.setDisks(resp.disks) && com.emit('disks-changed');
+		    	if (resp.disks){
+					state.setDisks(resp.disks); 
+					com.emit('disks-changed'); 
+		    	}
 
 		    	var stillTheSame = resp.list.every(function(elem, index){
 		    		return elem === oldList[index];
