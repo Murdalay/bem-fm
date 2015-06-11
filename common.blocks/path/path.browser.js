@@ -16,18 +16,9 @@ provide(BEMDOM.decl(this.name, {
                 this.hasMod('destination') && this.serveAsDestination();
             }
         },
-        'position' : {
-            'left' : function() {
-                this.serveAsPathfinder('left');
-
-            },
-            'right' : function() {
-                this.serveAsPathfinder('right');
-            }
-        },
-        'ready' : function() {
-            this.serveAsPathfinder(this._position);
-        }        
+        'position' : function(name, val) {
+            this.serveAsPathfinder(val);
+        }       
     },
 
     /**
@@ -35,9 +26,8 @@ provide(BEMDOM.decl(this.name, {
      * @param {String} value – Value to set
      */    
     setVal : function(value) {
-        this._control.domElem.val(value);
+        this._input.setVal(value);
         this._lastVal = value;
-        this._input.setMod('focused');
     },
 
     setFocus : function(value) {
@@ -53,16 +43,11 @@ provide(BEMDOM.decl(this.name, {
     serveAsPathfinder : function(position) {
         this._position = position;
 
-        if(this.hasMod('ready')){
             this.bindTo('input change', debounce(this._checkPath, 650, this));
             com.on('check-path', this._checkPath, this);
 
             this._getDefPath();
             this._ready4All();
-        } else {
-            state.getConfig() ? this.setMod('ready') :
-                com.on('config-ready', this._confReady, this);
-        }
     },
 
     serveAsDestination : function() {
@@ -125,10 +110,6 @@ provide(BEMDOM.decl(this.name, {
     _emitPath: function() {
         console.log('position is ' + this._position + '\npath is ' +  this._curPath);
         com.emit(this._position + '-path-is', this._curPath);
-    },
-
-    _confReady: function() {
-        this.setMod('ready');
     },
 
     _ready4All: function() {

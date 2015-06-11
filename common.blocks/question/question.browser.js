@@ -45,16 +45,23 @@ provide(BEMDOM.decl(this.name, {
     },
 
     setSimple: function(message, val) {
-    	!this.hasMod('simple') && this.setMod('simple', 'true');
-    	this._simple = this.findBlockInside({ block: 'path', modName: 'simple', modVal: 'true' });
-		val ? this._simple.setVal(val) : this._simple.setVal('');
-		this._message.html(message);
+        !this.hasMod('simple') && this.setMod('simple', 'true');
+        this._simple = this.findBlockInside({ block: 'path', modName: 'simple', modVal: 'true' });
+        val ? this._simple.setVal(val) : this._simple.setVal('');
+        this._message.html(message);
+
+        this._active = this._simple;
+    },
+
+    setFocusToActive: function() {
+        this._active && this._active.setFocus();
     },
 
     setDestination: function(val) {
     	!this.hasMod('with-destination', 'true') && this.setMod('with-destination', 'true');
     	this._destination = this.findBlockInside({ block: 'path', modName: 'destination', modVal: 'true' });
-    	this._destination.setVal(val);
+        this._destination.setVal(val);
+    	this._active = this._destination;
     },
 
     setHint: function(val) {

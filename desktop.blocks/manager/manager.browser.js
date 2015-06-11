@@ -22,6 +22,7 @@ provide(BEMDOM.decl(this.name, {
 
 				// command button click handlers
 				com.on('exec', this._exec, this);
+				com.on('config-ready', function() { this.findBlocksInside('panel'); this._disabler.setMod('disabled', 'true'); }, this);
 				com.on('copy', this._copy, this);
 				com.on('mkdir', this._mkdir, this);
 				com.on('symlink', this._symlink, this);

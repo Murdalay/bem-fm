@@ -7861,6 +7861,7 @@ provide(BEMDOM.decl(this.name, {
 
 				// command button click handlers
 				com.on('exec', this._exec, this);
+				com.on('config-ready', function() { this.findBlocksInside('panel'); this._disabler.setMod('disabled', 'true'); }, this);
 				com.on('copy', this._copy, this);
 				com.on('mkdir', this._mkdir, this);
 				com.on('symlink', this._symlink, this);
@@ -9586,6 +9587,9 @@ provide(BEMDOM.decl(this.name, {
 
 		this._path.detectMountpoint();
     }
+},
+{   // cancel live initialization
+    live: true
 }));
 
 });
@@ -9611,18 +9615,9 @@ provide(BEMDOM.decl(this.name, {
                 this.hasMod('destination') && this.serveAsDestination();
             }
         },
-        'position' : {
-            'left' : function() {
-                this.serveAsPathfinder('left');
-
-            },
-            'right' : function() {
-                this.serveAsPathfinder('right');
-            }
-        },
-        'ready' : function() {
-            this.serveAsPathfinder(this._position);
-        }        
+        'position' : function(name, val) {
+            this.serveAsPathfinder(val);
+        }       
     },
 
     /**
@@ -9630,9 +9625,8 @@ provide(BEMDOM.decl(this.name, {
      * @param {String} value – Value to set
      */    
     setVal : function(value) {
-        this._control.domElem.val(value);
+        this._input.setVal(value);
         this._lastVal = value;
-        this._input.setMod('focused');
     },
 
     setFocus : function(value) {
@@ -9648,16 +9642,11 @@ provide(BEMDOM.decl(this.name, {
     serveAsPathfinder : function(position) {
         this._position = position;
 
-        if(this.hasMod('ready')){
             this.bindTo('input change', debounce(this._checkPath, 650, this));
             com.on('check-path', this._checkPath, this);
 
             this._getDefPath();
             this._ready4All();
-        } else {
-            state.getConfig() ? this.setMod('ready') :
-                com.on('config-ready', this._confReady, this);
-        }
     },
 
     serveAsDestination : function() {
@@ -9720,10 +9709,6 @@ provide(BEMDOM.decl(this.name, {
     _emitPath: function() {
         console.log('position is ' + this._position + '\npath is ' +  this._curPath);
         com.emit(this._position + '-path-is', this._curPath);
-    },
-
-    _confReady: function() {
-        this.setMod('ready');
     },
 
     _ready4All: function() {
@@ -10766,10 +10751,6 @@ provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-i
                 return false
             }
         }
-    },
-
-    _onPointerClick : function() {
-        console.log('You are trying to select toplevel element');
     }
 }));
 });
@@ -10796,8 +10777,6 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                     this._name !== '..' && state.setName(this._path, this._name);
                 };
 
-                this.bindTo('dblclick', this._exec);
-
                 com.on(this._id + '-update', this._statesReady, this);
 
                 this.__base.apply(this, arguments);
@@ -10806,6 +10785,10 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
             },
             '' : function() {
                 com.un(this._id + '-update', this._statesReady);
+                
+                if(this.hasMod('checked')){
+                    com.emit('unchecked-' + this._position, this._path);
+                }
             }
         },
 
@@ -10897,7 +10880,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 {   // cancel live initialization
 	live: function(){ 
 		this.__base.apply(this, arguments);
-		return false 
+        this.liveBindTo('dblclick', function() { this._exec() });
 	}
 }));
 });
@@ -12219,6 +12202,8 @@ provide(BEMDOM.decl(this.name, {
         source && this._currentQuestion.setSource(source);
         
         this._showPopup(destination);
+        this._currentQuestion.setFocusToActive();
+        
         return defer.promise();
     },
 
@@ -12231,12 +12216,14 @@ provide(BEMDOM.decl(this.name, {
             defer.resolve(data);
             this._hidePopup();
         }, this);
-
+        
+        this._currentQuestion = this._questionSimple;
 
         this._questionSimple.setSimple(_message, preset);
         _hint && this._questionSimple.setHint(_hint);
 
-    	this._showPopup('simple');
+        this._showPopup('simple');
+        this._currentQuestion.setFocusToActive();
 
 		return defer.promise();
     },
@@ -12265,10 +12252,10 @@ provide(BEMDOM.decl(this.name, {
         this._activePopup.setPosition(_left, 360);
         this._activePopup.setMod('visible');
 
-        this.bindToDoc('keydown', this._onKeyPress);
-
         // ask all keydown subscribers to ignore keydowns
         com.emit('keyOverride');
+
+        this.bindToDoc('keydown', this._onKeyPress);
     },
 
     _hidePopup: function() {
@@ -12399,16 +12386,23 @@ provide(BEMDOM.decl(this.name, {
     },
 
     setSimple: function(message, val) {
-    	!this.hasMod('simple') && this.setMod('simple', 'true');
-    	this._simple = this.findBlockInside({ block: 'path', modName: 'simple', modVal: 'true' });
-		val ? this._simple.setVal(val) : this._simple.setVal('');
-		this._message.html(message);
+        !this.hasMod('simple') && this.setMod('simple', 'true');
+        this._simple = this.findBlockInside({ block: 'path', modName: 'simple', modVal: 'true' });
+        val ? this._simple.setVal(val) : this._simple.setVal('');
+        this._message.html(message);
+
+        this._active = this._simple;
+    },
+
+    setFocusToActive: function() {
+        this._active && this._active.setFocus();
     },
 
     setDestination: function(val) {
     	!this.hasMod('with-destination', 'true') && this.setMod('with-destination', 'true');
     	this._destination = this.findBlockInside({ block: 'path', modName: 'destination', modVal: 'true' });
-    	this._destination.setVal(val);
+        this._destination.setVal(val);
+    	this._active = this._destination;
     },
 
     setHint: function(val) {

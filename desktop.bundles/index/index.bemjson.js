@@ -90,8 +90,7 @@
                 block: 'divider'
             },
             {
-                block: 'disabler',
-                mods : { disabled: 'true' }
+                block: 'disabler'
             },
             {
                 block : 'confirm',

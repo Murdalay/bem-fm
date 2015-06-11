@@ -61,6 +61,8 @@ provide(BEMDOM.decl(this.name, {
         source && this._currentQuestion.setSource(source);
         
         this._showPopup(destination);
+        this._currentQuestion.setFocusToActive();
+        
         return defer.promise();
     },
 
@@ -73,12 +75,14 @@ provide(BEMDOM.decl(this.name, {
             defer.resolve(data);
             this._hidePopup();
         }, this);
-
+        
+        this._currentQuestion = this._questionSimple;
 
         this._questionSimple.setSimple(_message, preset);
         _hint && this._questionSimple.setHint(_hint);
 
-    	this._showPopup('simple');
+        this._showPopup('simple');
+        this._currentQuestion.setFocusToActive();
 
 		return defer.promise();
     },
@@ -107,10 +111,10 @@ provide(BEMDOM.decl(this.name, {
         this._activePopup.setPosition(_left, 360);
         this._activePopup.setMod('visible');
 
-        this.bindToDoc('keydown', this._onKeyPress);
-
         // ask all keydown subscribers to ignore keydowns
         com.emit('keyOverride');
+
+        this.bindToDoc('keydown', this._onKeyPress);
     },
 
     _hidePopup: function() {

@@ -281,6 +281,9 @@
 .radio-group {
   position: relative;
 }
+.select {
+  float: right;
+}
 /* ../../desktop.blocks/panel/panel.css end */
 /* ../../common.blocks/path/path.styl begin */
 .path {
@@ -477,6 +480,11 @@
   right: 1px;
 }
 /* ../../libs/bem-components/design/common.blocks/input/_theme/input_theme_islands.styl end */
+/* ../../libs/bem-components/common.blocks/input/_width/input_width_available.styl begin */
+.input_width_available {
+  width: 100%;
+}
+/* ../../libs/bem-components/common.blocks/input/_width/input_width_available.styl end */
 /* ../../desktop.blocks/list/list.styl begin */
 .list {
   margin-top: 6px;

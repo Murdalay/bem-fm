@@ -12,6 +12,6 @@
         { block : 'jquery' },
         { block : 'events', elems : 'channels' },
         { block : 'functions', elems : 'debounce' },
-        { block : 'input', mods : { theme : 'islands' } }
+        { block : 'input', mods : { theme : 'islands', size : 'l', width : 'available'  } }
     ]
 }]

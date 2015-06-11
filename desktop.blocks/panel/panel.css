@@ -14,3 +14,7 @@
 .radio-group {
 	position: relative;
 }
+
+.select {
+	float: right;
+}

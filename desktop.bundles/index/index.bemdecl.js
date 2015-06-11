@@ -55,15 +55,7 @@ exports.blocks = [
         "name": "divider"
     },
     {
-        "name": "disabler",
-        "mods": [
-            {
-                "name": "disabled",
-                "vals": [
-                    "true"
-                ]
-            }
-        ]
+        "name": "disabler"
     },
     {
         "name": "confirm"

@@ -16,10 +16,6 @@ provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-i
                 return false
             }
         }
-    },
-
-    _onPointerClick : function() {
-        console.log('You are trying to select toplevel element');
     }
 }));
 });
@@ -46,8 +42,6 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                     this._name !== '..' && state.setName(this._path, this._name);
                 };
 
-                this.bindTo('dblclick', this._exec);
-
                 com.on(this._id + '-update', this._statesReady, this);
 
                 this.__base.apply(this, arguments);
@@ -56,6 +50,10 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
             },
             '' : function() {
                 com.un(this._id + '-update', this._statesReady);
+                
+                if(this.hasMod('checked')){
+                    com.emit('unchecked-' + this._position, this._path);
+                }
             }
         },
 
@@ -147,7 +145,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 {   // cancel live initialization
 	live: function(){ 
 		this.__base.apply(this, arguments);
-		return false 
+        this.liveBindTo('dblclick', function() { this._exec() });
 	}
 }));
 });
