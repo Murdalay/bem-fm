@@ -5,10 +5,15 @@ modules.define('router', ['config', 'vow'], function(provide, config, vow) {
 	    vfs = require('vow-fs'),
 	    morgan = require('morgan'),
 	    mime = require('mime'),
-	    disksObj = null,
 	    njds = require('nodejs-disks'),
 		app = express(),
-		pathToBundle = path.join(process.cwd(), 'desktop.bundles', 'index');
+		pathToBundle = path.join(process.cwd(), 'desktop.bundles', 'index'),
+
+	    disksObj = null;
+
+	    njds.drives(function (err, drives) {
+	        njds.drivesDetail(drives, function (err, data) { disksObj = data });
+        });
 
 	app
 	    .disable('x-powered-by')
@@ -161,9 +166,7 @@ modules.define('router', ['config', 'vow'], function(provide, config, vow) {
 
 	app.get('/getconf', function (req, res) {
 		var conf = require(process.cwd() + '/config.json');
-
-		disksObj = null;
-		res.end(JSON.stringify(conf));
+		res.end(JSON.stringify({ conf : conf, disks : disksObj }));
 	});	
 
 	app.get('/setconf', function (req, res) {

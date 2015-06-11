@@ -107,7 +107,7 @@ var com = channels('116'),
 		    };
 
 		_lastPosition = position;
-		request.ping(path, _listSuccess, _fail);
+		path && request.ping(path, _listSuccess, _fail);
     },
 
     boundToTick,
@@ -141,9 +141,14 @@ var com = channels('116'),
 	},
 
     _getConfig = function() {
-    	var _sucscess = function(res){
-    		state.setConfig(res);
+    	var _sucscess = function(res) {
+    		state.setConfig(res.conf);
     		com.emit('config-ready');
+
+	    	if (res.disks){
+				state.setDisks(res.disks); 
+				com.emit('disks-changed'); 
+	    	}
 
 			_bindToTick();
     	};

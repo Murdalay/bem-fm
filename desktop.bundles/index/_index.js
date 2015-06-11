@@ -8619,7 +8619,7 @@ var com = channels('116'),
 		    };
 
 		_lastPosition = position;
-		request.ping(path, _listSuccess, _fail);
+		path && request.ping(path, _listSuccess, _fail);
     },
 
     boundToTick,
@@ -8653,9 +8653,14 @@ var com = channels('116'),
 	},
 
     _getConfig = function() {
-    	var _sucscess = function(res){
-    		state.setConfig(res);
+    	var _sucscess = function(res) {
+    		state.setConfig(res.conf);
     		com.emit('config-ready');
+
+	    	if (res.disks){
+				state.setDisks(res.disks); 
+				com.emit('disks-changed'); 
+	    	}
 
 			_bindToTick();
     	};
@@ -9587,9 +9592,6 @@ provide(BEMDOM.decl(this.name, {
 
 		this._path.detectMountpoint();
     }
-},
-{   // cancel live initialization
-    live: true
 }));
 
 });
@@ -9689,20 +9691,18 @@ provide(BEMDOM.decl(this.name, {
 
     detectMountpoint : function() {
         var drives = state.getDisks(),
+            path = state.getCurPath(this._position),
             activeDriveIndex = 0;
 
-        if(drives) {
+        if(drives && path) {
             drives.forEach(function (item, index) {
                 if(index > 0){
-                    state.getCurPath(this._position).indexOf(normalize(item.mountpoint)) !== -1 && (activeDriveIndex = index);
+                    path.indexOf(normalize(item.mountpoint)) !== -1 && (activeDriveIndex = index);
                 }
             }.bind(this));
 
             state.setActiveDriveIndex(this._position, activeDriveIndex);
             com.emit(this._position +'-drive-changed');
-        } else {
-            setTimeout(this.detectMountpoint.bind(this), 150);
-            console.log('not yet');
         }
     },
 
@@ -9746,11 +9746,11 @@ provide(BEMDOM.decl(this.name, {
         var _res = JSON.parse(result);
             
         if(_res.exist) {
-            this.detectMountpoint();
-
             _res.path = normalize(_res.path);
             this.setAll(_res.path);
             com.emit('path-' + this._position, _res.path);
+
+            this.detectMountpoint();
         }
         else {
             this._curPath ? 
@@ -12270,8 +12270,6 @@ provide(BEMDOM.decl(this.name, {
 }));
 
 });
-
- 
 
 /* ../../common.blocks/confirm/confirm.browser.js end */
 ;

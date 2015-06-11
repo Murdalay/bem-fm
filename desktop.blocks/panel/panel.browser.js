@@ -206,9 +206,6 @@ provide(BEMDOM.decl(this.name, {
 
 		this._path.detectMountpoint();
     }
-},
-{   // cancel live initialization
-    live: true
 }));
 
 });
