@@ -1,1 +1,0 @@
-{"buildFiles":[{"file":"i-bem.bemtree","absPath":"/Users/ragnar/repos/bem-fm/libs/bem-core/common.blocks/i-bem/i-bem.bemtree","lastUpdated":1404216383000,"suffix":"bemtree"}]}
