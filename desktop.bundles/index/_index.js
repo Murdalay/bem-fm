@@ -9601,8 +9601,8 @@ provide(BEMDOM.decl(this.name, {
 /* ../../common.blocks/path/path.browser.js begin */
 /* global modules:false */
 
-modules.define('path', ['i-bem__dom', 'events__channels', 'cookie', 'state', 'jquery', 'functions__debounce', 'path-normalizer', 'state'], 
-    function(provide, BEMDOM, channels, cookie, state, $, debounce, normalizer, state) {
+modules.define('path', ['i-bem__dom', 'events__channels', 'cookie', 'state', 'jquery', 'functions__debounce', 'path-normalizer'], 
+    function(provide, BEMDOM, channels, cookie, state, $, debounce, normalizer) {
         var com = channels('116'),
             conf = state.getClientConfig,
             normalize = normalizer.normalize;
@@ -12446,7 +12446,6 @@ provide(BEMDOM.decl(this.name, {
                 this._list = this.elem('list');
                 this._listSize = this.elem('list-size');
                 this._selected = this.elem('selected');
-                this._selectedSize = this.elem('selected-size');
 
                 this.setMod(this._selected, this._position);
 
@@ -12471,7 +12470,7 @@ provide(BEMDOM.decl(this.name, {
         _size && (this._itemsSize += _size);
         this._itemNumber += 1;
 
-        this._selected.html(this._itemNumber + ' files selected with total size of ' + size(this._itemsSize));
+        this._updateChecked();
     },
 
     _removeItem: function(e, data) {
@@ -12480,8 +12479,14 @@ provide(BEMDOM.decl(this.name, {
         (this._itemsSize -= _size);
         this._itemNumber -= 1;
 
-        this._selected.html(this._itemNumber + ' files selected with total size of ' + size(this._itemsSize));
-        this._itemsSize || this._itemNumber || this._selected.html('');
+        this._updateChecked();
+
+        this._itemsSize || this._itemNumber || this._selected.html('') && this.elem('selected-size').html('');
+    },
+
+    _updateChecked: function() {
+        this._selected.html(this._itemNumber + ' files selected');
+        this.elem('selected-size').html('the list size is ' + size(this._itemsSize));
     },
 
     _clearItems: function() {
@@ -12504,13 +12509,51 @@ provide(BEMDOM.decl(this.name, {
             _size += state.getState(_curPath + '/' + item, 'size');
         });
 
-        this._listSize.html('List size is ' + size(_size));
+        this._listSize.html('Total size ' + size(_size));
     }
 }));
 
 });
 
 /* ../../common.blocks/status/status.browser.js end */
+;
+/* ../../common.blocks/disk-monitor/disk-monitor.browser.js begin */
+/* global modules:false */
+
+modules.define('disk-monitor', ['i-bem__dom', 'events__channels', 'state'], 
+    function(provide, BEMDOM, channels, state) {
+        var com = channels('116'),
+            conf = state.getClientConfig;
+
+provide(BEMDOM.decl(this.name, {
+    onSetMod : {
+        'js' : {
+            'inited' : function() {
+            	this._position = this.getMod('position');
+            	console.log(this._position);
+                com.on(this._position +'-drive-changed', this._update, this);
+            }
+        }      
+    },
+
+    /**
+     * Sets the input value
+     * @param {String} value – Value to set
+     */    
+
+    _update : function() {
+    	var disk = state.getDisks()[state.getActiveDriveIndex(this._position)];
+    	console.log(disk);
+    	this.elem('free').html(disk.available);
+    	this.elem('total').html(disk.total);
+    	this.elem('mount-point').html(disk.mountpoint);
+    	console.log(this.elem('free'));
+    }
+}));
+
+});
+
+/* ../../common.blocks/disk-monitor/disk-monitor.browser.js end */
 ;
 (function(g) {
   var __bem_xjst = function(exports) {

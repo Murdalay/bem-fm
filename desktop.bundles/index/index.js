@@ -71,6 +71,7 @@
 /*borschik:include:../../common.blocks/question/question.browser.js*/;
 /*borschik:include:../../common.blocks/info/info.browser.js*/;
 /*borschik:include:../../common.blocks/status/status.browser.js*/;
+/*borschik:include:../../common.blocks/disk-monitor/disk-monitor.browser.js*/;
 (function(g) {
   var __bem_xjst = function(exports) {
      var $$mode = "", $$block = "", $$elem = "", $$elemMods = null, $$mods = null;

@@ -1,6 +1,6 @@
 block('panel')(
 	js()(true),
-	content()(function(){
+	content()(function() {
 		return [{ block : 'path' },
 				{
 				    block : 'radio-group',

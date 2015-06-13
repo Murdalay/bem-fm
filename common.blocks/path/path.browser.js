@@ -1,7 +1,7 @@
 /* global modules:false */
 
-modules.define('path', ['i-bem__dom', 'events__channels', 'cookie', 'state', 'jquery', 'functions__debounce', 'path-normalizer', 'state'], 
-    function(provide, BEMDOM, channels, cookie, state, $, debounce, normalizer, state) {
+modules.define('path', ['i-bem__dom', 'events__channels', 'cookie', 'state', 'jquery', 'functions__debounce', 'path-normalizer'], 
+    function(provide, BEMDOM, channels, cookie, state, $, debounce, normalizer) {
         var com = channels('116'),
             conf = state.getClientConfig,
             normalize = normalizer.normalize;

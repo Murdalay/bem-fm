@@ -3,16 +3,68 @@ block('status')(
 	content()(function(){
 		return [
 			{
-				elem: 'list'
+				elem : 'wrapper',
+				content : [
+					{
+						elem: 'list'
+					},
+					{
+						elem: 'selected'
+					}
+				]
 			},
 			{
-				elem: 'list-size'
-			},
-			{
-				elem: 'selected'
-			},
-			{
-				elem: 'selected-size'
+				elem : 'wrapper',
+				content : [
+					{
+						elem: 'list-size'
+					},
+					{
+						elem: 'selected-size'
+					}
+				]
 			}
-	]})
+	]}),
+
+	mod('position', 'right')(
+		content()(function(){
+			return [
+				{
+					elem : 'wrapper',
+					content : [
+						{
+							elem: 'selected'
+						},
+						{
+							elem: 'list'
+						}
+					]
+				},
+				{
+					elem : 'wrapper',
+					mods : { position : 'right' },
+					content : [
+						{
+							elem: 'selected-size'
+						},
+						{
+							elem: 'list-size'
+						}
+					]
+				}
+		]})
+	),
+
+	elem('wrapper')(tag()('tr')),
+
+	elem('list-size')(tag()('td')),
+	
+	elem('list')(tag()('td')),
+	
+	elem('selected-size')(tag()('td')),
+	
+	elem('selected')(tag()('td'))
 )
+
+block('status')(tag()('table'))
+

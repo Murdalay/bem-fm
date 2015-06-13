@@ -1,0 +1,12 @@
+block('disk-monitor')(
+	js()(true),
+	content()(
+		function(){
+			return [
+				{ elem : 'free', content: this.ctx.free },
+				{ elem : 'total', content: this.ctx.total },
+				{ elem : 'mount-point', content: this.ctx.mount }
+			]
+		}
+	)
+)

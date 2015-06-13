@@ -535,6 +535,15 @@ exports.deps = [
     },
     {
         "block": "menu",
+        "mod": "size"
+    },
+    {
+        "block": "menu",
+        "mod": "size",
+        "val": "l"
+    },
+    {
+        "block": "menu",
         "mod": "mode",
         "val": "check"
     },
@@ -628,6 +637,9 @@ exports.deps = [
     },
     {
         "block": "status"
+    },
+    {
+        "block": "disk-monitor"
     }
 ];
 exports.depsByTechs = {
@@ -4095,6 +4107,17 @@ exports.depsByTechs = {
             {
                 "tech": "js",
                 "block": "menu",
+                "mod": "size"
+            },
+            {
+                "tech": "js",
+                "block": "menu",
+                "mod": "size",
+                "val": "l"
+            },
+            {
+                "tech": "js",
+                "block": "menu",
                 "mod": "mode",
                 "val": "check"
             },
@@ -4177,6 +4200,12 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
+                "block": "menu",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "js",
                 "block": "dom"
             },
             {
@@ -4227,12 +4256,6 @@ exports.depsByTechs = {
             {
                 "tech": "js",
                 "block": "popup",
-                "mod": "theme",
-                "val": "islands"
-            },
-            {
-                "tech": "js",
-                "block": "menu",
                 "mod": "theme",
                 "val": "islands"
             },

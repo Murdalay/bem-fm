@@ -24,19 +24,23 @@ exports.apply = apply;
 function applyc(__$ctx, __$ref) {
     var __$t = $$mode;
     if (__$t === "content") {
+        var __$mr = __$m1[$$block];
+        if (__$mr) {
+            __$mr = __$mr(__$ctx, __$ref);
+            if (__$mr !== __$ref) return __$mr;
+        }
+        return __$ctx.ctx.content;
+    } else if (__$t === "js") {
         var __$r = __$g0(__$ctx, __$ref);
         if (__$r !== __$ref) return __$r;
-    } else if (__$t === "js") {
+    } else if (__$t === "tag") {
         var __$r = __$g1(__$ctx, __$ref);
         if (__$r !== __$ref) return __$r;
-    } else if (__$t === "tag") {
+    } else if (__$t === "attrs") {
         var __$r = __$g2(__$ctx, __$ref);
         if (__$r !== __$ref) return __$r;
-    } else if (__$t === "attrs") {
-        var __$r = __$g3(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
     } else if (__$t === "default") {
-        var __$r = __$g4(__$ctx, __$ref);
+        var __$r = __$g3(__$ctx, __$ref);
         if (__$r !== __$ref) return __$r;
     } else if (__$t === "mix") {
         var __$t = $$block;
@@ -91,22 +95,22 @@ function applyc(__$ctx, __$ref) {
         return undefined;
     } else if (__$t === "") {
         if (__$ctx.ctx && __$ctx.ctx._vow && (__$ctx.__$a0 & 1048576) === 0) {
-            var __$r = __$b117(__$ctx, __$ref);
+            var __$r = __$b101(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
         if (__$ctx.isSimple(__$ctx.ctx)) {
-            var __$r = __$b118(__$ctx, __$ref);
+            var __$r = __$b102(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
         if (!__$ctx.ctx) {
-            var __$r = __$b119(__$ctx, __$ref);
+            var __$r = __$b103(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
         if (__$ctx.isArray(__$ctx.ctx)) {
-            var __$r = __$b120(__$ctx, __$ref);
+            var __$r = __$b104(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
-        var __$r = __$b121(__$ctx, __$ref);
+        var __$r = __$b105(__$ctx, __$ref);
         if (__$r !== __$ref) return __$r;
     }
 }
@@ -309,80 +313,408 @@ function applyc(__$ctx, __$ref) {
     }
 });
 
-function __$b8(__$ctx, __$ref) {
-    var ctx__$118 = __$ctx.ctx, mods__$119 = $$mods;
-    return [ {
-        block: "button",
-        mods: {
-            togglable: mods__$119.mode === "radio-check" ? "check" : "radio",
-            checked: mods__$119.checked,
-            disabled: mods__$119.disabled,
-            theme: mods__$119.theme,
-            size: mods__$119.size
-        },
-        title: ctx__$118.title,
-        content: [ ctx__$118.icon, typeof ctx__$118.text !== "undefined" ? {
-            elem: "text",
-            content: ctx__$118.text
-        } : "" ]
-    }, {
-        block: "radio",
-        elem: "control",
-        checked: mods__$119.checked,
-        disabled: mods__$119.disabled,
-        name: ctx__$118.name,
-        val: ctx__$118.val
-    } ];
-}
+var __$m1 = {
+    "disk-monitor": function(__$ctx, __$ref) {
+        if (!$$elem) {
+            return [ {
+                elem: "free",
+                content: __$ctx.ctx.free
+            }, {
+                elem: "total",
+                content: __$ctx.ctx.total
+            }, {
+                elem: "mount-point",
+                content: __$ctx.ctx.mount
+            } ];
+        }
+        return __$ref;
+    },
+    status: function(__$ctx, __$ref) {
+        var __$t = !$$elem;
+        if (__$t) {
+            if ($$mods && $$mods["position"] === "right") {
+                return [ {
+                    elem: "wrapper",
+                    content: [ {
+                        elem: "selected"
+                    }, {
+                        elem: "list"
+                    } ]
+                }, {
+                    elem: "wrapper",
+                    mods: {
+                        position: "right"
+                    },
+                    content: [ {
+                        elem: "selected-size"
+                    }, {
+                        elem: "list-size"
+                    } ]
+                } ];
+            }
+            return [ {
+                elem: "wrapper",
+                content: [ {
+                    elem: "list"
+                }, {
+                    elem: "selected"
+                } ]
+            }, {
+                elem: "wrapper",
+                content: [ {
+                    elem: "list-size"
+                }, {
+                    elem: "selected-size"
+                } ]
+            } ];
+        }
+        return __$ref;
+    },
+    info: function(__$ctx, __$ref) {
+        if (!$$elem) {
+            return [ {
+                block: "status",
+                mods: {
+                    position: "left"
+                }
+            }, {
+                block: "disk-monitor",
+                free: "",
+                total: "",
+                mount: "",
+                mods: {
+                    position: "left"
+                }
+            }, {
+                block: "status",
+                mods: {
+                    position: "right"
+                }
+            }, {
+                block: "disk-monitor",
+                free: "",
+                total: "",
+                mount: "",
+                mods: {
+                    position: "right"
+                }
+            }, {
+                block: "queue-display"
+            } ];
+        }
+        return __$ref;
+    },
+    "button-wrapper": function(__$ctx, __$ref) {
+        if (!$$elem && $$mods && $$mods["yesno"] === "true") {
+            return [ {
+                block: "button",
+                mods: {
+                    theme: "islands",
+                    size: "xl",
+                    yes: "true"
+                },
+                name: "yes",
+                val: "true",
+                text: "Yes"
+            }, {
+                block: "gap"
+            }, {
+                block: "button",
+                mods: {
+                    theme: "islands",
+                    size: "xl",
+                    no: "true"
+                },
+                name: "no",
+                val: "false",
+                text: "No"
+            } ];
+        }
+        return __$ref;
+    },
+    question: function(__$ctx, __$ref) {
+        var __$t = !$$elem;
+        if (__$t) {
+            var __$t = $$mods;
+            if (__$t) {
+                if ($$mods["simple"] === "true") {
+                    return [ {
+                        elem: "message"
+                    }, {
+                        block: "path",
+                        mods: {
+                            simple: "true"
+                        }
+                    }, {
+                        elem: "hint",
+                        content: "Choose an existing destination by typing the path."
+                    }, {
+                        block: "button-wrapper",
+                        mods: {
+                            yesno: "true"
+                        }
+                    } ];
+                }
+                if ($$mods["with-destination"] === "true") {
+                    return [ {
+                        elem: "message",
+                        content: __$ctx.ctx.message ? __$ctx.ctx.message : "blah"
+                    }, {
+                        block: "path",
+                        mods: {
+                            source: "true"
+                        }
+                    }, {
+                        elem: "destination-message",
+                        content: "to the following destination folder:"
+                    }, {
+                        block: "path",
+                        mods: {
+                            destination: "true"
+                        }
+                    }, {
+                        elem: "hint",
+                        content: "Choose an existing destination by typing the path."
+                    }, {
+                        block: "button-wrapper",
+                        mods: {
+                            yesno: "true"
+                        }
+                    } ];
+                }
+            }
+            return [ {
+                elem: "message",
+                content: __$ctx.ctx.message ? __$ctx.ctx.message : "blah"
+            }, {
+                block: "path",
+                mods: {
+                    source: "true"
+                }
+            }, {
+                block: "button-wrapper",
+                mods: {
+                    yesno: "true"
+                }
+            } ];
+        }
+        return __$ref;
+    },
+    divider: function(__$ctx, __$ref) {
+        if (!$$elem) {
+            return {
+                block: "image",
+                url: "/images/divider.png"
+            };
+        }
+        return __$ref;
+    },
+    radio: function(__$ctx, __$ref) {
+        var __$t = !$$elem;
+        if (__$t) {
+            if ($$mods && $$mods["type"] === "button") {
+                var __$r = __$b115(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+            var __$r = __$b116(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+        return __$ref;
+    },
+    menu: function(__$ctx, __$ref) {
+        if ($$elem === "group" && typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 16) === 0) {
+            return [ {
+                elem: "group-title",
+                content: __$ctx.ctx.title
+            }, function __$lb__$21() {
+                var __$r__$22;
+                var __$l0__$23 = __$ctx.__$a0;
+                __$ctx.__$a0 = __$ctx.__$a0 | 16;
+                __$r__$22 = applyc(__$ctx, __$ref);
+                __$ctx.__$a0 = __$l0__$23;
+                return __$r__$22;
+            }() ];
+        }
+        return __$ref;
+    },
+    select: function(__$ctx, __$ref) {
+        if ($$elem === "button" && $$mods && $$mods["mode"] === "radio") {
+            return [ {
+                elem: "text",
+                content: __$ctx._checkedOption.text
+            } ];
+        }
+        var __$t = !$$elem;
+        if (__$t) {
+            if ($$mods && $$mods["mode"] === "radio" && (__$ctx.__$a0 & 4) === 0) {
+                return [ {
+                    elem: "control",
+                    val: __$ctx._checkedOption.val
+                }, function __$lb__$9() {
+                    var __$r__$10;
+                    var __$l0__$11 = __$ctx.__$a0;
+                    __$ctx.__$a0 = __$ctx.__$a0 | 4;
+                    __$r__$10 = applyc(__$ctx, __$ref);
+                    __$ctx.__$a0 = __$l0__$11;
+                    return __$r__$10;
+                }() ];
+            }
+            return [ {
+                elem: "button"
+            }, {
+                block: "popup",
+                mods: {
+                    target: "anchor",
+                    theme: $$mods.theme,
+                    autoclosable: true
+                },
+                directions: [ "bottom-left", "bottom-right", "top-left", "top-right" ],
+                content: {
+                    block: $$block,
+                    mods: $$mods,
+                    elem: "menu"
+                }
+            } ];
+        }
+        return __$ref;
+    },
+    button: function(__$ctx, __$ref) {
+        var __$t = !$$elem;
+        if (__$t) {
+            if (typeof __$ctx.ctx.content !== "undefined") {
+                return __$ctx.ctx.content;
+            }
+            var __$r = __$b122(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+        return __$ref;
+    },
+    details: function(__$ctx, __$ref) {
+        if (!$$elem) {
+            return [ {
+                elem: "name",
+                content: __$ctx.ctx.name,
+                mods: {
+                    type: __$ctx.ctx.type
+                }
+            }, {
+                elem: "type",
+                content: __$ctx.ctx.type
+            }, {
+                elem: "size",
+                content: __$ctx.ctx.stats.size
+            }, {
+                elem: "owner",
+                content: __$ctx.ctx.stats.uid
+            }, {
+                elem: "date",
+                content: __$ctx.ctx.stats.ctime
+            } ];
+        }
+        return __$ref;
+    },
+    path: function(__$ctx, __$ref) {
+        if (!$$elem) {
+            return [ {
+                block: "input",
+                mods: {
+                    theme: "islands",
+                    size: "l",
+                    width: "available"
+                },
+                name: "path"
+            } ];
+        }
+        return __$ref;
+    },
+    panel: function(__$ctx, __$ref) {
+        if (!$$elem) {
+            return [ {
+                block: "path"
+            }, {
+                block: "radio-group",
+                mods: {
+                    theme: "islands",
+                    size: "l",
+                    type: "button"
+                },
+                val: "name",
+                options: [ {
+                    val: "name",
+                    text: "Name"
+                }, {
+                    val: "type",
+                    text: "Type"
+                }, {
+                    val: "size",
+                    text: "Size"
+                }, {
+                    val: "owner",
+                    text: "Owner"
+                }, {
+                    val: "date",
+                    text: "Creation date"
+                } ]
+            }, {
+                block: "select",
+                mods: {
+                    mode: "radio",
+                    theme: "islands",
+                    size: "l",
+                    disabled: true
+                },
+                name: "select1",
+                val: 1,
+                options: [ {
+                    val: 1,
+                    text: "Drive data is unavailable"
+                } ]
+            }, {
+                block: "list"
+            } ];
+        }
+        return __$ref;
+    },
+    input: function(__$ctx, __$ref) {
+        if (!$$elem) {
+            return {
+                elem: "box",
+                content: {
+                    elem: "control"
+                }
+            };
+        }
+        return __$ref;
+    },
+    "radio-group": function(__$ctx, __$ref) {
+        if (!$$elem) {
+            var __$r = __$b127(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+        return __$ref;
+    },
+    page: function(__$ctx, __$ref) {
+        if (!$$elem && (__$ctx.__$a0 & 262144) === 0) {
+            return [ function __$lb__$143() {
+                var __$r__$144;
+                var __$l0__$145 = __$ctx.__$a0;
+                __$ctx.__$a0 = __$ctx.__$a0 | 262144;
+                __$r__$144 = applyc(__$ctx, __$ref);
+                __$ctx.__$a0 = __$l0__$145;
+                return __$r__$144;
+            }(), __$ctx.ctx.scripts ];
+        }
+        return __$ref;
+    },
+    ua: function(__$ctx, __$ref) {
+        if (!$$elem) {
+            return [ "(function(e,c){", 'e[c]=e[c].replace(/(ua_js_)no/g,"$1yes");', '})(document.documentElement,"className");' ];
+        }
+        return __$ref;
+    }
+};
 
 function __$b9(__$ctx, __$ref) {
-    var ctx__$122 = __$ctx.ctx;
-    return [ {
-        elem: "box",
-        content: {
-            elem: "control",
-            checked: $$mods.checked,
-            disabled: $$mods.disabled,
-            name: ctx__$122.name,
-            val: ctx__$122.val
-        }
-    }, ctx__$122.text ];
-}
-
-function __$b15(__$ctx, __$ref) {
-    var ctx__$110 = __$ctx.ctx, content__$111 = [ ctx__$110.icon ];
-    "text" in ctx__$110 && content__$111.push({
-        elem: "text",
-        content: ctx__$110.text
-    });
-    return content__$111;
-}
-
-function __$b20(__$ctx, __$ref) {
-    var mods__$123 = $$mods, ctx__$124 = __$ctx.ctx, isValDef__$125 = typeof ctx__$124.val !== "undefined";
-    return (ctx__$124.options || []).map(function(option, i) {
-        return [ !!i && !mods__$123.type && {
-            tag: "br"
-        }, {
-            block: "radio",
-            mods: {
-                type: mods__$123.type,
-                mode: mods__$123.mode,
-                theme: mods__$123.theme,
-                size: mods__$123.size,
-                checked: isValDef__$125 && ctx__$124.val === option.val,
-                disabled: option.disabled || mods__$123.disabled
-            },
-            name: ctx__$124.name,
-            val: option.val,
-            text: option.text,
-            title: option.title,
-            icon: option.icon
-        } ];
-    });
-}
-
-function __$b31(__$ctx, __$ref) {
     var ctx__$81 = __$ctx.ctx;
     return {
         name: ctx__$81.name,
@@ -390,7 +722,7 @@ function __$b31(__$ctx, __$ref) {
     };
 }
 
-function __$b34(__$ctx, __$ref) {
+function __$b12(__$ctx, __$ref) {
     var ctx__$20 = __$ctx.ctx;
     return {
         mainOffset: ctx__$20.mainOffset,
@@ -401,7 +733,7 @@ function __$b34(__$ctx, __$ref) {
     };
 }
 
-function __$b73(__$ctx, __$ref) {
+function __$b57(__$ctx, __$ref) {
     var ctx__$0 = __$ctx.ctx;
     return __$ctx.extend(function __$lb__$1() {
         var __$r__$2;
@@ -419,7 +751,7 @@ function __$b73(__$ctx, __$ref) {
     });
 }
 
-function __$b75(__$ctx, __$ref) {
+function __$b59(__$ctx, __$ref) {
     var attrs__$4 = {
         "aria-hidden": "true"
     }, url__$5 = __$ctx.ctx.url;
@@ -427,7 +759,7 @@ function __$b75(__$ctx, __$ref) {
     return attrs__$4;
 }
 
-function __$b76(__$ctx, __$ref) {
+function __$b60(__$ctx, __$ref) {
     var ctx__$120 = __$ctx.ctx, attrs__$121 = {
         type: "radio",
         autocomplete: "off",
@@ -439,7 +771,7 @@ function __$b76(__$ctx, __$ref) {
     return attrs__$121;
 }
 
-function __$b80(__$ctx, __$ref) {
+function __$b64(__$ctx, __$ref) {
     var attrs__$42 = {
         role: "menu"
     };
@@ -447,7 +779,7 @@ function __$b80(__$ctx, __$ref) {
     return attrs__$42;
 }
 
-function __$b82(__$ctx, __$ref) {
+function __$b66(__$ctx, __$ref) {
     var ctx__$112 = __$ctx.ctx, attrs__$113 = {
         type: $$mods.type || "button",
         name: ctx__$112.name,
@@ -464,7 +796,7 @@ function __$b82(__$ctx, __$ref) {
     }(), attrs__$113);
 }
 
-function __$b83(__$ctx, __$ref) {
+function __$b67(__$ctx, __$ref) {
     var ctx__$117 = __$ctx.ctx;
     return {
         role: "button",
@@ -474,7 +806,7 @@ function __$b83(__$ctx, __$ref) {
     };
 }
 
-function __$b85(__$ctx, __$ref) {
+function __$b69(__$ctx, __$ref) {
     var input__$99 = __$ctx._input, attrs__$100 = {
         id: input__$99.id,
         name: input__$99.name,
@@ -488,7 +820,7 @@ function __$b85(__$ctx, __$ref) {
     return attrs__$100;
 }
 
-function __$b86(__$ctx, __$ref) {
+function __$b70(__$ctx, __$ref) {
     var attrs__$126 = {};
     if (__$ctx.ctx.url) {
         attrs__$126.src = __$ctx.ctx.url;
@@ -498,7 +830,7 @@ function __$b86(__$ctx, __$ref) {
     return attrs__$126;
 }
 
-function __$b90(__$ctx, __$ref) {
+function __$b74(__$ctx, __$ref) {
     (__$ctx._firstItem.mods = __$ctx._firstItem.mods || {}).checked = true;
     var __$r__$7;
     var __$l0__$8 = __$ctx.__$a0;
@@ -508,7 +840,7 @@ function __$b90(__$ctx, __$ref) {
     return;
 }
 
-function __$b91(__$ctx, __$ref) {
+function __$b75(__$ctx, __$ref) {
     var ctx__$43 = __$ctx.ctx, mods__$44 = $$mods, firstItem__$45, checkedItems__$46 = [];
     if (ctx__$43.content) {
         var isValDef__$47 = typeof ctx__$43.val !== "undefined", containsVal__$48 = function(val) {
@@ -548,7 +880,7 @@ function __$b91(__$ctx, __$ref) {
     return;
 }
 
-function __$b92(__$ctx, __$ref) {
+function __$b76(__$ctx, __$ref) {
     var checkedOptions__$12 = __$ctx._checkedOptions, firstOption__$13 = __$ctx._firstOption;
     if (firstOption__$13 && !checkedOptions__$12.length) {
         firstOption__$13.checked = true;
@@ -567,7 +899,7 @@ function __$b92(__$ctx, __$ref) {
     return;
 }
 
-function __$b93(__$ctx, __$ref) {
+function __$b77(__$ctx, __$ref) {
     var mods__$58 = $$mods, optionToMenuItem__$59 = function(option) {
         var res__$60 = {
             block: "menu-item",
@@ -628,7 +960,7 @@ function __$b93(__$ctx, __$ref) {
     return;
 }
 
-function __$b94(__$ctx, __$ref) {
+function __$b78(__$ctx, __$ref) {
     var mods__$68 = $$mods;
     var __$r__$70;
     var __$l0__$71 = $$mode;
@@ -676,7 +1008,7 @@ function __$b94(__$ctx, __$ref) {
     return;
 }
 
-function __$b95(__$ctx, __$ref) {
+function __$b79(__$ctx, __$ref) {
     if (!$$mods.mode) throw Error("Can't build select without mode modifier");
     var ctx__$82 = __$ctx.ctx, isValDef__$83 = typeof ctx__$82.val !== "undefined", isModeCheck__$84 = $$mods.mode === "check", firstOption__$85, checkedOptions__$86 = [], containsVal__$87 = function(val) {
         return isValDef__$83 && (isModeCheck__$84 ? ctx__$82.val.indexOf(val) > -1 : ctx__$82.val === val);
@@ -714,7 +1046,7 @@ function __$b95(__$ctx, __$ref) {
     return;
 }
 
-function __$b96(__$ctx, __$ref) {
+function __$b80(__$ctx, __$ref) {
     var ctx__$30 = __$ctx.ctx;
     ctx__$30._wrapped = true;
     var __$r__$32;
@@ -736,7 +1068,7 @@ function __$b96(__$ctx, __$ref) {
     return;
 }
 
-function __$b97(__$ctx, __$ref) {
+function __$b81(__$ctx, __$ref) {
     var mods__$38 = $$mods;
     mods__$38.theme = mods__$38.theme || __$ctx._menuMods.theme;
     mods__$38.disabled = mods__$38.disabled || __$ctx._menuMods.disabled;
@@ -748,7 +1080,7 @@ function __$b97(__$ctx, __$ref) {
     return;
 }
 
-function __$b98(__$ctx, __$ref) {
+function __$b82(__$ctx, __$ref) {
     var __$r__$102;
     var __$l0__$103 = __$ctx._input;
     __$ctx._input = __$ctx.ctx;
@@ -762,7 +1094,7 @@ function __$b98(__$ctx, __$ref) {
     return;
 }
 
-function __$b99(__$ctx, __$ref) {
+function __$b83(__$ctx, __$ref) {
     var url__$127 = __$ctx.ctx.url;
     var __$r__$129;
     var __$l0__$130 = $$mode;
@@ -786,7 +1118,7 @@ function __$b99(__$ctx, __$ref) {
     return;
 }
 
-function __$b100(__$ctx, __$ref) {
+function __$b84(__$ctx, __$ref) {
     var ie__$135 = __$ctx.ctx.ie, hideRule__$136 = !ie__$135 ? [ "gt IE 9", "<!-->", "<!--" ] : ie__$135 === "!IE" ? [ ie__$135, "<!-->", "<!--" ] : [ ie__$135, "", "" ];
     var __$r__$138;
     var __$l0__$139 = $$mode;
@@ -803,7 +1135,7 @@ function __$b100(__$ctx, __$ref) {
     return;
 }
 
-function __$b101(__$ctx, __$ref) {
+function __$b85(__$ctx, __$ref) {
     var ctx__$146 = __$ctx.ctx;
     __$ctx._nonceCsp = ctx__$146.nonce;
     var __$r__$148;
@@ -851,7 +1183,7 @@ function __$b101(__$ctx, __$ref) {
     return;
 }
 
-function __$b102(__$ctx, __$ref) {
+function __$b86(__$ctx, __$ref) {
     var BEM_INTERNAL__$154 = __$ctx.BEM.INTERNAL, ctx__$155 = __$ctx.ctx, isBEM__$156, tag__$157, res__$158;
     var __$r__$160;
     var __$l0__$161 = __$ctx._str;
@@ -1007,7 +1339,7 @@ function __$b102(__$ctx, __$ref) {
     return;
 }
 
-function __$b117(__$ctx, __$ref) {
+function __$b101(__$ctx, __$ref) {
     var __$r__$208;
     var __$l0__$209 = $$mode;
     $$mode = "";
@@ -1024,7 +1356,7 @@ function __$b117(__$ctx, __$ref) {
     return;
 }
 
-function __$b118(__$ctx, __$ref) {
+function __$b102(__$ctx, __$ref) {
     __$ctx._listLength--;
     var ctx__$214 = __$ctx.ctx;
     if (ctx__$214 && ctx__$214 !== true || ctx__$214 === 0) {
@@ -1033,12 +1365,12 @@ function __$b118(__$ctx, __$ref) {
     return;
 }
 
-function __$b119(__$ctx, __$ref) {
+function __$b103(__$ctx, __$ref) {
     __$ctx._listLength--;
     return;
 }
 
-function __$b120(__$ctx, __$ref) {
+function __$b104(__$ctx, __$ref) {
     var ctx__$215 = __$ctx.ctx, len__$216 = ctx__$215.length, i__$217 = 0, prevPos__$218 = __$ctx.position, prevNotNewList__$219 = __$ctx._notNewList;
     if (prevNotNewList__$219) {
         __$ctx._listLength += len__$216 - 1;
@@ -1059,7 +1391,7 @@ function __$b120(__$ctx, __$ref) {
     return;
 }
 
-function __$b121(__$ctx, __$ref) {
+function __$b105(__$ctx, __$ref) {
     __$ctx.ctx || (__$ctx.ctx = {});
     var vBlock__$223 = __$ctx.ctx.block, vElem__$224 = __$ctx.ctx.elem, block__$225 = __$ctx._currBlock || $$block;
     var __$r__$227;
@@ -1087,328 +1419,86 @@ function __$b121(__$ctx, __$ref) {
     return;
 }
 
-function __$g0(__$ctx, __$ref) {
-    var __$t = $$block;
-    if (__$t === "status") {
-        if (!$$elem) {
-            return [ {
-                elem: "list"
-            }, {
-                elem: "list-size"
-            }, {
-                elem: "selected"
-            }, {
-                elem: "selected-size"
-            } ];
-        }
-    } else if (__$t === "info") {
-        if (!$$elem) {
-            return [ {
-                block: "status",
-                mods: {
-                    position: "left"
-                }
-            }, {
-                block: "status",
-                mods: {
-                    position: "right"
-                }
-            }, {
-                block: "queue-display"
-            } ];
-        }
-    } else if (__$t === "button-wrapper") {
-        if (!$$elem && $$mods && $$mods["yesno"] === "true") {
-            return [ {
-                block: "button",
-                mods: {
-                    theme: "islands",
-                    size: "xl",
-                    yes: "true"
-                },
-                name: "yes",
-                val: "true",
-                text: "Yes"
-            }, {
-                block: "gap"
-            }, {
-                block: "button",
-                mods: {
-                    theme: "islands",
-                    size: "xl",
-                    no: "true"
-                },
-                name: "no",
-                val: "false",
-                text: "No"
-            } ];
-        }
-    } else if (__$t === "question") {
-        var __$t = !$$elem;
-        if (__$t) {
-            var __$t = $$mods;
-            if (__$t) {
-                if ($$mods["simple"] === "true") {
-                    return [ {
-                        elem: "message"
-                    }, {
-                        block: "path",
-                        mods: {
-                            simple: "true"
-                        }
-                    }, {
-                        elem: "hint",
-                        content: "Choose an existing destination by typing the path."
-                    }, {
-                        block: "button-wrapper",
-                        mods: {
-                            yesno: "true"
-                        }
-                    } ];
-                }
-                if ($$mods["with-destination"] === "true") {
-                    return [ {
-                        elem: "message",
-                        content: __$ctx.ctx.message ? __$ctx.ctx.message : "blah"
-                    }, {
-                        block: "path",
-                        mods: {
-                            source: "true"
-                        }
-                    }, {
-                        elem: "destination-message",
-                        content: "to the following destination folder:"
-                    }, {
-                        block: "path",
-                        mods: {
-                            destination: "true"
-                        }
-                    }, {
-                        elem: "hint",
-                        content: "Choose an existing destination by typing the path."
-                    }, {
-                        block: "button-wrapper",
-                        mods: {
-                            yesno: "true"
-                        }
-                    } ];
-                }
-            }
-            return [ {
-                elem: "message",
-                content: __$ctx.ctx.message ? __$ctx.ctx.message : "blah"
-            }, {
-                block: "path",
-                mods: {
-                    source: "true"
-                }
-            }, {
-                block: "button-wrapper",
-                mods: {
-                    yesno: "true"
-                }
-            } ];
-        }
-    } else if (__$t === "divider") {
-        if (!$$elem) {
-            return {
-                block: "image",
-                url: "/images/divider.png"
-            };
-        }
-    } else if (__$t === "radio") {
-        var __$t = !$$elem;
-        if (__$t) {
-            if ($$mods && $$mods["type"] === "button") {
-                var __$r = __$b8(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-            var __$r = __$b9(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu") {
-        if ($$elem === "group" && typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 16) === 0) {
-            return [ {
-                elem: "group-title",
-                content: __$ctx.ctx.title
-            }, function __$lb__$21() {
-                var __$r__$22;
-                var __$l0__$23 = __$ctx.__$a0;
-                __$ctx.__$a0 = __$ctx.__$a0 | 16;
-                __$r__$22 = applyc(__$ctx, __$ref);
-                __$ctx.__$a0 = __$l0__$23;
-                return __$r__$22;
-            }() ];
-        }
-    } else if (__$t === "select") {
-        if ($$elem === "button" && $$mods && $$mods["mode"] === "radio") {
-            return [ {
-                elem: "text",
-                content: __$ctx._checkedOption.text
-            } ];
-        }
-        var __$t = !$$elem;
-        if (__$t) {
-            if ($$mods && $$mods["mode"] === "radio" && (__$ctx.__$a0 & 4) === 0) {
-                return [ {
-                    elem: "control",
-                    val: __$ctx._checkedOption.val
-                }, function __$lb__$9() {
-                    var __$r__$10;
-                    var __$l0__$11 = __$ctx.__$a0;
-                    __$ctx.__$a0 = __$ctx.__$a0 | 4;
-                    __$r__$10 = applyc(__$ctx, __$ref);
-                    __$ctx.__$a0 = __$l0__$11;
-                    return __$r__$10;
-                }() ];
-            }
-            return [ {
-                elem: "button"
-            }, {
-                block: "popup",
-                mods: {
-                    target: "anchor",
-                    theme: $$mods.theme,
-                    autoclosable: true
-                },
-                directions: [ "bottom-left", "bottom-right", "top-left", "top-right" ],
-                content: {
-                    block: $$block,
-                    mods: $$mods,
-                    elem: "menu"
-                }
-            } ];
-        }
-    } else if (__$t === "button") {
-        var __$t = !$$elem;
-        if (__$t) {
-            if (typeof __$ctx.ctx.content !== "undefined") {
-                return __$ctx.ctx.content;
-            }
-            var __$r = __$b15(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "details") {
-        if (!$$elem) {
-            return [ {
-                elem: "name",
-                content: __$ctx.ctx.name,
-                mods: {
-                    type: __$ctx.ctx.type
-                }
-            }, {
-                elem: "type",
-                content: __$ctx.ctx.type
-            }, {
-                elem: "size",
-                content: __$ctx.ctx.stats.size
-            }, {
-                elem: "owner",
-                content: __$ctx.ctx.stats.uid
-            }, {
-                elem: "date",
-                content: __$ctx.ctx.stats.ctime
-            } ];
-        }
-    } else if (__$t === "path") {
-        if (!$$elem) {
-            return [ {
-                block: "input",
-                mods: {
-                    theme: "islands",
-                    size: "l",
-                    width: "available"
-                },
-                name: "path"
-            } ];
-        }
-    } else if (__$t === "panel") {
-        if (!$$elem) {
-            return [ {
-                block: "path"
-            }, {
-                block: "radio-group",
-                mods: {
-                    theme: "islands",
-                    size: "l",
-                    type: "button"
-                },
-                val: "name",
-                options: [ {
-                    val: "name",
-                    text: "Name"
-                }, {
-                    val: "type",
-                    text: "Type"
-                }, {
-                    val: "size",
-                    text: "Size"
-                }, {
-                    val: "owner",
-                    text: "Owner"
-                }, {
-                    val: "date",
-                    text: "Creation date"
-                } ]
-            }, {
-                block: "select",
-                mods: {
-                    mode: "radio",
-                    theme: "islands",
-                    size: "l",
-                    disabled: true
-                },
-                name: "select1",
-                val: 1,
-                options: [ {
-                    val: 1,
-                    text: "Drive data is unavailable"
-                } ]
-            }, {
-                block: "list"
-            } ];
-        }
-    } else if (__$t === "input") {
-        if (!$$elem) {
-            return {
-                elem: "box",
-                content: {
-                    elem: "control"
-                }
-            };
-        }
-    } else if (__$t === "radio-group") {
-        if (!$$elem) {
-            var __$r = __$b20(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "page") {
-        if (!$$elem && (__$ctx.__$a0 & 262144) === 0) {
-            return [ function __$lb__$143() {
-                var __$r__$144;
-                var __$l0__$145 = __$ctx.__$a0;
-                __$ctx.__$a0 = __$ctx.__$a0 | 262144;
-                __$r__$144 = applyc(__$ctx, __$ref);
-                __$ctx.__$a0 = __$l0__$145;
-                return __$r__$144;
-            }(), __$ctx.ctx.scripts ];
-        }
-    } else if (__$t === "ua") {
-        if (!$$elem) {
-            return [ "(function(e,c){", 'e[c]=e[c].replace(/(ua_js_)no/g,"$1yes");', '})(document.documentElement,"className");' ];
-        }
-    }
-    return __$ctx.ctx.content;
-    return __$ref;
+function __$b115(__$ctx, __$ref) {
+    var ctx__$118 = __$ctx.ctx, mods__$119 = $$mods;
+    return [ {
+        block: "button",
+        mods: {
+            togglable: mods__$119.mode === "radio-check" ? "check" : "radio",
+            checked: mods__$119.checked,
+            disabled: mods__$119.disabled,
+            theme: mods__$119.theme,
+            size: mods__$119.size
+        },
+        title: ctx__$118.title,
+        content: [ ctx__$118.icon, typeof ctx__$118.text !== "undefined" ? {
+            elem: "text",
+            content: ctx__$118.text
+        } : "" ]
+    }, {
+        block: "radio",
+        elem: "control",
+        checked: mods__$119.checked,
+        disabled: mods__$119.disabled,
+        name: ctx__$118.name,
+        val: ctx__$118.val
+    } ];
 }
 
-function __$g1(__$ctx, __$ref) {
+function __$b116(__$ctx, __$ref) {
+    var ctx__$122 = __$ctx.ctx;
+    return [ {
+        elem: "box",
+        content: {
+            elem: "control",
+            checked: $$mods.checked,
+            disabled: $$mods.disabled,
+            name: ctx__$122.name,
+            val: ctx__$122.val
+        }
+    }, ctx__$122.text ];
+}
+
+function __$b122(__$ctx, __$ref) {
+    var ctx__$110 = __$ctx.ctx, content__$111 = [ ctx__$110.icon ];
+    "text" in ctx__$110 && content__$111.push({
+        elem: "text",
+        content: ctx__$110.text
+    });
+    return content__$111;
+}
+
+function __$b127(__$ctx, __$ref) {
+    var mods__$123 = $$mods, ctx__$124 = __$ctx.ctx, isValDef__$125 = typeof ctx__$124.val !== "undefined";
+    return (ctx__$124.options || []).map(function(option, i) {
+        return [ !!i && !mods__$123.type && {
+            tag: "br"
+        }, {
+            block: "radio",
+            mods: {
+                type: mods__$123.type,
+                mode: mods__$123.mode,
+                theme: mods__$123.theme,
+                size: mods__$123.size,
+                checked: isValDef__$125 && ctx__$124.val === option.val,
+                disabled: option.disabled || mods__$123.disabled
+            },
+            name: ctx__$124.name,
+            val: option.val,
+            text: option.text,
+            title: option.title,
+            icon: option.icon
+        } ];
+    });
+}
+
+function __$g0(__$ctx, __$ref) {
     var __$t = $$block;
-    if (__$t === "status") {
+    if (__$t === "disk-monitor") {
         if (!$$elem) {
             return true;
         }
-    } else if (__$t === "info") {
+    } else if (__$t === "status") {
         if (!$$elem) {
             return true;
         }
@@ -1454,7 +1544,7 @@ function __$g1(__$ctx, __$ref) {
                 });
                 if (__$r !== __$ref) return __$r;
             }
-            var __$r = __$b31(__$ctx, __$ref);
+            var __$r = __$b9(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "button") {
@@ -1477,7 +1567,7 @@ function __$g1(__$ctx, __$ref) {
         }
     } else if (__$t === "popup") {
         if (!$$elem) {
-            var __$r = __$b34(__$ctx, __$ref);
+            var __$r = __$b12(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "menu-item") {
@@ -1511,9 +1601,25 @@ function __$g1(__$ctx, __$ref) {
     return __$ref;
 }
 
-function __$g2(__$ctx, __$ref) {
+function __$g1(__$ctx, __$ref) {
     var __$t = $$block;
-    if (__$t === "gap") {
+    if (__$t === "status") {
+        if (!$$elem) {
+            return "table";
+        }
+        var __$t = $$elem;
+        if (__$t === "selected") {
+            return "td";
+        } else if (__$t === "selected-size") {
+            return "td";
+        } else if (__$t === "list") {
+            return "td";
+        } else if (__$t === "list-size") {
+            return "td";
+        } else if (__$t === "wrapper") {
+            return "tr";
+        }
+    } else if (__$t === "gap") {
         if (!$$elem) {
             return "span";
         }
@@ -1614,13 +1720,13 @@ function __$g2(__$ctx, __$ref) {
     return __$ref;
 }
 
-function __$g3(__$ctx, __$ref) {
+function __$g2(__$ctx, __$ref) {
     var __$t = $$block;
     if (__$t === "image") {
         var __$t = !$$elem;
         if (__$t) {
             if (typeof __$ctx.ctx.content === "undefined" && (__$ctx.__$a0 & 1) === 0) {
-                var __$r = __$b73(__$ctx, __$ref);
+                var __$r = __$b57(__$ctx, __$ref);
                 if (__$r !== __$ref) return __$r;
             }
             return {
@@ -1629,12 +1735,12 @@ function __$g3(__$ctx, __$ref) {
         }
     } else if (__$t === "icon") {
         if (!$$elem) {
-            var __$r = __$b75(__$ctx, __$ref);
+            var __$r = __$b59(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "radio") {
         if ($$elem === "control") {
-            var __$r = __$b76(__$ctx, __$ref);
+            var __$r = __$b60(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "menu") {
@@ -1662,7 +1768,7 @@ function __$g3(__$ctx, __$ref) {
             };
         }
         if (!$$elem) {
-            var __$r = __$b80(__$ctx, __$ref);
+            var __$r = __$b64(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "select") {
@@ -1678,10 +1784,10 @@ function __$g3(__$ctx, __$ref) {
         var __$t = !$$elem;
         if (__$t) {
             if ((!$$mods.type || $$mods.type === "submit") && (__$ctx.__$a0 & 65536) === 0) {
-                var __$r = __$b82(__$ctx, __$ref);
+                var __$r = __$b66(__$ctx, __$ref);
                 if (__$r !== __$ref) return __$r;
             }
-            var __$r = __$b83(__$ctx, __$ref);
+            var __$r = __$b67(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "menu-item") {
@@ -1692,13 +1798,13 @@ function __$g3(__$ctx, __$ref) {
         }
     } else if (__$t === "input") {
         if ($$elem === "control") {
-            var __$r = __$b85(__$ctx, __$ref);
+            var __$r = __$b69(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "page") {
         var __$t = $$elem;
         if (__$t === "js") {
-            var __$r = __$b86(__$ctx, __$ref);
+            var __$r = __$b70(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         } else if (__$t === "css") {
             if (__$ctx.ctx.url) {
@@ -1718,54 +1824,54 @@ function __$g3(__$ctx, __$ref) {
     return __$ref;
 }
 
-function __$g4(__$ctx, __$ref) {
+function __$g3(__$ctx, __$ref) {
     var __$t = $$block;
     if (__$t === "menu") {
         var __$t = !$$elem;
         if (__$t) {
             if ($$mods && $$mods["mode"] === "radio" && __$ctx._firstItem && __$ctx._checkedItems && !__$ctx._checkedItems.length && (__$ctx.__$a0 & 2) === 0) {
-                var __$r = __$b90(__$ctx, __$ref);
+                var __$r = __$b74(__$ctx, __$ref);
                 if (__$r !== __$ref) return __$r;
             }
             if ((__$ctx.__$a0 & 512) === 0) {
-                var __$r = __$b91(__$ctx, __$ref);
+                var __$r = __$b75(__$ctx, __$ref);
                 if (__$r !== __$ref) return __$r;
             }
         }
     } else if (__$t === "select") {
         if (!$$elem && $$mods && $$mods["mode"] === "radio" && __$ctx._checkedOptions && (__$ctx.__$a0 & 8) === 0) {
-            var __$r = __$b92(__$ctx, __$ref);
+            var __$r = __$b76(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
         var __$t = $$elem;
         if (__$t === "menu") {
             if ((__$ctx.__$a0 & 1024) === 0) {
-                var __$r = __$b93(__$ctx, __$ref);
+                var __$r = __$b77(__$ctx, __$ref);
                 if (__$r !== __$ref) return __$r;
             }
         } else if (__$t === "button") {
             if ((__$ctx.__$a0 & 2048) === 0) {
-                var __$r = __$b94(__$ctx, __$ref);
+                var __$r = __$b78(__$ctx, __$ref);
                 if (__$r !== __$ref) return __$r;
             }
         }
         if (!$$elem && !__$ctx._select && (__$ctx.__$a0 & 8192) === 0) {
-            var __$r = __$b95(__$ctx, __$ref);
+            var __$r = __$b79(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "details") {
         if (!$$elem && !__$ctx.ctx._wrapped && (__$ctx.__$a0 & 128) === 0) {
-            var __$r = __$b96(__$ctx, __$ref);
+            var __$r = __$b80(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "menu-item") {
         if (!$$elem && __$ctx._menuMods && (__$ctx.__$a0 & 256) === 0) {
-            var __$r = __$b97(__$ctx, __$ref);
+            var __$r = __$b81(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "input") {
         if (!$$elem && (__$ctx.__$a0 & 16384) === 0) {
-            var __$r = __$b98(__$ctx, __$ref);
+            var __$r = __$b82(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "page") {
@@ -1776,20 +1882,20 @@ function __$g4(__$ctx, __$ref) {
                 var __$t = __$ctx.ctx.hasOwnProperty("ie");
                 if (__$t) {
                     if (__$ctx.ctx.ie === true && (__$ctx.__$a0 & 131072) === 0) {
-                        var __$r = __$b99(__$ctx, __$ref);
+                        var __$r = __$b83(__$ctx, __$ref);
                         if (__$r !== __$ref) return __$r;
                     }
-                    var __$r = __$b100(__$ctx, __$ref);
+                    var __$r = __$b84(__$ctx, __$ref);
                     if (__$r !== __$ref) return __$r;
                 }
             }
         }
         if (!$$elem && (__$ctx.__$a0 & 524288) === 0) {
-            var __$r = __$b101(__$ctx, __$ref);
+            var __$r = __$b85(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     }
-    var __$r = __$b102(__$ctx, __$ref);
+    var __$r = __$b86(__$ctx, __$ref);
     if (__$r !== __$ref) return __$r;
     return __$ref;
 };

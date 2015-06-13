@@ -1,5 +1,4 @@
 block('info')(
-	js()(true),
 	content()(function(){
 		return [
 			{
@@ -7,9 +6,23 @@ block('info')(
 				mods : { position : 'left' }
 			},
 			{
+				block: 'disk-monitor',
+				free : '',
+				total : '',
+				mount : '',
+				mods : { position : 'left' }
+			},
+			{
 				block: 'status',
 				mods : { position : 'right' }
 			},		
+			{
+				block: 'disk-monitor',
+				free : '',
+				total : '',
+				mount : '',
+				mods : { position : 'right' }
+			},	
 			{
 				block: 'queue-display'
 			}

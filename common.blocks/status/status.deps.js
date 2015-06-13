@@ -3,7 +3,6 @@
 },
 {
     shouldDeps : [
-        { block : 'config' },
         { block : 'state' },
         { block : 'size' },
         { block : 'functions', elems : 'debounce' },

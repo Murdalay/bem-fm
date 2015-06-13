@@ -15,7 +15,6 @@ provide(BEMDOM.decl(this.name, {
                 this._list = this.elem('list');
                 this._listSize = this.elem('list-size');
                 this._selected = this.elem('selected');
-                this._selectedSize = this.elem('selected-size');
 
                 this.setMod(this._selected, this._position);
 
@@ -40,7 +39,7 @@ provide(BEMDOM.decl(this.name, {
         _size && (this._itemsSize += _size);
         this._itemNumber += 1;
 
-        this._selected.html(this._itemNumber + ' files selected with total size of ' + size(this._itemsSize));
+        this._updateChecked();
     },
 
     _removeItem: function(e, data) {
@@ -49,8 +48,14 @@ provide(BEMDOM.decl(this.name, {
         (this._itemsSize -= _size);
         this._itemNumber -= 1;
 
-        this._selected.html(this._itemNumber + ' files selected with total size of ' + size(this._itemsSize));
-        this._itemsSize || this._itemNumber || this._selected.html('');
+        this._updateChecked();
+
+        this._itemsSize || this._itemNumber || this._selected.html('') && this.elem('selected-size').html('');
+    },
+
+    _updateChecked: function() {
+        this._selected.html(this._itemNumber + ' files selected');
+        this.elem('selected-size').html('the list size is ' + size(this._itemsSize));
     },
 
     _clearItems: function() {
@@ -73,7 +78,7 @@ provide(BEMDOM.decl(this.name, {
             _size += state.getState(_curPath + '/' + item, 'size');
         });
 
-        this._listSize.html('List size is ' + size(_size));
+        this._listSize.html('Total size ' + size(_size));
     }
 }));
 
