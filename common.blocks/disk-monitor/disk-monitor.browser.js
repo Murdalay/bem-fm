@@ -10,24 +10,16 @@ provide(BEMDOM.decl(this.name, {
         'js' : {
             'inited' : function() {
             	this._position = this.getMod('position');
-            	console.log(this._position);
-                com.on(this._position +'-drive-changed', this._update, this);
+                com.on(this._position +'-drive-changed' + ' disks-changed', this._update, this);
             }
         }      
-    },
-
-    /**
-     * Sets the input value
-     * @param {String} value – Value to set
-     */    
+    }, 
 
     _update : function() {
     	var disk = state.getDisks()[state.getActiveDriveIndex(this._position)];
-    	console.log(disk);
     	this.elem('free').html(disk.available);
     	this.elem('total').html(disk.total);
     	this.elem('mount-point').html(disk.mountpoint);
-    	console.log(this.elem('free'));
     }
 }));
 

@@ -4,8 +4,8 @@
  * @module menu
  */
 
-modules.define('menu', ['keyboard__codes', 'events__channels'], 
-function(provide, keyCodes, channels, Menu) {
+modules.define('menu', ['keyboard__codes', 'events__channels', 'menu-item'], 
+function(provide, keyCodes, channels, Item, Menu) {
 	var com = channels('116');
 
 /**
@@ -20,6 +20,8 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
                 this._lastItem = false;
                 com.on('keyOverride', this._keyPressOverride, this);
                 com.on('keyRestore', this._keyRestore, this);
+
+                Item.on(this.domElem, 'selected', this._onSelect, this);
 
                 this.__base.apply(this, arguments);
             }
@@ -82,6 +84,25 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
 
     _keyPressOverride : function(e) {
         this.setMod('keys-disabled');
+    },
+
+    _onSelect : function(e) {
+        var list = this.findBlockOutside('list').domElem,
+            topOfset = list.offset().top,
+            listHeight = list.innerHeight(),
+            position = list.scrollTop(),
+            itemPos = e.target.domElem.offset().top - topOfset,
+            height = e.target.domElem.innerHeight();
+            activeTop = height * 2,
+            activeBottom = listHeight - (height * 2);
+
+        if(itemPos > activeBottom) {
+            list.animate({ scrollTop: position + itemPos - height }, "slow");
+        } else if(itemPos < activeTop && itemPos >= 0) {
+            list.animate({ scrollTop: position - height * 2 }, "slow");
+        } else if(itemPos < 0) {
+            list.animate({ scrollTop: position + itemPos - height }, "slow");
+        }
     },
 
     _keyRestore : function(e) {

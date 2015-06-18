@@ -20,9 +20,14 @@ provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-i
 }));
 });
 
-modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state'], 
-	function(provide, BEMDOM, channels, BEMHTML, state, MenuItem) {
+modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state', 'functions__throttle'], 
+	function(provide, BEMDOM, channels, BEMHTML, state, throttle, MenuItem) {
 		var timer,
+
+            throttled = throttle(function(cb, ctx) {
+                  cb.call(ctx);          
+            }, 400),
+
 			com = channels('116');
 
 provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu-item.prototype */{
@@ -52,7 +57,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                 com.un(this._id + '-update', this._statesReady);
                 
                 if(this.hasMod('checked')){
-                    com.emit('unchecked-' + this._position, this._path);
+                    this.delMod('checked');
                 }
             }
         },
@@ -60,11 +65,31 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         'hovered' : {
             'true' : function() {
                 this._stat && !this.hasMod('toplevel') && this._details.setMod('hovered');
+                !this.hasMod('selected') && 
+                    this.hasMod('poinerover') ? 
+                        (this._timer = setTimeout(this.setSelection.bind(this), 1550)) :
+                            throttled(this.setSelection, this);
                 this.__base.apply(this, arguments);
             },
             '' : function() {
                 this._stat && !this.hasMod('toplevel') && this._details.delMod('hovered');
                 this.__base.apply(this, arguments);
+                clearTimeout(this._timer);
+            }
+        },
+
+        'focused' : {
+            'true' : function() {
+                !this.hasMod('selected') && this.setMod('selected');
+                this.__base.apply(this, arguments);
+            }
+        },
+
+        'selected' : {
+            'true' : function() {
+                com.emit('remove-selection');
+                com.once('remove-selection', this.removeSelection, this);
+                this.emit('selected');
             }
         },
 
@@ -78,6 +103,14 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         }
     },
 
+    setSelection: function() {
+        this.setMod('selected'); 
+    },
+
+    removeSelection: function() {
+        this.hasMod('selected') && this.delMod('selected'); 
+    },
+
     getPosition: function() {
         return this._position;
     },
@@ -85,6 +118,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
     getPath: function() {
         return this._path;
     },
+
 
     // redefining basic onclick handling
     _onPointerClick: function() {
@@ -113,6 +147,11 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         com.emit('is-dir', { path: this._path, id: this._id, object: this });
     },
 
+    _onPointerOver : function() {
+        this.setMod('poinerover');
+        this.__base.apply(this, arguments);
+    },
+
     _statesReady: function(e, data) {
         com.emit('updated-item-' + this._position);
         this.updateContent(e, data);
@@ -138,13 +177,13 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
     },
 
     _dirSuccess: function(e, data) {
-    	this._isdir = data;
-    	!this.hasMod('toplevel') && data && this.setMod('dir');
+        this._isdir = data;
+        !this.hasMod('toplevel') && data && this.setMod('dir');
     }
 },
 {   // cancel live initialization
-	live: function(){ 
-		this.__base.apply(this, arguments);
+    live: function(){ 
+        this.__base.apply(this, arguments);
         this.liveBindTo('dblclick', function() { this._exec() });
 	}
 }));

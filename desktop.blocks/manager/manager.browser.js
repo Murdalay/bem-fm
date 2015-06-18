@@ -255,6 +255,8 @@ provide(BEMDOM.decl(this.name, {
 				var _deleteSuccess = function(resp, spec) {
 					var _obj = state.getObj(spec.data.path);
 
+					com.emit('updated-item-' + _obj.getMod('position'));
+
 				   	BEMDOM.destruct(_obj.domElem);
 				   	state.dropItemByPath(spec.data.path);
 			    };
