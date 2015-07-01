@@ -64,6 +64,7 @@ provide(BEMDOM.decl(this.name, {
     _updateList: function(e, data) {
         this._itemNumber && this._clearItems();
         this._list.html('Folder contains ' + data + ' files');
+        this._updateListSize();
     },
 
     _updateListSize: function() {
@@ -71,9 +72,9 @@ provide(BEMDOM.decl(this.name, {
             _curPath = state.getCurPath(this._position),
             _list = state.getCurList(this._position);
 
-        _list && _list.forEach(function(item){
-            _size += state.getState(_curPath + '/' + item, 'size');
-        });
+        _list ? _list.forEach(function(item){
+                _size += state.getState(_curPath + '/' + item, 'size');
+            }) : (_size = 0);
 
         this._listSize.html('Total size ' + size(_size));
     }

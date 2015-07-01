@@ -23,10 +23,21 @@ provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-i
 modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state', 'functions__throttle'], 
 	function(provide, BEMDOM, channels, BEMHTML, state, throttle, MenuItem) {
 		var timer,
+            mouseActive = true,
+            _mouseActivityTimer,
 
             throttled = throttle(function(cb, ctx) {
                   cb.call(ctx);          
-            }, 400),
+            }, 620),
+
+            _mouseStateUpdate = function() {
+                mouseActive = true;
+                clearTimeout(_mouseActivityTimer);
+
+                _mouseActivityTimer = setTimeout(function() {
+                    mouseActive = false;
+                }, 1000);
+            },
 
 			com = channels('116');
 
@@ -56,19 +67,20 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
             '' : function() {
                 com.un(this._id + '-update', this._statesReady);
                 
-                if(this.hasMod('checked')){
-                    this.delMod('checked');
-                }
+                this.hasMod('checked') && this.delMod('checked');
             }
         },
 
         'hovered' : {
             'true' : function() {
                 this._stat && !this.hasMod('toplevel') && this._details.setMod('hovered');
-                !this.hasMod('selected') && 
-                    this.hasMod('poinerover') ? 
-                        (this._timer = setTimeout(this.setSelection.bind(this), 1550)) :
-                            throttled(this.setSelection, this);
+
+                if(this.hasMod('pointerover')) {
+                    this._timer = setTimeout(this.setSelection.bind(this), 1550);
+                } else {
+                    throttled(this.setSelection, this);                    
+                }
+
                 this.__base.apply(this, arguments);
             },
             '' : function() {
@@ -104,7 +116,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
     },
 
     setSelection: function() {
-        this.setMod('selected'); 
+        this.setMod('selected');
     },
 
     removeSelection: function() {
@@ -148,8 +160,15 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
     },
 
     _onPointerOver : function() {
-        this.setMod('poinerover');
-        this.__base.apply(this, arguments);
+        if(mouseActive) {
+            this.setMod('pointerover');
+            this.__base.apply(this, arguments);
+        }
+    },
+
+    _onPointerLeave : function() {
+        this.delMod('pointerover');
+        mouseActive && this.__base.apply(this, arguments);
     },
 
     _statesReady: function(e, data) {
@@ -169,7 +188,8 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                         name: this._stat.name,
                         type: this._stat.type, 
                         stats: this._stat
-                    });
+                    }
+                );
     
             BEMDOM.update(this.domElem, html);
             this._details = this.findBlockInside('details');
@@ -182,9 +202,13 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
     }
 },
 {   // cancel live initialization
-    live: function(){ 
+    live : function(){ 
         this.__base.apply(this, arguments);
         this.liveBindTo('dblclick', function() { this._exec() });
-	}
+        this.liveBindTo('pointermove', throttle(_mouseStateUpdate, 300));
+	},
+    getMouseState : function() { 
+        return mouseActive
+    }
 }));
 });

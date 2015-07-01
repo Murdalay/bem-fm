@@ -71,6 +71,7 @@ provide(BEMDOM.decl(this.name, {
     _setPath: function(e) {
     	var drives = state.getDisks(),
 	    	mountpoint = drives[e.target.getVal()].mountpoint;
+
     	com.emit('set-path-' + this._position, mountpoint);
     	com.emit('path-'     + this._position, mountpoint);
     },

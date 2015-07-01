@@ -84,8 +84,9 @@ var com = channels('116'),
 
 		    _listSuccess = function(resp) {
 		    	if (resp.disks){
-					state.setDisks(resp.disks); 
-					com.emit('disks-changed'); 
+					state.setDisks(resp.disks);
+					console.log('_updateState'); 
+					com.emit('disks-changed');
 		    	}
 
 		    	var stillTheSame = resp.list.every(function(elem, index){
@@ -146,7 +147,8 @@ var com = channels('116'),
     		com.emit('config-ready');
 
 	    	if (res.disks){
-				state.setDisks(res.disks); 
+	    		console.log('_getConfig');
+				state.setDisks(res.disks);
 				com.emit('disks-changed'); 
 	    	}
 

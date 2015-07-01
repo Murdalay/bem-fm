@@ -6,6 +6,7 @@
     ],
     scripts: [
         { elem: 'js', url: '_index.js' },
+        { elem: 'js', url: 'jquery.min.js' },
     ],
     content: [
     {

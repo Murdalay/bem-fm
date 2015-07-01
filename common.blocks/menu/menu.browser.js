@@ -101,8 +101,10 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
         } else if(itemPos < activeTop && itemPos >= 0) {
             list.animate({ scrollTop: position - height * 2 }, "slow");
         } else if(itemPos < 0) {
-            list.animate({ scrollTop: position + itemPos - height }, "slow");
+            list.animate({ scrollTop: position + itemPos - height * 2 }, "slow");
         }
+
+        this._lastItem = e.target; 
     },
 
     _keyRestore : function(e) {

@@ -8598,8 +8598,9 @@ var com = channels('116'),
 
 		    _listSuccess = function(resp) {
 		    	if (resp.disks){
-					state.setDisks(resp.disks); 
-					com.emit('disks-changed'); 
+					state.setDisks(resp.disks);
+					console.log('_updateState'); 
+					com.emit('disks-changed');
 		    	}
 
 		    	var stillTheSame = resp.list.every(function(elem, index){
@@ -8660,7 +8661,8 @@ var com = channels('116'),
     		com.emit('config-ready');
 
 	    	if (res.disks){
-				state.setDisks(res.disks); 
+	    		console.log('_getConfig');
+				state.setDisks(res.disks);
 				com.emit('disks-changed'); 
 	    	}
 
@@ -9459,11 +9461,13 @@ provide(BEMDOM.decl(this.name, {
     _setPath: function(e) {
     	var drives = state.getDisks(),
 	    	mountpoint = drives[e.target.getVal()].mountpoint;
+
     	com.emit('set-path-' + this._position, mountpoint);
     	com.emit('path-'     + this._position, mountpoint);
     },
 
     _setSelectValue : function() {
+    	console.log('_setSelectValue');
     	var items = [],
 	    	drives = state.getDisks();
 
@@ -10650,8 +10654,10 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
         } else if(itemPos < activeTop && itemPos >= 0) {
             list.animate({ scrollTop: position - height * 2 }, "slow");
         } else if(itemPos < 0) {
-            list.animate({ scrollTop: position + itemPos - height }, "slow");
+            list.animate({ scrollTop: position + itemPos - height * 2 }, "slow");
         }
+
+        this._lastItem = e.target; 
     },
 
     _keyRestore : function(e) {
@@ -10781,10 +10787,21 @@ provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-i
 modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state', 'functions__throttle'], 
 	function(provide, BEMDOM, channels, BEMHTML, state, throttle, MenuItem) {
 		var timer,
+            mouseActive = true,
+            _mouseActivityTimer,
 
             throttled = throttle(function(cb, ctx) {
                   cb.call(ctx);          
-            }, 400),
+            }, 620),
+
+            _mouseStateUpdate = function() {
+                mouseActive = true;
+                clearTimeout(_mouseActivityTimer);
+
+                _mouseActivityTimer = setTimeout(function() {
+                    mouseActive = false;
+                }, 1000);
+            },
 
 			com = channels('116');
 
@@ -10814,19 +10831,20 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
             '' : function() {
                 com.un(this._id + '-update', this._statesReady);
                 
-                if(this.hasMod('checked')){
-                    this.delMod('checked');
-                }
+                this.hasMod('checked') && this.delMod('checked');
             }
         },
 
         'hovered' : {
             'true' : function() {
                 this._stat && !this.hasMod('toplevel') && this._details.setMod('hovered');
-                !this.hasMod('selected') && 
-                    this.hasMod('poinerover') ? 
-                        (this._timer = setTimeout(this.setSelection.bind(this), 1550)) :
-                            throttled(this.setSelection, this);
+
+                if(this.hasMod('pointerover')) {
+                    this._timer = setTimeout(this.setSelection.bind(this), 1550);
+                } else {
+                    throttled(this.setSelection, this);                    
+                }
+
                 this.__base.apply(this, arguments);
             },
             '' : function() {
@@ -10862,7 +10880,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
     },
 
     setSelection: function() {
-        this.setMod('selected'); 
+        this.setMod('selected');
     },
 
     removeSelection: function() {
@@ -10906,8 +10924,15 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
     },
 
     _onPointerOver : function() {
-        this.setMod('poinerover');
-        this.__base.apply(this, arguments);
+        if(mouseActive) {
+            this.setMod('pointerover');
+            this.__base.apply(this, arguments);
+        }
+    },
+
+    _onPointerLeave : function() {
+        this.delMod('pointerover');
+        mouseActive && this.__base.apply(this, arguments);
     },
 
     _statesReady: function(e, data) {
@@ -10927,7 +10952,8 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                         name: this._stat.name,
                         type: this._stat.type, 
                         stats: this._stat
-                    });
+                    }
+                );
     
             BEMDOM.update(this.domElem, html);
             this._details = this.findBlockInside('details');
@@ -10940,10 +10966,14 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
     }
 },
 {   // cancel live initialization
-    live: function(){ 
+    live : function(){ 
         this.__base.apply(this, arguments);
         this.liveBindTo('dblclick', function() { this._exec() });
-	}
+        this.liveBindTo('pointermove', throttle(_mouseStateUpdate, 300));
+	},
+    getMouseState : function() { 
+        return mouseActive
+    }
 }));
 });
 
@@ -12557,6 +12587,7 @@ provide(BEMDOM.decl(this.name, {
     _updateList: function(e, data) {
         this._itemNumber && this._clearItems();
         this._list.html('Folder contains ' + data + ' files');
+        this._updateListSize();
     },
 
     _updateListSize: function() {
@@ -12564,9 +12595,9 @@ provide(BEMDOM.decl(this.name, {
             _curPath = state.getCurPath(this._position),
             _list = state.getCurList(this._position);
 
-        _list && _list.forEach(function(item){
-            _size += state.getState(_curPath + '/' + item, 'size');
-        });
+        _list ? _list.forEach(function(item){
+                _size += state.getState(_curPath + '/' + item, 'size');
+            }) : (_size = 0);
 
         this._listSize.html('Total size ' + size(_size));
     }

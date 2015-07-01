@@ -64,7 +64,7 @@ modules.define('router', ['config', 'vow'], function(provide, config, vow) {
 	    	if(disksObj && res.length == disksObj.length){
 		    	res.every(function(item, i){
 		    		return item.used == disksObj[i].used
-		    	}) && (_data = res); 
+		    	}) || (_data = res); 
 	    	} else {
 		    	_data = res; 
 	    	}
