@@ -85,7 +85,6 @@ var com = channels('116'),
 		    _listSuccess = function(resp) {
 		    	if (resp.disks){
 					state.setDisks(resp.disks);
-					console.log('_updateState'); 
 					com.emit('disks-changed');
 		    	}
 
@@ -147,7 +146,6 @@ var com = channels('116'),
     		com.emit('config-ready');
 
 	    	if (res.disks){
-	    		console.log('_getConfig');
 				state.setDisks(res.disks);
 				com.emit('disks-changed'); 
 	    	}
