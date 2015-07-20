@@ -56,6 +56,16 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 				return paths[_path] ? paths[_path].stat : null; 
 			},
 
+			wipeItemProps: function(path){
+				var _path = normalize(path);
+
+				if(paths[_path]) {
+					paths[_path].readable = null; 
+					paths[_path].stat = null; 
+					paths[_path].name = null; 
+				}
+			},
+
 			setStates: function(path, stat){ 
 				_init(path, { stat: stat }); 
 			},
@@ -115,10 +125,10 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 			},
 
 			setReadableState: function(path, state, value){
-				_init(path);
-
 				var _path = normalize(path);
-				paths[_path].readable[state] = value;
+
+				_init(_path);
+				paths[_path] && paths[_path].readable && (paths[_path].readable[state] = value);
 			},
 
 			getCurList: function(align){ 
@@ -150,7 +160,7 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 			},
 
 			setCurPath: function(path, position){ 
-				state.curPath[position] = path;
+				state.curPath[position] = normalize(path);
 			},
 
 			getConfig: function(){ 
@@ -166,11 +176,11 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 			},
 
 			getList: function(path){ 
-				return state.lists[path];
+				return state.lists[normalize(path)];
 			},
 
 			setList: function(path, list){ 
-				state.lists[path] = list;
+				state.lists[normalize(path)] = list;
 			},
 
 			getPathById: function(id){ 
@@ -192,6 +202,19 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 					console.log('Deleting records for path \n' + paths[_path]);
 					console.log(delete ids[_id]);
 					console.log(delete path[_path]);
+				}
+			},
+
+			moveItem: function(path, destination){
+				var _path = normalize(path),
+					_destination = normalize(destination);
+
+				if (paths[_path]){
+					var _id = paths[_path].id;
+
+					paths[_destination] = paths[_path];
+					api.dropItemByPath(path);
+					ids[_id] = _destination;
 				}
 			},
 

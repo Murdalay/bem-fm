@@ -18,6 +18,14 @@ provide(BEMDOM.decl(this.name, {
         },
         'position' : function(name, val) {
             this.serveAsPathfinder(val);
+        },
+        'disabled' : {
+            'true' : function() {
+                this._input.setMod('disabled');
+            },
+            '' : function() {
+                this._input.delMod('disabled');
+            }
         }       
     },
 
@@ -43,11 +51,11 @@ provide(BEMDOM.decl(this.name, {
     serveAsPathfinder : function(position) {
         this._position = position;
 
-            this.bindTo('input change', debounce(this._checkPath, 650, this));
-            com.on('check-path', this._checkPath, this);
+        this.bindTo('input change', debounce(this._checkPath, 650, this));
+        com.on('check-path', this._checkPath, this);
 
-            this._getDefPath();
-            this._ready4All();
+        this._getDefPath();
+        this._ready4All();
     },
 
     serveAsDestination : function() {
@@ -112,7 +120,7 @@ provide(BEMDOM.decl(this.name, {
 
     _ready4All: function() {
         com.on('tell-path-' + this._position, this._emitPath, this);
-        com.on('set-path-' + this._position, this.setAll, this);
+        com.on('set-path-'  + this._position, this.setAll, this);
     },
 
     _getDefPath : function() {

@@ -11,19 +11,16 @@ var com = channels('116'),
 		    _dirSuccess = function(resp, spec) {
 		    	// store dir property for path
 		    	state.setDir(data.path, resp);
-		    	
-			   	com.emit(data.id + '-is-dir', resp);
-			   	com.emit('state', data);
+
+		    	data.object._dirSuccess(resp);
 		    };
 
-		state.setObj(data.path, data.object);
-
 		// checking if we already know is path a dir
-		if(_isDir !== null && _isDir !== 'waiting') {
-			com.emit(data.id + '-is-dir', _isDir);
+		if(_isDir !== null) {
+			data.object._dirSuccess(_isDir);
 		}
 		else {
-			request.isDir(data.path, _dirSuccess);
+			request.isDir(data.path, _dirSuccess, function(err){ console.log(err); });
 		};
     },
 
@@ -39,11 +36,10 @@ var com = channels('116'),
 			        	ctime: _ctime.toLocaleString(),
 						size: size(resp.size),
 						uid: resp.uid,
-						name: state.getName(data.path),
-						type: state.isDir(data.path) ? 'dir' : 'file'
+						name: state.getName(data.path)
 					};
 
-		        com.emit(_id + '-update', readable);
+		        data.object.updateContent(readable);
 		    	
 		    	state.setReadableStates(data.path, readable);
 		    	state.setStates(data.path, resp);
@@ -51,7 +47,7 @@ var com = channels('116'),
 
 		// checking if we already get states for path
 		if(_state !== null) {
-			com.emit(_id + '-update', _state);
+	        data.object.updateContent(_state);
 		}
 		else {
 			request.getStates(data.path, _statSuccess);

@@ -4,8 +4,8 @@
  * @module menu
  */
 
-modules.define('menu', ['keyboard__codes', 'events__channels', 'menu-item'], 
-function(provide, keyCodes, channels, Item, Menu) {
+modules.define('menu', ['keyboard__codes', 'events__channels', 'menu-item', 'functions__throttle'], 
+function(provide, keyCodes, channels, Item, throttle, Menu) {
 	var com = channels('116');
 
 /**
@@ -21,7 +21,7 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
                 com.on('keyOverride', this._keyPressOverride, this);
                 com.on('keyRestore', this._keyRestore, this);
 
-                Item.on(this.domElem, 'selected', this._onSelect, this);
+                Item.on(this.domElem, 'selected', throttle(this._onSelect, 450), this);
 
                 this.__base.apply(this, arguments);
             }
@@ -54,13 +54,17 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
 			console.log(e);
 
 		if(this.hasMod('keys-disabled')) { 
-            e.preventDefault();
+            // e.preventDefault();
             return 
         };
 
         e.metaKey && (cmdDown = true) && this.bindToDoc('keyup', _cmd);
 
-        if(this._hoveredItem && keyCode === keyCodes.ENTER || cmdDown && keyCode === keyCodes.DOWN ) {
+        if(this._hoveredItem && cmdDown && keyCode === keyCodes.ENTER) {
+            com.emit('rename');
+            return false
+        }
+        else if(this._hoveredItem && keyCode === keyCodes.ENTER || cmdDown && keyCode === keyCodes.DOWN ) {
 			com.emit('exec', { 
 				position: this._hoveredItem.getPosition(),
 				path: this._hoveredItem.getPath() 

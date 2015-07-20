@@ -7861,6 +7861,8 @@ provide(BEMDOM.decl(this.name, {
 
 				// command button click handlers
 				com.on('exec', this._exec, this);
+				com.on('disable', this._disable, this);
+				com.on('enable', this._enable, this);
 				com.on('config-ready', function() { this.findBlocksInside('panel'); this._disabler.setMod('disabled', 'true'); }, this);
 				com.on('copy', this._copy, this);
 				com.on('mkdir', this._mkdir, this);
@@ -7934,6 +7936,16 @@ provide(BEMDOM.decl(this.name, {
 
     _getConfirm: function(message) {
 		return this._confirm.getConfirm(message);
+    },
+
+    _disable: function() {
+        this.findBlockInside('control-group').findBlocksInside('button').forEach(function(item){ item.setMod('disabled')} );
+        this.findBlocksInside('panel').forEach(function(item){ item.setMod('disabled')} );
+    },
+
+    _enable: function() {
+        this.findBlockInside('control-group').findBlocksInside('button').forEach(function(item){ item.delMod('disabled')} );
+        this.findBlocksInside('panel').forEach(function(item){ item.delMod('disabled')} );
     },
 
     _levelUp : function(e, data) {
@@ -8257,6 +8269,16 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 				return paths[_path] ? paths[_path].stat : null; 
 			},
 
+			wipeItemProps: function(path){
+				var _path = normalize(path);
+
+				if(paths[_path]) {
+					paths[_path].readable = null; 
+					paths[_path].stat = null; 
+					paths[_path].name = null; 
+				}
+			},
+
 			setStates: function(path, stat){ 
 				_init(path, { stat: stat }); 
 			},
@@ -8316,10 +8338,10 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 			},
 
 			setReadableState: function(path, state, value){
-				_init(path);
-
 				var _path = normalize(path);
-				paths[_path].readable[state] = value;
+
+				_init(_path);
+				paths[_path] && paths[_path].readable && (paths[_path].readable[state] = value);
 			},
 
 			getCurList: function(align){ 
@@ -8351,7 +8373,7 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 			},
 
 			setCurPath: function(path, position){ 
-				state.curPath[position] = path;
+				state.curPath[position] = normalize(path);
 			},
 
 			getConfig: function(){ 
@@ -8367,11 +8389,11 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 			},
 
 			getList: function(path){ 
-				return state.lists[path];
+				return state.lists[normalize(path)];
 			},
 
 			setList: function(path, list){ 
-				state.lists[path] = list;
+				state.lists[normalize(path)] = list;
 			},
 
 			getPathById: function(id){ 
@@ -8393,6 +8415,19 @@ modules.define('state', ['events__channels', 'size', 'identify', 'objects', 'pat
 					console.log('Deleting records for path \n' + paths[_path]);
 					console.log(delete ids[_id]);
 					console.log(delete path[_path]);
+				}
+			},
+
+			moveItem: function(path, destination){
+				var _path = normalize(path),
+					_destination = normalize(destination);
+
+				if (paths[_path]){
+					var _id = paths[_path].id;
+
+					paths[_destination] = paths[_path];
+					api.dropItemByPath(path);
+					ids[_id] = _destination;
 				}
 			},
 
@@ -8525,19 +8560,16 @@ var com = channels('116'),
 		    _dirSuccess = function(resp, spec) {
 		    	// store dir property for path
 		    	state.setDir(data.path, resp);
-		    	
-			   	com.emit(data.id + '-is-dir', resp);
-			   	com.emit('state', data);
+
+		    	data.object._dirSuccess(resp);
 		    };
 
-		state.setObj(data.path, data.object);
-
 		// checking if we already know is path a dir
-		if(_isDir !== null && _isDir !== 'waiting') {
-			com.emit(data.id + '-is-dir', _isDir);
+		if(_isDir !== null) {
+			data.object._dirSuccess(_isDir);
 		}
 		else {
-			request.isDir(data.path, _dirSuccess);
+			request.isDir(data.path, _dirSuccess, function(err){ console.log(err); });
 		};
     },
 
@@ -8553,11 +8585,10 @@ var com = channels('116'),
 			        	ctime: _ctime.toLocaleString(),
 						size: size(resp.size),
 						uid: resp.uid,
-						name: state.getName(data.path),
-						type: state.isDir(data.path) ? 'dir' : 'file'
+						name: state.getName(data.path)
 					};
 
-		        com.emit(_id + '-update', readable);
+		        data.object.updateContent(readable);
 		    	
 		    	state.setReadableStates(data.path, readable);
 		    	state.setStates(data.path, resp);
@@ -8565,7 +8596,7 @@ var com = channels('116'),
 
 		// checking if we already get states for path
 		if(_state !== null) {
-			com.emit(_id + '-update', _state);
+	        data.object.updateContent(_state);
 		}
 		else {
 			request.getStates(data.path, _statSuccess);
@@ -8599,7 +8630,6 @@ var com = channels('116'),
 		    _listSuccess = function(resp) {
 		    	if (resp.disks){
 					state.setDisks(resp.disks);
-					console.log('_updateState'); 
 					com.emit('disks-changed');
 		    	}
 
@@ -8661,7 +8691,6 @@ var com = channels('116'),
     		com.emit('config-ready');
 
 	    	if (res.disks){
-	    		console.log('_getConfig');
 				state.setDisks(res.disks);
 				com.emit('disks-changed'); 
 	    	}
@@ -8947,6 +8976,13 @@ var com = channels('116'),
 				item: source, 
 				destination: destination, 
 				action: 'move' }, cb, onFail);
+	    },
+
+	    rename: function(source, destination, cb, onFail) {
+			_formRequest({ 
+				item: source, 
+				destination: destination, 
+				action: 'rename' }, cb, onFail);
 	    },
 
 	    symlink: function(source, destination, cb, onFail) {
@@ -9445,6 +9481,20 @@ provide(BEMDOM.decl(this.name, {
 					return state.getState(path, 'uid');	
 				};
             }
+        },
+        'disabled' : {
+            'true' : function() {
+        		this._list.findBlockInside('menu').setMod('disabled');
+        		this._select.setMod('disabled');
+        		this._path.setMod('disabled');
+        		this._sorters.setMod('disabled');
+            },
+            '' : function() {
+        		this._list.findBlockInside('menu').delMod('disabled');
+        		this._select.delMod('disabled');
+        		this._path.delMod('disabled');
+        		this._sorters.delMod('disabled');
+            }
         }      
     },
 
@@ -9467,7 +9517,6 @@ provide(BEMDOM.decl(this.name, {
     },
 
     _setSelectValue : function() {
-    	console.log('_setSelectValue');
     	var items = [],
 	    	drives = state.getDisks();
 
@@ -9625,6 +9674,14 @@ provide(BEMDOM.decl(this.name, {
         },
         'position' : function(name, val) {
             this.serveAsPathfinder(val);
+        },
+        'disabled' : {
+            'true' : function() {
+                this._input.setMod('disabled');
+            },
+            '' : function() {
+                this._input.delMod('disabled');
+            }
         }       
     },
 
@@ -9650,11 +9707,11 @@ provide(BEMDOM.decl(this.name, {
     serveAsPathfinder : function(position) {
         this._position = position;
 
-            this.bindTo('input change', debounce(this._checkPath, 650, this));
-            com.on('check-path', this._checkPath, this);
+        this.bindTo('input change', debounce(this._checkPath, 650, this));
+        com.on('check-path', this._checkPath, this);
 
-            this._getDefPath();
-            this._ready4All();
+        this._getDefPath();
+        this._ready4All();
     },
 
     serveAsDestination : function() {
@@ -9719,7 +9776,7 @@ provide(BEMDOM.decl(this.name, {
 
     _ready4All: function() {
         com.on('tell-path-' + this._position, this._emitPath, this);
-        com.on('set-path-' + this._position, this.setAll, this);
+        com.on('set-path-'  + this._position, this.setAll, this);
     },
 
     _getDefPath : function() {
@@ -10557,8 +10614,8 @@ provide(BEMDOM.decl({ block : this.name, baseBlock : Control }, /** @lends menu.
  * @module menu
  */
 
-modules.define('menu', ['keyboard__codes', 'events__channels', 'menu-item'], 
-function(provide, keyCodes, channels, Item, Menu) {
+modules.define('menu', ['keyboard__codes', 'events__channels', 'menu-item', 'functions__throttle'], 
+function(provide, keyCodes, channels, Item, throttle, Menu) {
 	var com = channels('116');
 
 /**
@@ -10574,7 +10631,7 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
                 com.on('keyOverride', this._keyPressOverride, this);
                 com.on('keyRestore', this._keyRestore, this);
 
-                Item.on(this.domElem, 'selected', this._onSelect, this);
+                Item.on(this.domElem, 'selected', throttle(this._onSelect, 450), this);
 
                 this.__base.apply(this, arguments);
             }
@@ -10607,13 +10664,17 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
 			console.log(e);
 
 		if(this.hasMod('keys-disabled')) { 
-            e.preventDefault();
+            // e.preventDefault();
             return 
         };
 
         e.metaKey && (cmdDown = true) && this.bindToDoc('keyup', _cmd);
 
-        if(this._hoveredItem && keyCode === keyCodes.ENTER || cmdDown && keyCode === keyCodes.DOWN ) {
+        if(this._hoveredItem && cmdDown && keyCode === keyCodes.ENTER) {
+            com.emit('rename');
+            return false
+        }
+        else if(this._hoveredItem && keyCode === keyCodes.ENTER || cmdDown && keyCode === keyCodes.DOWN ) {
 			com.emit('exec', { 
 				position: this._hoveredItem.getPosition(),
 				path: this._hoveredItem.getPath() 
@@ -10762,37 +10823,11 @@ provide(BEMDOM.decl(this.name, /** @lends menu-item.prototype */{
 /* ../../libs/bem-components/common.blocks/menu-item/menu-item.js end */
 ;
 /* ../../common.blocks/menu-item/menu-item.browser.js begin */
-/**
- * @module menu-item
- */
-
-modules.define('menu-item', function(provide, MenuItem) {
-
-/**
- * @exports
- * @class menu-item
- * @bem
- */
-provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-item.prototype */{
-    beforeSetMod : {
-        'checked' : {
-            'true' : function() {
-                return false
-            }
-        }
-    }
-}));
-});
-
 modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state', 'functions__throttle'], 
 	function(provide, BEMDOM, channels, BEMHTML, state, throttle, MenuItem) {
 		var timer,
             mouseActive = true,
             _mouseActivityTimer,
-
-            throttled = throttle(function(cb, ctx) {
-                  cb.call(ctx);          
-            }, 620),
 
             _mouseStateUpdate = function() {
                 mouseActive = true;
@@ -10806,27 +10841,41 @@ modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state
 			com = channels('116');
 
 provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu-item.prototype */{
+    beforeSetMod : {
+        'checked' : {
+            'true' : function() {
+                if(this._details && this._details.hasMod('rename')) {
+                    return false
+                }
+            }
+        }
+    },
     onSetMod : {
         'js' : {
             'inited' : function() {
-				this._position = this.getMod('position');
+                this._position = this.getMod('position');
                 this._path = this.getVal();
 
-                this._id = state.getId(this._path);
-                this._stat = state.getReadableStates(this._path);
-                this._name = state.getName(this._path);
-                this._isdir = state.isDir(this._path);
-
-                if (!this._name) {
-                    this._name = this.getText();
-                    this._name !== '..' && state.setName(this._path, this._name);
-                };
-
-                com.on(this._id + '-update', this._statesReady, this);
-
                 this.__base.apply(this, arguments);
-                !this.hasMod('toplevel') && this._isdir === null && this._isdir === null && this._isDir();
-                this._stat && this.updateContent(this._stat);
+
+                if(!this.hasMod('toplevel')) {
+                    this._id = state.getId(this._path);
+                    this._stat = state.getReadableStates(this._path);
+                    this._name = state.getName(this._path);
+                    this._isdir = state.isDir(this._path);
+
+                    // state.setObj(this._path, this);
+
+                    if (!this._name) {
+                        this._name = this.getText();
+                        state.setName(this._path, this._name);
+                    };
+
+                    com.on(this._id + '-update', this._statesReady, this);
+
+                    this._isDir();
+                    this._stat ? this.updateContent(this._stat) : this.setMod('pending') && com.emit('state', { path: this._path, id: this._id, object: this });
+                }
             },
             '' : function() {
                 com.un(this._id + '-update', this._statesReady);
@@ -10842,7 +10891,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                 if(this.hasMod('pointerover')) {
                     this._timer = setTimeout(this.setSelection.bind(this), 1550);
                 } else {
-                    throttled(this.setSelection, this);                    
+                    this.setSelection();
                 }
 
                 this.__base.apply(this, arguments);
@@ -10866,6 +10915,18 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                 com.emit('remove-selection');
                 com.once('remove-selection', this.removeSelection, this);
                 this.emit('selected');
+
+                this._details && this._details.setMod('selected');
+            },
+            '' : function() {
+                com.un('rename', this.rename, this);
+                this._details && this._details.delMod('selected');
+            }
+        },
+
+        'pending' : {
+            '' : function() {
+                this.hasMod('need-update') && this._dirSuccess(state.isDir(this._path));
             }
         },
 
@@ -10881,6 +10942,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 
     setSelection: function() {
         this.setMod('selected');
+        this.hasMod('pointerover') && this.findBlockOutside('menu').setMod('focused');
     },
 
     removeSelection: function() {
@@ -10895,11 +10957,17 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         return this._path;
     },
 
+    setPath: function(path) {
+        this._path = path;
+    },
+
 
     // redefining basic onclick handling
     _onPointerClick: function() {
         var base = this.__base,
             _old = function(){ 
+                clearTimeout(this._timer);
+                this.setMod('selected');
                 base.apply(this, arguments);
                 timer = false;
             };
@@ -10914,12 +10982,10 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         (this._isdir || this.hasMod('toplevel')) && 
             com.emit('exec', { position: this._position, path: this._path });
         timer = false;
+        console.log(this._path);
     },
 
-    _isDir: function() {
-        state.setDir(this._path, 'waiting');
-
-        com.once(this._id + '-is-dir', this._dirSuccess, this);
+    _isDir : function() {
         com.emit('is-dir', { path: this._path, id: this._id, object: this });
     },
 
@@ -10935,22 +11001,21 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         mouseActive && this.__base.apply(this, arguments);
     },
 
-    _statesReady: function(e, data) {
+    _statesReady : function(e, data) {
         com.emit('updated-item-' + this._position);
         this.updateContent(e, data);
+        this.delMod('pending');
     },
 
-    updateContent: function(e, data) {
-        this._stat = data;
-        data || (this._stat = e);
-
+    updateContent : function(e, data) {
+        this._stat = data ? data : e;
 
         if(!this.hasMod('toplevel')){
             var html = BEMHTML.apply(
                     {
                         block: 'details',
                         name: this._stat.name,
-                        type: this._stat.type, 
+                        type: this._stat.type ? this._stat.type : 'file', 
                         stats: this._stat
                     }
                 );
@@ -10960,9 +11025,18 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         }
     },
 
-    _dirSuccess: function(e, data) {
+    _dirSuccess: function(data) {
         this._isdir = data;
-        !this.hasMod('toplevel') && data && this.setMod('dir');
+        if(!this.hasMod('toplevel') && data) {
+            state.setReadableState(this._path, 'type', 'dir');
+            this.setMod('dir');
+
+            if(this._details) { 
+                this._details.setMod('dir');
+            } else {
+                this.hasMod('pending') && this.setMod('need-update');
+            }        
+        }
     }
 },
 {   // cancel live initialization
@@ -10977,14 +11051,37 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 }));
 });
 
+/**
+ * @module menu-item
+ */
+
+modules.define('menu-item', function(provide, MenuItem) {
+
+/**
+ * @exports
+ * @class menu-item
+ * @bem
+ */
+provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-item.prototype */{
+    beforeSetMod : {
+        'checked' : {
+            'true' : function() {
+                return false
+            }
+        }
+    }
+}));
+});
+
 /* ../../common.blocks/menu-item/menu-item.browser.js end */
 ;
 /* ../../common.blocks/details/details.browser.js begin */
 /* global modules:false */
 
-modules.define('details', ['i-bem__dom', 'events__channels'],
-	function(provide, BEMDOM, channels) {
-		var com = channels('116');
+modules.define('details', ['i-bem__dom', 'events__channels', 'BEMHTML', 'keyboard__codes', 'state', 'request', 'functions__debounce', 'path-normalizer'],
+	function(provide, BEMDOM, channels, BEMHTML, keyCodes, state, request, debounce, normalizer) {
+		var com = channels('116'),
+            norm = normalizer.normalize;
 
 provide(BEMDOM.decl(this.name, {
     onSetMod : {
@@ -10995,12 +11092,182 @@ provide(BEMDOM.decl(this.name, {
         },
         'hovered' : {
             'true' : function() {
-        		this.setMod(this.findElem('name'), 'hovered')
+                this.setMod(this.findElem('name'), 'hovered');
             },
             '' : function() {
-        		this.delMod(this.findElem('name'), 'hovered')
+                this.delMod(this.findElem('name'), 'hovered');
+            }
+        },
+        'typing' : {
+            '' : function() {
+                if(this._isConfirmed){
+                    this._isConfirmed = false;
+                    this._confirm();
+                }
+            }
+        },
+        'dir' : {
+            'true' : function() {
+                this.elem('type').html('dir');
+                this.setMod(this.elem('name'), 'type', 'dir');
+            }
+        },
+        'rename' : {
+            'true' : function() {
+                this._oldVal = this.elem('name').html();
+
+                this.setMod(this.elem('name'), 'rename');
+
+                var html = BEMHTML.apply({
+                    block : 'input',
+                    mods : { theme : 'islands', size : 'l' },
+                    val : this._oldVal
+                });
+
+                com.emit('keyOverride');
+                BEMDOM.update(this.elem('name'), html);
+                this._input = this.findBlockInside('input');
+
+                this.bindToDoc('keypress', this._onKeyPress, this);
+                this._input.on('input change', this._onInput, this);
+
+                this._input.setMod('focused');
+
+                this._path = this._item.getPath();
+
+                com.emit('disable');
+                this.findBlockOutside('menu-item').delMod('disabled');
+                // this.setMod('old');
+            },
+            '' : function() {
+                this.delMod(this.elem('name'), 'rename');
+                this.unbindFromDoc('keypress');
+
+                this.unbindFrom('input change', this._onInput);
+                com.emit('keyRestore');
+                com.emit('enable');
+                this.delMod('good');
+                this.delMod('error');
+                this.delMod('old');
+
+                delete this._input;
+                delete this._path;
+                delete this._item;
+                delete this._basePath;
+            }
+        },
+        'selected' : {
+            'true' : function() {
+                com.on('rename', this.rename, this);
+            },
+            '' : function() {
+                com.un('rename', this._rename, this);
+            }
+        },
+        'error' : {
+            'true' : function() {
+                this.delMod('good');
+                this.delMod('old');
+            }
+        },
+        'good' : {
+            'true' : function() {
+                this.delMod('error');
+                this.delMod('old');
+            }
+        },
+        'old' : {
+            'true' : function() {
+                this.delMod('good');
+                this.delMod('error');
             }
         }      
+    },
+
+    rename : function() {
+        this._item = this.findBlockOutside('menu-item');
+        
+        this._position = this._item.getMod('position');
+        this._basePath = state.getCurPath(this._position);
+
+        this.setMod('rename');
+        this._item.delMod('checked');
+    },
+
+    _restore : function() {
+        this.delMod('rename');
+        BEMDOM.update(this.elem('name'), this._oldVal);
+        this.findBlockOutside('menu').setMod('focused');
+    },
+
+    _sendRequest : debounce(function(path, cb) {
+        request.checkExist(path, cb, function(){ console.log('Error checking exist')});
+    }, 850),
+
+    _confirm : function() {
+        var _success = function() {
+                var old = this._oldVal,
+                    list = state.getCurList(this._position),
+                    val = this._input.getVal();
+
+                BEMDOM.update(this.elem('name'), val);
+
+                list.forEach(function(item, i){
+                    if(item == old){
+                        list[i] = val;
+                    };
+                });
+
+                state.setCurList(this._position, list);
+                state.setList(this._basePath, list);
+                state.moveItem(this._path, this._goodVal);
+                state.wipeItemProps(this._goodVal);
+                state.setName(this._goodVal, val);
+                this._item.setPath(this._goodVal);
+
+                this.delMod('rename');
+                this.findBlockOutside('menu').setMod('focused');
+            }.bind(this);
+
+        if(this.hasMod('good')) {
+            request.rename(this._path, this._goodVal, _success);
+        }
+        else if(this.hasMod('old')) {
+            this._restore();
+        }
+    },
+
+    _onInput : function(e) {
+        var _checkSuccess = function(res) {
+                this.delMod('typing');
+
+                if(res.path === norm(this._path)) {
+                    this.setMod('old');
+                }
+                else if(res.exist === true) {
+                    this.setMod('error');
+                }
+                else {
+                    this.setMod('good');
+                    this._goodVal = res.path;
+                }
+            }.bind(this);
+
+        this.setMod('typing');
+
+        this._sendRequest(this._basePath + '/' + this._input.getVal(), _checkSuccess);
+    },
+
+    _onKeyPress : function(e) {
+        var keyCode = e.keyCode;
+                
+        // close on Esc
+        if(keyCode === keyCodes.ESC) {
+            e.preventDefault();
+            this._restore();
+        } else if(keyCode === keyCodes.ENTER) {
+            this.hasMod('typing') || this._confirm();
+        }
     }
 }));
 
@@ -12662,22 +12929,7 @@ exports.apply = apply;
 
 function applyc(__$ctx, __$ref) {
     var __$t = $$mode;
-    if (__$t === "attrs") {
-        var __$r = __$g0(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "tag") {
-        var __$r = __$g1(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "content") {
-        var __$r = __$g2(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "default") {
-        var __$r = __$g3(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "js") {
-        var __$r = __$g4(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "bem") {
+    if (__$t === "bem") {
         var __$t = $$block;
         if (__$t === "path-normalizer") {
             if (!$$elem) {
@@ -12689,6 +12941,21 @@ function applyc(__$ctx, __$ref) {
             }
         }
         return undefined;
+    } else if (__$t === "content") {
+        var __$r = __$g0(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
+    } else if (__$t === "js") {
+        var __$r = __$g1(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
+    } else if (__$t === "tag") {
+        var __$r = __$g2(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
+    } else if (__$t === "attrs") {
+        var __$r = __$g3(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
+    } else if (__$t === "default") {
+        var __$r = __$g4(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
     } else if (__$t === "mix") {
         var __$t = $$block;
         if (__$t === "menu") {
@@ -12902,9 +13169,9 @@ function applyc(__$ctx, __$ref) {
     fn(exports, this);
 }, {
     recordExtensions: function(ctx) {
-        ctx["_input"] = undefined;
         ctx["__$a0"] = 0;
         ctx["_checkedOption"] = undefined;
+        ctx["_input"] = undefined;
         ctx["_mode"] = undefined;
         ctx["ctx"] = undefined;
         ctx["_menuMods"] = undefined;
@@ -12926,29 +13193,43 @@ function applyc(__$ctx, __$ref) {
     }
 });
 
-function __$b1(__$ctx, __$ref) {
-    var input__$0 = __$ctx._input, attrs__$1 = {
-        id: input__$0.id,
-        name: input__$0.name,
-        value: input__$0.val,
-        maxlength: input__$0.maxLength,
-        tabindex: input__$0.tabIndex,
-        placeholder: input__$0.placeholder
+function __$b14(__$ctx, __$ref) {
+    var ctx__$75 = __$ctx.ctx, content__$76 = [ ctx__$75.icon ];
+    "text" in ctx__$75 && content__$76.push({
+        elem: "text",
+        content: ctx__$75.text
+    });
+    return content__$76;
+}
+
+function __$b23(__$ctx, __$ref) {
+    var ctx__$96 = __$ctx.ctx;
+    return {
+        name: ctx__$96.name,
+        optionsMaxHeight: ctx__$96.optionsMaxHeight
     };
-    input__$0.autocomplete === false && (attrs__$1.autocomplete = "off");
-    $$mods.disabled && (attrs__$1.disabled = "disabled");
-    return attrs__$1;
 }
 
-function __$b2(__$ctx, __$ref) {
-    var attrs__$8 = {
+function __$b26(__$ctx, __$ref) {
+    var ctx__$16 = __$ctx.ctx;
+    return {
+        mainOffset: ctx__$16.mainOffset,
+        secondaryOffset: ctx__$16.secondaryOffset,
+        viewportOffset: ctx__$16.viewportOffset,
+        directions: ctx__$16.directions,
+        zIndexGroupLevel: ctx__$16.zIndexGroupLevel
+    };
+}
+
+function __$b47(__$ctx, __$ref) {
+    var attrs__$0 = {
         "aria-hidden": "true"
-    }, url__$9 = __$ctx.ctx.url;
-    if (url__$9) attrs__$8.style = "background-image:url(" + url__$9 + ")";
-    return attrs__$8;
+    }, url__$1 = __$ctx.ctx.url;
+    if (url__$1) attrs__$0.style = "background-image:url(" + url__$1 + ")";
+    return attrs__$0;
 }
 
-function __$b6(__$ctx, __$ref) {
+function __$b51(__$ctx, __$ref) {
     var attrs__$46 = {
         role: "menu"
     };
@@ -12956,7 +13237,7 @@ function __$b6(__$ctx, __$ref) {
     return attrs__$46;
 }
 
-function __$b8(__$ctx, __$ref) {
+function __$b53(__$ctx, __$ref) {
     var ctx__$77 = __$ctx.ctx, attrs__$78 = {
         type: $$mods.type || "button",
         name: ctx__$77.name,
@@ -12973,7 +13254,7 @@ function __$b8(__$ctx, __$ref) {
     }(), attrs__$78);
 }
 
-function __$b9(__$ctx, __$ref) {
+function __$b54(__$ctx, __$ref) {
     var ctx__$82 = __$ctx.ctx;
     return {
         role: "button",
@@ -12983,40 +13264,31 @@ function __$b9(__$ctx, __$ref) {
     };
 }
 
-function __$b40(__$ctx, __$ref) {
-    var ctx__$75 = __$ctx.ctx, content__$76 = [ ctx__$75.icon ];
-    "text" in ctx__$75 && content__$76.push({
-        elem: "text",
-        content: ctx__$75.text
-    });
-    return content__$76;
+function __$b55(__$ctx, __$ref) {
+    var input__$26 = __$ctx._input, attrs__$27 = {
+        id: input__$26.id,
+        name: input__$26.name,
+        value: input__$26.val,
+        maxlength: input__$26.maxLength,
+        tabindex: input__$26.tabIndex,
+        placeholder: input__$26.placeholder
+    };
+    input__$26.autocomplete === false && (attrs__$27.autocomplete = "off");
+    $$mods.disabled && (attrs__$27.disabled = "disabled");
+    return attrs__$27;
 }
 
-function __$b44(__$ctx, __$ref) {
-    var __$r__$3;
-    var __$l0__$4 = __$ctx._input;
-    __$ctx._input = __$ctx.ctx;
-    var __$r__$6;
-    var __$l1__$7 = __$ctx.__$a0;
-    __$ctx.__$a0 = __$ctx.__$a0 | 1;
-    __$r__$6 = applyc(__$ctx, __$ref);
-    __$ctx.__$a0 = __$l1__$7;
-    __$r__$3 = __$r__$6;
-    __$ctx._input = __$l0__$4;
-    return;
-}
-
-function __$b45(__$ctx, __$ref) {
+function __$b58(__$ctx, __$ref) {
     (__$ctx._firstItem.mods = __$ctx._firstItem.mods || {}).checked = true;
-    var __$r__$11;
-    var __$l0__$12 = __$ctx.__$a0;
-    __$ctx.__$a0 = __$ctx.__$a0 | 2;
-    __$r__$11 = applyc(__$ctx, __$ref);
-    __$ctx.__$a0 = __$l0__$12;
+    var __$r__$3;
+    var __$l0__$4 = __$ctx.__$a0;
+    __$ctx.__$a0 = __$ctx.__$a0 | 1;
+    __$r__$3 = applyc(__$ctx, __$ref);
+    __$ctx.__$a0 = __$l0__$4;
     return;
 }
 
-function __$b46(__$ctx, __$ref) {
+function __$b59(__$ctx, __$ref) {
     var ctx__$47 = __$ctx.ctx, mods__$48 = $$mods, firstItem__$49, checkedItems__$50 = [];
     if (ctx__$47.content) {
         var isValDef__$51 = typeof ctx__$47.val !== "undefined", containsVal__$52 = function(val) {
@@ -13056,26 +13328,26 @@ function __$b46(__$ctx, __$ref) {
     return;
 }
 
-function __$b47(__$ctx, __$ref) {
-    var checkedOptions__$16 = __$ctx._checkedOptions, firstOption__$17 = __$ctx._firstOption;
-    if (firstOption__$17 && !checkedOptions__$16.length) {
-        firstOption__$17.checked = true;
-        checkedOptions__$16 = [ firstOption__$17 ];
+function __$b60(__$ctx, __$ref) {
+    var checkedOptions__$8 = __$ctx._checkedOptions, firstOption__$9 = __$ctx._firstOption;
+    if (firstOption__$9 && !checkedOptions__$8.length) {
+        firstOption__$9.checked = true;
+        checkedOptions__$8 = [ firstOption__$9 ];
     }
-    var __$r__$19;
-    var __$l0__$20 = __$ctx._checkedOption;
-    __$ctx._checkedOption = checkedOptions__$16[0];
-    var __$r__$22;
-    var __$l1__$23 = __$ctx.__$a0;
-    __$ctx.__$a0 = __$ctx.__$a0 | 8;
-    __$r__$22 = applyc(__$ctx, __$ref);
-    __$ctx.__$a0 = __$l1__$23;
-    __$r__$19 = __$r__$22;
-    __$ctx._checkedOption = __$l0__$20;
+    var __$r__$11;
+    var __$l0__$12 = __$ctx._checkedOption;
+    __$ctx._checkedOption = checkedOptions__$8[0];
+    var __$r__$14;
+    var __$l1__$15 = __$ctx.__$a0;
+    __$ctx.__$a0 = __$ctx.__$a0 | 4;
+    __$r__$14 = applyc(__$ctx, __$ref);
+    __$ctx.__$a0 = __$l1__$15;
+    __$r__$11 = __$r__$14;
+    __$ctx._checkedOption = __$l0__$12;
     return;
 }
 
-function __$b48(__$ctx, __$ref) {
+function __$b61(__$ctx, __$ref) {
     var mods__$62 = $$mods, optionToMenuItem__$63 = function(option) {
         var res__$64 = {
             block: "menu-item",
@@ -13136,7 +13408,7 @@ function __$b48(__$ctx, __$ref) {
     return;
 }
 
-function __$b49(__$ctx, __$ref) {
+function __$b62(__$ctx, __$ref) {
     var mods__$83 = $$mods;
     var __$r__$85;
     var __$l0__$86 = $$mode;
@@ -13184,7 +13456,7 @@ function __$b49(__$ctx, __$ref) {
     return;
 }
 
-function __$b50(__$ctx, __$ref) {
+function __$b63(__$ctx, __$ref) {
     if (!$$mods.mode) throw Error("Can't build select without mode modifier");
     var ctx__$97 = __$ctx.ctx, isValDef__$98 = typeof ctx__$97.val !== "undefined", isModeCheck__$99 = $$mods.mode === "check", firstOption__$100, checkedOptions__$101 = [], containsVal__$102 = function(val) {
         return isValDef__$98 && (isModeCheck__$99 ? ctx__$97.val.indexOf(val) > -1 : ctx__$97.val === val);
@@ -13222,7 +13494,21 @@ function __$b50(__$ctx, __$ref) {
     return;
 }
 
-function __$b51(__$ctx, __$ref) {
+function __$b64(__$ctx, __$ref) {
+    var __$r__$29;
+    var __$l0__$30 = __$ctx._input;
+    __$ctx._input = __$ctx.ctx;
+    var __$r__$32;
+    var __$l1__$33 = __$ctx.__$a0;
+    __$ctx.__$a0 = __$ctx.__$a0 | 64;
+    __$r__$32 = applyc(__$ctx, __$ref);
+    __$ctx.__$a0 = __$l1__$33;
+    __$r__$29 = __$r__$32;
+    __$ctx._input = __$l0__$30;
+    return;
+}
+
+function __$b65(__$ctx, __$ref) {
     var ctx__$34 = __$ctx.ctx;
     ctx__$34._wrapped = true;
     var __$r__$36;
@@ -13244,7 +13530,7 @@ function __$b51(__$ctx, __$ref) {
     return;
 }
 
-function __$b52(__$ctx, __$ref) {
+function __$b66(__$ctx, __$ref) {
     var mods__$42 = $$mods;
     mods__$42.theme = mods__$42.theme || __$ctx._menuMods.theme;
     mods__$42.disabled = mods__$42.disabled || __$ctx._menuMods.disabled;
@@ -13256,7 +13542,7 @@ function __$b52(__$ctx, __$ref) {
     return;
 }
 
-function __$b53(__$ctx, __$ref) {
+function __$b67(__$ctx, __$ref) {
     var BEM_INTERNAL__$114 = __$ctx.BEM.INTERNAL, ctx__$115 = __$ctx.ctx, isBEM__$116, tag__$117, res__$118;
     var __$r__$120;
     var __$l0__$121 = __$ctx._str;
@@ -13412,25 +13698,6 @@ function __$b53(__$ctx, __$ref) {
     return;
 }
 
-function __$b59(__$ctx, __$ref) {
-    var ctx__$96 = __$ctx.ctx;
-    return {
-        name: ctx__$96.name,
-        optionsMaxHeight: ctx__$96.optionsMaxHeight
-    };
-}
-
-function __$b62(__$ctx, __$ref) {
-    var ctx__$24 = __$ctx.ctx;
-    return {
-        mainOffset: ctx__$24.mainOffset,
-        secondaryOffset: ctx__$24.secondaryOffset,
-        viewportOffset: ctx__$24.viewportOffset,
-        directions: ctx__$24.directions,
-        zIndexGroupLevel: ctx__$24.zIndexGroupLevel
-    };
-}
-
 function __$b72(__$ctx, __$ref) {
     var __$r__$168;
     var __$l0__$169 = $$mode;
@@ -13513,146 +13780,7 @@ function __$b76(__$ctx, __$ref) {
 
 function __$g0(__$ctx, __$ref) {
     var __$t = $$block;
-    if (__$t === "input") {
-        if ($$elem === "control") {
-            var __$r = __$b1(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "icon") {
-        if (!$$elem) {
-            var __$r = __$b2(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu") {
-        var __$t = $$elem;
-        if (__$t === "group-title") {
-            return {
-                role: "presentation"
-            };
-        } else if (__$t === "group") {
-            if (typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 32) === 0) {
-                var __$r = __$ctx.extend(function __$lb__$28() {
-                    var __$r__$29;
-                    var __$l0__$30 = __$ctx.__$a0;
-                    __$ctx.__$a0 = __$ctx.__$a0 | 32;
-                    __$r__$29 = applyc(__$ctx, __$ref);
-                    __$ctx.__$a0 = __$l0__$30;
-                    return __$r__$29;
-                }(), {
-                    "aria-label": __$ctx.ctx.title
-                });
-                if (__$r !== __$ref) return __$r;
-            }
-            return {
-                role: "group"
-            };
-        }
-        if (!$$elem) {
-            var __$r = __$b6(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "select") {
-        if ($$elem === "control") {
-            return {
-                type: "hidden",
-                name: __$ctx._select.name,
-                value: __$ctx.ctx.val,
-                disabled: $$mods.disabled ? "disabled" : undefined
-            };
-        }
-    } else if (__$t === "button") {
-        var __$t = !$$elem;
-        if (__$t) {
-            if ((!$$mods.type || $$mods.type === "submit") && (__$ctx.__$a0 & 4096) === 0) {
-                var __$r = __$b8(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-            var __$r = __$b9(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu-item") {
-        if (!$$elem) {
-            return {
-                role: "menuitem"
-            };
-        }
-    }
-    return undefined;
-    return __$ref;
-}
-
-function __$g1(__$ctx, __$ref) {
-    var __$t = $$block;
-    if (__$t === "input") {
-        var __$t = $$elem;
-        if (__$t === "control") {
-            return "input";
-        } else if (__$t === "box") {
-            return "span";
-        }
-        if (!$$elem) {
-            return "span";
-        }
-    } else if (__$t === "gap") {
-        if (!$$elem) {
-            return "span";
-        }
-    } else if (__$t === "icon") {
-        if (!$$elem) {
-            return "i";
-        }
-    } else if (__$t === "select") {
-        if ($$elem === "control") {
-            return "input";
-        }
-    } else if (__$t === "button") {
-        if ($$elem === "text") {
-            return "span";
-        }
-        if (!$$elem) {
-            return __$ctx.ctx.tag || "button";
-        }
-    } else if (__$t === "details-wrapper") {
-        if (!$$elem) {
-            return "table";
-        }
-    } else if (__$t === "details") {
-        var __$t = $$elem;
-        if (__$t === "date") {
-            return "td";
-        } else if (__$t === "owner") {
-            return "td";
-        } else if (__$t === "size") {
-            return "td";
-        } else if (__$t === "type") {
-            return "td";
-        } else if (__$t === "name") {
-            return "td";
-        }
-        if (!$$elem) {
-            return "tr";
-        }
-    } else if (__$t === "ua") {
-        if (!$$elem) {
-            return "script";
-        }
-    }
-    return undefined;
-    return __$ref;
-}
-
-function __$g2(__$ctx, __$ref) {
-    var __$t = $$block;
-    if (__$t === "input") {
-        if (!$$elem) {
-            return {
-                elem: "box",
-                content: {
-                    elem: "control"
-                }
-            };
-        }
-    } else if (__$t === "path") {
+    if (__$t === "path") {
         if (!$$elem) {
             return [ {
                 block: "input",
@@ -13757,17 +13885,17 @@ function __$g2(__$ctx, __$ref) {
             } ];
         }
     } else if (__$t === "menu") {
-        if ($$elem === "group" && typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 16) === 0) {
+        if ($$elem === "group" && typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 8) === 0) {
             return [ {
                 elem: "group-title",
                 content: __$ctx.ctx.title
-            }, function __$lb__$25() {
-                var __$r__$26;
-                var __$l0__$27 = __$ctx.__$a0;
-                __$ctx.__$a0 = __$ctx.__$a0 | 16;
-                __$r__$26 = applyc(__$ctx, __$ref);
-                __$ctx.__$a0 = __$l0__$27;
-                return __$r__$26;
+            }, function __$lb__$17() {
+                var __$r__$18;
+                var __$l0__$19 = __$ctx.__$a0;
+                __$ctx.__$a0 = __$ctx.__$a0 | 8;
+                __$r__$18 = applyc(__$ctx, __$ref);
+                __$ctx.__$a0 = __$l0__$19;
+                return __$r__$18;
             }() ];
         }
     } else if (__$t === "select") {
@@ -13779,17 +13907,17 @@ function __$g2(__$ctx, __$ref) {
         }
         var __$t = !$$elem;
         if (__$t) {
-            if ($$mods && $$mods["mode"] === "radio" && (__$ctx.__$a0 & 4) === 0) {
+            if ($$mods && $$mods["mode"] === "radio" && (__$ctx.__$a0 & 2) === 0) {
                 return [ {
                     elem: "control",
                     val: __$ctx._checkedOption.val
-                }, function __$lb__$13() {
-                    var __$r__$14;
-                    var __$l0__$15 = __$ctx.__$a0;
-                    __$ctx.__$a0 = __$ctx.__$a0 | 4;
-                    __$r__$14 = applyc(__$ctx, __$ref);
-                    __$ctx.__$a0 = __$l0__$15;
-                    return __$r__$14;
+                }, function __$lb__$5() {
+                    var __$r__$6;
+                    var __$l0__$7 = __$ctx.__$a0;
+                    __$ctx.__$a0 = __$ctx.__$a0 | 2;
+                    __$r__$6 = applyc(__$ctx, __$ref);
+                    __$ctx.__$a0 = __$l0__$7;
+                    return __$r__$6;
                 }() ];
             }
             return [ {
@@ -13815,8 +13943,17 @@ function __$g2(__$ctx, __$ref) {
             if (typeof __$ctx.ctx.content !== "undefined") {
                 return __$ctx.ctx.content;
             }
-            var __$r = __$b40(__$ctx, __$ref);
+            var __$r = __$b14(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "input") {
+        if (!$$elem) {
+            return {
+                elem: "box",
+                content: {
+                    elem: "control"
+                }
+            };
         }
     } else if (__$t === "details") {
         if (!$$elem) {
@@ -13849,83 +13986,23 @@ function __$g2(__$ctx, __$ref) {
     return __$ref;
 }
 
-function __$g3(__$ctx, __$ref) {
+function __$g1(__$ctx, __$ref) {
     var __$t = $$block;
-    if (__$t === "input") {
-        if (!$$elem && (__$ctx.__$a0 & 1) === 0) {
-            var __$r = __$b44(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu") {
-        var __$t = !$$elem;
-        if (__$t) {
-            if ($$mods && $$mods["mode"] === "radio" && __$ctx._firstItem && __$ctx._checkedItems && !__$ctx._checkedItems.length && (__$ctx.__$a0 & 2) === 0) {
-                var __$r = __$b45(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-            if ((__$ctx.__$a0 & 512) === 0) {
-                var __$r = __$b46(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-        }
-    } else if (__$t === "select") {
-        if (!$$elem && $$mods && $$mods["mode"] === "radio" && __$ctx._checkedOptions && (__$ctx.__$a0 & 8) === 0) {
-            var __$r = __$b47(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-        var __$t = $$elem;
-        if (__$t === "menu") {
-            if ((__$ctx.__$a0 & 1024) === 0) {
-                var __$r = __$b48(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-        } else if (__$t === "button") {
-            if ((__$ctx.__$a0 & 8192) === 0) {
-                var __$r = __$b49(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-        }
-        if (!$$elem && !__$ctx._select && (__$ctx.__$a0 & 32768) === 0) {
-            var __$r = __$b50(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "details") {
-        if (!$$elem && !__$ctx.ctx._wrapped && (__$ctx.__$a0 & 128) === 0) {
-            var __$r = __$b51(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu-item") {
-        if (!$$elem && __$ctx._menuMods && (__$ctx.__$a0 & 256) === 0) {
-            var __$r = __$b52(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    }
-    var __$r = __$b53(__$ctx, __$ref);
-    if (__$r !== __$ref) return __$r;
-    return __$ref;
-}
-
-function __$g4(__$ctx, __$ref) {
-    var __$t = $$block;
-    if (__$t === "input") {
-        if (!$$elem) {
-            return true;
-        }
-    } else if (__$t === "path") {
+    if (__$t === "path") {
         if (!$$elem) {
             return true;
         }
     } else if (__$t === "menu") {
         var __$t = !$$elem;
         if (__$t) {
-            if ($$mods && $$mods["focused"] === true && (__$ctx.__$a0 & 64) === 0) {
-                var __$r = __$ctx.extend(function __$lb__$31() {
-                    var __$r__$32;
-                    var __$l0__$33 = __$ctx.__$a0;
-                    __$ctx.__$a0 = __$ctx.__$a0 | 64;
-                    __$r__$32 = applyc(__$ctx, __$ref);
-                    __$ctx.__$a0 = __$l0__$33;
-                    return __$r__$32;
+            if ($$mods && $$mods["focused"] === true && (__$ctx.__$a0 & 32) === 0) {
+                var __$r = __$ctx.extend(function __$lb__$23() {
+                    var __$r__$24;
+                    var __$l0__$25 = __$ctx.__$a0;
+                    __$ctx.__$a0 = __$ctx.__$a0 | 32;
+                    __$r__$24 = applyc(__$ctx, __$ref);
+                    __$ctx.__$a0 = __$l0__$25;
+                    return __$r__$24;
                 }(), {
                     live: false
                 });
@@ -13949,7 +14026,7 @@ function __$g4(__$ctx, __$ref) {
                 });
                 if (__$r !== __$ref) return __$r;
             }
-            var __$r = __$b59(__$ctx, __$ref);
+            var __$r = __$b23(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "button") {
@@ -13972,8 +14049,12 @@ function __$g4(__$ctx, __$ref) {
         }
     } else if (__$t === "popup") {
         if (!$$elem) {
-            var __$r = __$b62(__$ctx, __$ref);
+            var __$r = __$b26(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "input") {
+        if (!$$elem) {
+            return true;
         }
     } else if (__$t === "menu-item") {
         if (!$$elem) {
@@ -13983,6 +14064,192 @@ function __$g4(__$ctx, __$ref) {
         }
     }
     return undefined;
+    return __$ref;
+}
+
+function __$g2(__$ctx, __$ref) {
+    var __$t = $$block;
+    if (__$t === "gap") {
+        if (!$$elem) {
+            return "span";
+        }
+    } else if (__$t === "icon") {
+        if (!$$elem) {
+            return "i";
+        }
+    } else if (__$t === "select") {
+        if ($$elem === "control") {
+            return "input";
+        }
+    } else if (__$t === "button") {
+        if ($$elem === "text") {
+            return "span";
+        }
+        if (!$$elem) {
+            return __$ctx.ctx.tag || "button";
+        }
+    } else if (__$t === "input") {
+        var __$t = $$elem;
+        if (__$t === "control") {
+            return "input";
+        } else if (__$t === "box") {
+            return "span";
+        }
+        if (!$$elem) {
+            return "span";
+        }
+    } else if (__$t === "details-wrapper") {
+        if (!$$elem) {
+            return "table";
+        }
+    } else if (__$t === "details") {
+        var __$t = $$elem;
+        if (__$t === "date") {
+            return "td";
+        } else if (__$t === "owner") {
+            return "td";
+        } else if (__$t === "size") {
+            return "td";
+        } else if (__$t === "type") {
+            return "td";
+        } else if (__$t === "name") {
+            return "td";
+        }
+        if (!$$elem) {
+            return "tr";
+        }
+    } else if (__$t === "ua") {
+        if (!$$elem) {
+            return "script";
+        }
+    }
+    return undefined;
+    return __$ref;
+}
+
+function __$g3(__$ctx, __$ref) {
+    var __$t = $$block;
+    if (__$t === "icon") {
+        if (!$$elem) {
+            var __$r = __$b47(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "menu") {
+        var __$t = $$elem;
+        if (__$t === "group-title") {
+            return {
+                role: "presentation"
+            };
+        } else if (__$t === "group") {
+            if (typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 16) === 0) {
+                var __$r = __$ctx.extend(function __$lb__$20() {
+                    var __$r__$21;
+                    var __$l0__$22 = __$ctx.__$a0;
+                    __$ctx.__$a0 = __$ctx.__$a0 | 16;
+                    __$r__$21 = applyc(__$ctx, __$ref);
+                    __$ctx.__$a0 = __$l0__$22;
+                    return __$r__$21;
+                }(), {
+                    "aria-label": __$ctx.ctx.title
+                });
+                if (__$r !== __$ref) return __$r;
+            }
+            return {
+                role: "group"
+            };
+        }
+        if (!$$elem) {
+            var __$r = __$b51(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "select") {
+        if ($$elem === "control") {
+            return {
+                type: "hidden",
+                name: __$ctx._select.name,
+                value: __$ctx.ctx.val,
+                disabled: $$mods.disabled ? "disabled" : undefined
+            };
+        }
+    } else if (__$t === "button") {
+        var __$t = !$$elem;
+        if (__$t) {
+            if ((!$$mods.type || $$mods.type === "submit") && (__$ctx.__$a0 & 4096) === 0) {
+                var __$r = __$b53(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+            var __$r = __$b54(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "input") {
+        if ($$elem === "control") {
+            var __$r = __$b55(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "menu-item") {
+        if (!$$elem) {
+            return {
+                role: "menuitem"
+            };
+        }
+    }
+    return undefined;
+    return __$ref;
+}
+
+function __$g4(__$ctx, __$ref) {
+    var __$t = $$block;
+    if (__$t === "menu") {
+        var __$t = !$$elem;
+        if (__$t) {
+            if ($$mods && $$mods["mode"] === "radio" && __$ctx._firstItem && __$ctx._checkedItems && !__$ctx._checkedItems.length && (__$ctx.__$a0 & 1) === 0) {
+                var __$r = __$b58(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+            if ((__$ctx.__$a0 & 512) === 0) {
+                var __$r = __$b59(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+        }
+    } else if (__$t === "select") {
+        if (!$$elem && $$mods && $$mods["mode"] === "radio" && __$ctx._checkedOptions && (__$ctx.__$a0 & 4) === 0) {
+            var __$r = __$b60(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+        var __$t = $$elem;
+        if (__$t === "menu") {
+            if ((__$ctx.__$a0 & 1024) === 0) {
+                var __$r = __$b61(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+        } else if (__$t === "button") {
+            if ((__$ctx.__$a0 & 8192) === 0) {
+                var __$r = __$b62(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+        }
+        if (!$$elem && !__$ctx._select && (__$ctx.__$a0 & 32768) === 0) {
+            var __$r = __$b63(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "input") {
+        if (!$$elem && (__$ctx.__$a0 & 64) === 0) {
+            var __$r = __$b64(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "details") {
+        if (!$$elem && !__$ctx.ctx._wrapped && (__$ctx.__$a0 & 128) === 0) {
+            var __$r = __$b65(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "menu-item") {
+        if (!$$elem && __$ctx._menuMods && (__$ctx.__$a0 & 256) === 0) {
+            var __$r = __$b66(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    }
+    var __$r = __$b67(__$ctx, __$ref);
+    if (__$r !== __$ref) return __$r;
     return __$ref;
 };
      return exports;

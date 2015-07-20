@@ -97,22 +97,7 @@ exports.apply = apply;
 
 function applyc(__$ctx, __$ref) {
     var __$t = $$mode;
-    if (__$t === "attrs") {
-        var __$r = __$g0(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "tag") {
-        var __$r = __$g1(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "content") {
-        var __$r = __$g2(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "default") {
-        var __$r = __$g3(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "js") {
-        var __$r = __$g4(__$ctx, __$ref);
-        if (__$r !== __$ref) return __$r;
-    } else if (__$t === "bem") {
+    if (__$t === "bem") {
         var __$t = $$block;
         if (__$t === "path-normalizer") {
             if (!$$elem) {
@@ -124,6 +109,21 @@ function applyc(__$ctx, __$ref) {
             }
         }
         return undefined;
+    } else if (__$t === "content") {
+        var __$r = __$g0(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
+    } else if (__$t === "js") {
+        var __$r = __$g1(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
+    } else if (__$t === "tag") {
+        var __$r = __$g2(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
+    } else if (__$t === "attrs") {
+        var __$r = __$g3(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
+    } else if (__$t === "default") {
+        var __$r = __$g4(__$ctx, __$ref);
+        if (__$r !== __$ref) return __$r;
     } else if (__$t === "mix") {
         var __$t = $$block;
         if (__$t === "menu") {
@@ -337,9 +337,9 @@ function applyc(__$ctx, __$ref) {
     fn(exports, this);
 }, {
     recordExtensions: function(ctx) {
-        ctx["_input"] = undefined;
         ctx["__$a0"] = 0;
         ctx["_checkedOption"] = undefined;
+        ctx["_input"] = undefined;
         ctx["_mode"] = undefined;
         ctx["ctx"] = undefined;
         ctx["_menuMods"] = undefined;
@@ -361,29 +361,43 @@ function applyc(__$ctx, __$ref) {
     }
 });
 
-function __$b1(__$ctx, __$ref) {
-    var input__$0 = __$ctx._input, attrs__$1 = {
-        id: input__$0.id,
-        name: input__$0.name,
-        value: input__$0.val,
-        maxlength: input__$0.maxLength,
-        tabindex: input__$0.tabIndex,
-        placeholder: input__$0.placeholder
+function __$b14(__$ctx, __$ref) {
+    var ctx__$75 = __$ctx.ctx, content__$76 = [ ctx__$75.icon ];
+    "text" in ctx__$75 && content__$76.push({
+        elem: "text",
+        content: ctx__$75.text
+    });
+    return content__$76;
+}
+
+function __$b23(__$ctx, __$ref) {
+    var ctx__$96 = __$ctx.ctx;
+    return {
+        name: ctx__$96.name,
+        optionsMaxHeight: ctx__$96.optionsMaxHeight
     };
-    input__$0.autocomplete === false && (attrs__$1.autocomplete = "off");
-    $$mods.disabled && (attrs__$1.disabled = "disabled");
-    return attrs__$1;
 }
 
-function __$b2(__$ctx, __$ref) {
-    var attrs__$8 = {
+function __$b26(__$ctx, __$ref) {
+    var ctx__$16 = __$ctx.ctx;
+    return {
+        mainOffset: ctx__$16.mainOffset,
+        secondaryOffset: ctx__$16.secondaryOffset,
+        viewportOffset: ctx__$16.viewportOffset,
+        directions: ctx__$16.directions,
+        zIndexGroupLevel: ctx__$16.zIndexGroupLevel
+    };
+}
+
+function __$b47(__$ctx, __$ref) {
+    var attrs__$0 = {
         "aria-hidden": "true"
-    }, url__$9 = __$ctx.ctx.url;
-    if (url__$9) attrs__$8.style = "background-image:url(" + url__$9 + ")";
-    return attrs__$8;
+    }, url__$1 = __$ctx.ctx.url;
+    if (url__$1) attrs__$0.style = "background-image:url(" + url__$1 + ")";
+    return attrs__$0;
 }
 
-function __$b6(__$ctx, __$ref) {
+function __$b51(__$ctx, __$ref) {
     var attrs__$46 = {
         role: "menu"
     };
@@ -391,7 +405,7 @@ function __$b6(__$ctx, __$ref) {
     return attrs__$46;
 }
 
-function __$b8(__$ctx, __$ref) {
+function __$b53(__$ctx, __$ref) {
     var ctx__$77 = __$ctx.ctx, attrs__$78 = {
         type: $$mods.type || "button",
         name: ctx__$77.name,
@@ -408,7 +422,7 @@ function __$b8(__$ctx, __$ref) {
     }(), attrs__$78);
 }
 
-function __$b9(__$ctx, __$ref) {
+function __$b54(__$ctx, __$ref) {
     var ctx__$82 = __$ctx.ctx;
     return {
         role: "button",
@@ -418,40 +432,31 @@ function __$b9(__$ctx, __$ref) {
     };
 }
 
-function __$b40(__$ctx, __$ref) {
-    var ctx__$75 = __$ctx.ctx, content__$76 = [ ctx__$75.icon ];
-    "text" in ctx__$75 && content__$76.push({
-        elem: "text",
-        content: ctx__$75.text
-    });
-    return content__$76;
+function __$b55(__$ctx, __$ref) {
+    var input__$26 = __$ctx._input, attrs__$27 = {
+        id: input__$26.id,
+        name: input__$26.name,
+        value: input__$26.val,
+        maxlength: input__$26.maxLength,
+        tabindex: input__$26.tabIndex,
+        placeholder: input__$26.placeholder
+    };
+    input__$26.autocomplete === false && (attrs__$27.autocomplete = "off");
+    $$mods.disabled && (attrs__$27.disabled = "disabled");
+    return attrs__$27;
 }
 
-function __$b44(__$ctx, __$ref) {
-    var __$r__$3;
-    var __$l0__$4 = __$ctx._input;
-    __$ctx._input = __$ctx.ctx;
-    var __$r__$6;
-    var __$l1__$7 = __$ctx.__$a0;
-    __$ctx.__$a0 = __$ctx.__$a0 | 1;
-    __$r__$6 = applyc(__$ctx, __$ref);
-    __$ctx.__$a0 = __$l1__$7;
-    __$r__$3 = __$r__$6;
-    __$ctx._input = __$l0__$4;
-    return;
-}
-
-function __$b45(__$ctx, __$ref) {
+function __$b58(__$ctx, __$ref) {
     (__$ctx._firstItem.mods = __$ctx._firstItem.mods || {}).checked = true;
-    var __$r__$11;
-    var __$l0__$12 = __$ctx.__$a0;
-    __$ctx.__$a0 = __$ctx.__$a0 | 2;
-    __$r__$11 = applyc(__$ctx, __$ref);
-    __$ctx.__$a0 = __$l0__$12;
+    var __$r__$3;
+    var __$l0__$4 = __$ctx.__$a0;
+    __$ctx.__$a0 = __$ctx.__$a0 | 1;
+    __$r__$3 = applyc(__$ctx, __$ref);
+    __$ctx.__$a0 = __$l0__$4;
     return;
 }
 
-function __$b46(__$ctx, __$ref) {
+function __$b59(__$ctx, __$ref) {
     var ctx__$47 = __$ctx.ctx, mods__$48 = $$mods, firstItem__$49, checkedItems__$50 = [];
     if (ctx__$47.content) {
         var isValDef__$51 = typeof ctx__$47.val !== "undefined", containsVal__$52 = function(val) {
@@ -491,26 +496,26 @@ function __$b46(__$ctx, __$ref) {
     return;
 }
 
-function __$b47(__$ctx, __$ref) {
-    var checkedOptions__$16 = __$ctx._checkedOptions, firstOption__$17 = __$ctx._firstOption;
-    if (firstOption__$17 && !checkedOptions__$16.length) {
-        firstOption__$17.checked = true;
-        checkedOptions__$16 = [ firstOption__$17 ];
+function __$b60(__$ctx, __$ref) {
+    var checkedOptions__$8 = __$ctx._checkedOptions, firstOption__$9 = __$ctx._firstOption;
+    if (firstOption__$9 && !checkedOptions__$8.length) {
+        firstOption__$9.checked = true;
+        checkedOptions__$8 = [ firstOption__$9 ];
     }
-    var __$r__$19;
-    var __$l0__$20 = __$ctx._checkedOption;
-    __$ctx._checkedOption = checkedOptions__$16[0];
-    var __$r__$22;
-    var __$l1__$23 = __$ctx.__$a0;
-    __$ctx.__$a0 = __$ctx.__$a0 | 8;
-    __$r__$22 = applyc(__$ctx, __$ref);
-    __$ctx.__$a0 = __$l1__$23;
-    __$r__$19 = __$r__$22;
-    __$ctx._checkedOption = __$l0__$20;
+    var __$r__$11;
+    var __$l0__$12 = __$ctx._checkedOption;
+    __$ctx._checkedOption = checkedOptions__$8[0];
+    var __$r__$14;
+    var __$l1__$15 = __$ctx.__$a0;
+    __$ctx.__$a0 = __$ctx.__$a0 | 4;
+    __$r__$14 = applyc(__$ctx, __$ref);
+    __$ctx.__$a0 = __$l1__$15;
+    __$r__$11 = __$r__$14;
+    __$ctx._checkedOption = __$l0__$12;
     return;
 }
 
-function __$b48(__$ctx, __$ref) {
+function __$b61(__$ctx, __$ref) {
     var mods__$62 = $$mods, optionToMenuItem__$63 = function(option) {
         var res__$64 = {
             block: "menu-item",
@@ -571,7 +576,7 @@ function __$b48(__$ctx, __$ref) {
     return;
 }
 
-function __$b49(__$ctx, __$ref) {
+function __$b62(__$ctx, __$ref) {
     var mods__$83 = $$mods;
     var __$r__$85;
     var __$l0__$86 = $$mode;
@@ -619,7 +624,7 @@ function __$b49(__$ctx, __$ref) {
     return;
 }
 
-function __$b50(__$ctx, __$ref) {
+function __$b63(__$ctx, __$ref) {
     if (!$$mods.mode) throw Error("Can't build select without mode modifier");
     var ctx__$97 = __$ctx.ctx, isValDef__$98 = typeof ctx__$97.val !== "undefined", isModeCheck__$99 = $$mods.mode === "check", firstOption__$100, checkedOptions__$101 = [], containsVal__$102 = function(val) {
         return isValDef__$98 && (isModeCheck__$99 ? ctx__$97.val.indexOf(val) > -1 : ctx__$97.val === val);
@@ -657,7 +662,21 @@ function __$b50(__$ctx, __$ref) {
     return;
 }
 
-function __$b51(__$ctx, __$ref) {
+function __$b64(__$ctx, __$ref) {
+    var __$r__$29;
+    var __$l0__$30 = __$ctx._input;
+    __$ctx._input = __$ctx.ctx;
+    var __$r__$32;
+    var __$l1__$33 = __$ctx.__$a0;
+    __$ctx.__$a0 = __$ctx.__$a0 | 64;
+    __$r__$32 = applyc(__$ctx, __$ref);
+    __$ctx.__$a0 = __$l1__$33;
+    __$r__$29 = __$r__$32;
+    __$ctx._input = __$l0__$30;
+    return;
+}
+
+function __$b65(__$ctx, __$ref) {
     var ctx__$34 = __$ctx.ctx;
     ctx__$34._wrapped = true;
     var __$r__$36;
@@ -679,7 +698,7 @@ function __$b51(__$ctx, __$ref) {
     return;
 }
 
-function __$b52(__$ctx, __$ref) {
+function __$b66(__$ctx, __$ref) {
     var mods__$42 = $$mods;
     mods__$42.theme = mods__$42.theme || __$ctx._menuMods.theme;
     mods__$42.disabled = mods__$42.disabled || __$ctx._menuMods.disabled;
@@ -691,7 +710,7 @@ function __$b52(__$ctx, __$ref) {
     return;
 }
 
-function __$b53(__$ctx, __$ref) {
+function __$b67(__$ctx, __$ref) {
     var BEM_INTERNAL__$114 = __$ctx.BEM.INTERNAL, ctx__$115 = __$ctx.ctx, isBEM__$116, tag__$117, res__$118;
     var __$r__$120;
     var __$l0__$121 = __$ctx._str;
@@ -847,25 +866,6 @@ function __$b53(__$ctx, __$ref) {
     return;
 }
 
-function __$b59(__$ctx, __$ref) {
-    var ctx__$96 = __$ctx.ctx;
-    return {
-        name: ctx__$96.name,
-        optionsMaxHeight: ctx__$96.optionsMaxHeight
-    };
-}
-
-function __$b62(__$ctx, __$ref) {
-    var ctx__$24 = __$ctx.ctx;
-    return {
-        mainOffset: ctx__$24.mainOffset,
-        secondaryOffset: ctx__$24.secondaryOffset,
-        viewportOffset: ctx__$24.viewportOffset,
-        directions: ctx__$24.directions,
-        zIndexGroupLevel: ctx__$24.zIndexGroupLevel
-    };
-}
-
 function __$b72(__$ctx, __$ref) {
     var __$r__$168;
     var __$l0__$169 = $$mode;
@@ -948,146 +948,7 @@ function __$b76(__$ctx, __$ref) {
 
 function __$g0(__$ctx, __$ref) {
     var __$t = $$block;
-    if (__$t === "input") {
-        if ($$elem === "control") {
-            var __$r = __$b1(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "icon") {
-        if (!$$elem) {
-            var __$r = __$b2(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu") {
-        var __$t = $$elem;
-        if (__$t === "group-title") {
-            return {
-                role: "presentation"
-            };
-        } else if (__$t === "group") {
-            if (typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 32) === 0) {
-                var __$r = __$ctx.extend(function __$lb__$28() {
-                    var __$r__$29;
-                    var __$l0__$30 = __$ctx.__$a0;
-                    __$ctx.__$a0 = __$ctx.__$a0 | 32;
-                    __$r__$29 = applyc(__$ctx, __$ref);
-                    __$ctx.__$a0 = __$l0__$30;
-                    return __$r__$29;
-                }(), {
-                    "aria-label": __$ctx.ctx.title
-                });
-                if (__$r !== __$ref) return __$r;
-            }
-            return {
-                role: "group"
-            };
-        }
-        if (!$$elem) {
-            var __$r = __$b6(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "select") {
-        if ($$elem === "control") {
-            return {
-                type: "hidden",
-                name: __$ctx._select.name,
-                value: __$ctx.ctx.val,
-                disabled: $$mods.disabled ? "disabled" : undefined
-            };
-        }
-    } else if (__$t === "button") {
-        var __$t = !$$elem;
-        if (__$t) {
-            if ((!$$mods.type || $$mods.type === "submit") && (__$ctx.__$a0 & 4096) === 0) {
-                var __$r = __$b8(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-            var __$r = __$b9(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu-item") {
-        if (!$$elem) {
-            return {
-                role: "menuitem"
-            };
-        }
-    }
-    return undefined;
-    return __$ref;
-}
-
-function __$g1(__$ctx, __$ref) {
-    var __$t = $$block;
-    if (__$t === "input") {
-        var __$t = $$elem;
-        if (__$t === "control") {
-            return "input";
-        } else if (__$t === "box") {
-            return "span";
-        }
-        if (!$$elem) {
-            return "span";
-        }
-    } else if (__$t === "gap") {
-        if (!$$elem) {
-            return "span";
-        }
-    } else if (__$t === "icon") {
-        if (!$$elem) {
-            return "i";
-        }
-    } else if (__$t === "select") {
-        if ($$elem === "control") {
-            return "input";
-        }
-    } else if (__$t === "button") {
-        if ($$elem === "text") {
-            return "span";
-        }
-        if (!$$elem) {
-            return __$ctx.ctx.tag || "button";
-        }
-    } else if (__$t === "details-wrapper") {
-        if (!$$elem) {
-            return "table";
-        }
-    } else if (__$t === "details") {
-        var __$t = $$elem;
-        if (__$t === "date") {
-            return "td";
-        } else if (__$t === "owner") {
-            return "td";
-        } else if (__$t === "size") {
-            return "td";
-        } else if (__$t === "type") {
-            return "td";
-        } else if (__$t === "name") {
-            return "td";
-        }
-        if (!$$elem) {
-            return "tr";
-        }
-    } else if (__$t === "ua") {
-        if (!$$elem) {
-            return "script";
-        }
-    }
-    return undefined;
-    return __$ref;
-}
-
-function __$g2(__$ctx, __$ref) {
-    var __$t = $$block;
-    if (__$t === "input") {
-        if (!$$elem) {
-            return {
-                elem: "box",
-                content: {
-                    elem: "control"
-                }
-            };
-        }
-    } else if (__$t === "path") {
+    if (__$t === "path") {
         if (!$$elem) {
             return [ {
                 block: "input",
@@ -1192,17 +1053,17 @@ function __$g2(__$ctx, __$ref) {
             } ];
         }
     } else if (__$t === "menu") {
-        if ($$elem === "group" && typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 16) === 0) {
+        if ($$elem === "group" && typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 8) === 0) {
             return [ {
                 elem: "group-title",
                 content: __$ctx.ctx.title
-            }, function __$lb__$25() {
-                var __$r__$26;
-                var __$l0__$27 = __$ctx.__$a0;
-                __$ctx.__$a0 = __$ctx.__$a0 | 16;
-                __$r__$26 = applyc(__$ctx, __$ref);
-                __$ctx.__$a0 = __$l0__$27;
-                return __$r__$26;
+            }, function __$lb__$17() {
+                var __$r__$18;
+                var __$l0__$19 = __$ctx.__$a0;
+                __$ctx.__$a0 = __$ctx.__$a0 | 8;
+                __$r__$18 = applyc(__$ctx, __$ref);
+                __$ctx.__$a0 = __$l0__$19;
+                return __$r__$18;
             }() ];
         }
     } else if (__$t === "select") {
@@ -1214,17 +1075,17 @@ function __$g2(__$ctx, __$ref) {
         }
         var __$t = !$$elem;
         if (__$t) {
-            if ($$mods && $$mods["mode"] === "radio" && (__$ctx.__$a0 & 4) === 0) {
+            if ($$mods && $$mods["mode"] === "radio" && (__$ctx.__$a0 & 2) === 0) {
                 return [ {
                     elem: "control",
                     val: __$ctx._checkedOption.val
-                }, function __$lb__$13() {
-                    var __$r__$14;
-                    var __$l0__$15 = __$ctx.__$a0;
-                    __$ctx.__$a0 = __$ctx.__$a0 | 4;
-                    __$r__$14 = applyc(__$ctx, __$ref);
-                    __$ctx.__$a0 = __$l0__$15;
-                    return __$r__$14;
+                }, function __$lb__$5() {
+                    var __$r__$6;
+                    var __$l0__$7 = __$ctx.__$a0;
+                    __$ctx.__$a0 = __$ctx.__$a0 | 2;
+                    __$r__$6 = applyc(__$ctx, __$ref);
+                    __$ctx.__$a0 = __$l0__$7;
+                    return __$r__$6;
                 }() ];
             }
             return [ {
@@ -1250,8 +1111,17 @@ function __$g2(__$ctx, __$ref) {
             if (typeof __$ctx.ctx.content !== "undefined") {
                 return __$ctx.ctx.content;
             }
-            var __$r = __$b40(__$ctx, __$ref);
+            var __$r = __$b14(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "input") {
+        if (!$$elem) {
+            return {
+                elem: "box",
+                content: {
+                    elem: "control"
+                }
+            };
         }
     } else if (__$t === "details") {
         if (!$$elem) {
@@ -1284,83 +1154,23 @@ function __$g2(__$ctx, __$ref) {
     return __$ref;
 }
 
-function __$g3(__$ctx, __$ref) {
+function __$g1(__$ctx, __$ref) {
     var __$t = $$block;
-    if (__$t === "input") {
-        if (!$$elem && (__$ctx.__$a0 & 1) === 0) {
-            var __$r = __$b44(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu") {
-        var __$t = !$$elem;
-        if (__$t) {
-            if ($$mods && $$mods["mode"] === "radio" && __$ctx._firstItem && __$ctx._checkedItems && !__$ctx._checkedItems.length && (__$ctx.__$a0 & 2) === 0) {
-                var __$r = __$b45(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-            if ((__$ctx.__$a0 & 512) === 0) {
-                var __$r = __$b46(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-        }
-    } else if (__$t === "select") {
-        if (!$$elem && $$mods && $$mods["mode"] === "radio" && __$ctx._checkedOptions && (__$ctx.__$a0 & 8) === 0) {
-            var __$r = __$b47(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-        var __$t = $$elem;
-        if (__$t === "menu") {
-            if ((__$ctx.__$a0 & 1024) === 0) {
-                var __$r = __$b48(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-        } else if (__$t === "button") {
-            if ((__$ctx.__$a0 & 8192) === 0) {
-                var __$r = __$b49(__$ctx, __$ref);
-                if (__$r !== __$ref) return __$r;
-            }
-        }
-        if (!$$elem && !__$ctx._select && (__$ctx.__$a0 & 32768) === 0) {
-            var __$r = __$b50(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "details") {
-        if (!$$elem && !__$ctx.ctx._wrapped && (__$ctx.__$a0 & 128) === 0) {
-            var __$r = __$b51(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    } else if (__$t === "menu-item") {
-        if (!$$elem && __$ctx._menuMods && (__$ctx.__$a0 & 256) === 0) {
-            var __$r = __$b52(__$ctx, __$ref);
-            if (__$r !== __$ref) return __$r;
-        }
-    }
-    var __$r = __$b53(__$ctx, __$ref);
-    if (__$r !== __$ref) return __$r;
-    return __$ref;
-}
-
-function __$g4(__$ctx, __$ref) {
-    var __$t = $$block;
-    if (__$t === "input") {
-        if (!$$elem) {
-            return true;
-        }
-    } else if (__$t === "path") {
+    if (__$t === "path") {
         if (!$$elem) {
             return true;
         }
     } else if (__$t === "menu") {
         var __$t = !$$elem;
         if (__$t) {
-            if ($$mods && $$mods["focused"] === true && (__$ctx.__$a0 & 64) === 0) {
-                var __$r = __$ctx.extend(function __$lb__$31() {
-                    var __$r__$32;
-                    var __$l0__$33 = __$ctx.__$a0;
-                    __$ctx.__$a0 = __$ctx.__$a0 | 64;
-                    __$r__$32 = applyc(__$ctx, __$ref);
-                    __$ctx.__$a0 = __$l0__$33;
-                    return __$r__$32;
+            if ($$mods && $$mods["focused"] === true && (__$ctx.__$a0 & 32) === 0) {
+                var __$r = __$ctx.extend(function __$lb__$23() {
+                    var __$r__$24;
+                    var __$l0__$25 = __$ctx.__$a0;
+                    __$ctx.__$a0 = __$ctx.__$a0 | 32;
+                    __$r__$24 = applyc(__$ctx, __$ref);
+                    __$ctx.__$a0 = __$l0__$25;
+                    return __$r__$24;
                 }(), {
                     live: false
                 });
@@ -1384,7 +1194,7 @@ function __$g4(__$ctx, __$ref) {
                 });
                 if (__$r !== __$ref) return __$r;
             }
-            var __$r = __$b59(__$ctx, __$ref);
+            var __$r = __$b23(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
         }
     } else if (__$t === "button") {
@@ -1407,8 +1217,12 @@ function __$g4(__$ctx, __$ref) {
         }
     } else if (__$t === "popup") {
         if (!$$elem) {
-            var __$r = __$b62(__$ctx, __$ref);
+            var __$r = __$b26(__$ctx, __$ref);
             if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "input") {
+        if (!$$elem) {
+            return true;
         }
     } else if (__$t === "menu-item") {
         if (!$$elem) {
@@ -1418,6 +1232,192 @@ function __$g4(__$ctx, __$ref) {
         }
     }
     return undefined;
+    return __$ref;
+}
+
+function __$g2(__$ctx, __$ref) {
+    var __$t = $$block;
+    if (__$t === "gap") {
+        if (!$$elem) {
+            return "span";
+        }
+    } else if (__$t === "icon") {
+        if (!$$elem) {
+            return "i";
+        }
+    } else if (__$t === "select") {
+        if ($$elem === "control") {
+            return "input";
+        }
+    } else if (__$t === "button") {
+        if ($$elem === "text") {
+            return "span";
+        }
+        if (!$$elem) {
+            return __$ctx.ctx.tag || "button";
+        }
+    } else if (__$t === "input") {
+        var __$t = $$elem;
+        if (__$t === "control") {
+            return "input";
+        } else if (__$t === "box") {
+            return "span";
+        }
+        if (!$$elem) {
+            return "span";
+        }
+    } else if (__$t === "details-wrapper") {
+        if (!$$elem) {
+            return "table";
+        }
+    } else if (__$t === "details") {
+        var __$t = $$elem;
+        if (__$t === "date") {
+            return "td";
+        } else if (__$t === "owner") {
+            return "td";
+        } else if (__$t === "size") {
+            return "td";
+        } else if (__$t === "type") {
+            return "td";
+        } else if (__$t === "name") {
+            return "td";
+        }
+        if (!$$elem) {
+            return "tr";
+        }
+    } else if (__$t === "ua") {
+        if (!$$elem) {
+            return "script";
+        }
+    }
+    return undefined;
+    return __$ref;
+}
+
+function __$g3(__$ctx, __$ref) {
+    var __$t = $$block;
+    if (__$t === "icon") {
+        if (!$$elem) {
+            var __$r = __$b47(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "menu") {
+        var __$t = $$elem;
+        if (__$t === "group-title") {
+            return {
+                role: "presentation"
+            };
+        } else if (__$t === "group") {
+            if (typeof __$ctx.ctx.title !== "undefined" && (__$ctx.__$a0 & 16) === 0) {
+                var __$r = __$ctx.extend(function __$lb__$20() {
+                    var __$r__$21;
+                    var __$l0__$22 = __$ctx.__$a0;
+                    __$ctx.__$a0 = __$ctx.__$a0 | 16;
+                    __$r__$21 = applyc(__$ctx, __$ref);
+                    __$ctx.__$a0 = __$l0__$22;
+                    return __$r__$21;
+                }(), {
+                    "aria-label": __$ctx.ctx.title
+                });
+                if (__$r !== __$ref) return __$r;
+            }
+            return {
+                role: "group"
+            };
+        }
+        if (!$$elem) {
+            var __$r = __$b51(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "select") {
+        if ($$elem === "control") {
+            return {
+                type: "hidden",
+                name: __$ctx._select.name,
+                value: __$ctx.ctx.val,
+                disabled: $$mods.disabled ? "disabled" : undefined
+            };
+        }
+    } else if (__$t === "button") {
+        var __$t = !$$elem;
+        if (__$t) {
+            if ((!$$mods.type || $$mods.type === "submit") && (__$ctx.__$a0 & 4096) === 0) {
+                var __$r = __$b53(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+            var __$r = __$b54(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "input") {
+        if ($$elem === "control") {
+            var __$r = __$b55(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "menu-item") {
+        if (!$$elem) {
+            return {
+                role: "menuitem"
+            };
+        }
+    }
+    return undefined;
+    return __$ref;
+}
+
+function __$g4(__$ctx, __$ref) {
+    var __$t = $$block;
+    if (__$t === "menu") {
+        var __$t = !$$elem;
+        if (__$t) {
+            if ($$mods && $$mods["mode"] === "radio" && __$ctx._firstItem && __$ctx._checkedItems && !__$ctx._checkedItems.length && (__$ctx.__$a0 & 1) === 0) {
+                var __$r = __$b58(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+            if ((__$ctx.__$a0 & 512) === 0) {
+                var __$r = __$b59(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+        }
+    } else if (__$t === "select") {
+        if (!$$elem && $$mods && $$mods["mode"] === "radio" && __$ctx._checkedOptions && (__$ctx.__$a0 & 4) === 0) {
+            var __$r = __$b60(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+        var __$t = $$elem;
+        if (__$t === "menu") {
+            if ((__$ctx.__$a0 & 1024) === 0) {
+                var __$r = __$b61(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+        } else if (__$t === "button") {
+            if ((__$ctx.__$a0 & 8192) === 0) {
+                var __$r = __$b62(__$ctx, __$ref);
+                if (__$r !== __$ref) return __$r;
+            }
+        }
+        if (!$$elem && !__$ctx._select && (__$ctx.__$a0 & 32768) === 0) {
+            var __$r = __$b63(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "input") {
+        if (!$$elem && (__$ctx.__$a0 & 64) === 0) {
+            var __$r = __$b64(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "details") {
+        if (!$$elem && !__$ctx.ctx._wrapped && (__$ctx.__$a0 & 128) === 0) {
+            var __$r = __$b65(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    } else if (__$t === "menu-item") {
+        if (!$$elem && __$ctx._menuMods && (__$ctx.__$a0 & 256) === 0) {
+            var __$r = __$b66(__$ctx, __$ref);
+            if (__$r !== __$ref) return __$r;
+        }
+    }
+    var __$r = __$b67(__$ctx, __$ref);
+    if (__$r !== __$ref) return __$r;
     return __$ref;
 };
      return exports;

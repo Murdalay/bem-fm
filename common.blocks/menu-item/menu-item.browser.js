@@ -1,34 +1,8 @@
-/**
- * @module menu-item
- */
-
-modules.define('menu-item', function(provide, MenuItem) {
-
-/**
- * @exports
- * @class menu-item
- * @bem
- */
-provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-item.prototype */{
-    beforeSetMod : {
-        'checked' : {
-            'true' : function() {
-                return false
-            }
-        }
-    }
-}));
-});
-
 modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state', 'functions__throttle'], 
 	function(provide, BEMDOM, channels, BEMHTML, state, throttle, MenuItem) {
 		var timer,
             mouseActive = true,
             _mouseActivityTimer,
-
-            throttled = throttle(function(cb, ctx) {
-                  cb.call(ctx);          
-            }, 620),
 
             _mouseStateUpdate = function() {
                 mouseActive = true;
@@ -42,27 +16,41 @@ modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state
 			com = channels('116');
 
 provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu-item.prototype */{
+    beforeSetMod : {
+        'checked' : {
+            'true' : function() {
+                if(this._details && this._details.hasMod('rename')) {
+                    return false
+                }
+            }
+        }
+    },
     onSetMod : {
         'js' : {
             'inited' : function() {
-				this._position = this.getMod('position');
+                this._position = this.getMod('position');
                 this._path = this.getVal();
 
-                this._id = state.getId(this._path);
-                this._stat = state.getReadableStates(this._path);
-                this._name = state.getName(this._path);
-                this._isdir = state.isDir(this._path);
-
-                if (!this._name) {
-                    this._name = this.getText();
-                    this._name !== '..' && state.setName(this._path, this._name);
-                };
-
-                com.on(this._id + '-update', this._statesReady, this);
-
                 this.__base.apply(this, arguments);
-                !this.hasMod('toplevel') && this._isdir === null && this._isdir === null && this._isDir();
-                this._stat && this.updateContent(this._stat);
+
+                if(!this.hasMod('toplevel')) {
+                    this._id = state.getId(this._path);
+                    this._stat = state.getReadableStates(this._path);
+                    this._name = state.getName(this._path);
+                    this._isdir = state.isDir(this._path);
+
+                    // state.setObj(this._path, this);
+
+                    if (!this._name) {
+                        this._name = this.getText();
+                        state.setName(this._path, this._name);
+                    };
+
+                    com.on(this._id + '-update', this._statesReady, this);
+
+                    this._isDir();
+                    this._stat ? this.updateContent(this._stat) : this.setMod('pending') && com.emit('state', { path: this._path, id: this._id, object: this });
+                }
             },
             '' : function() {
                 com.un(this._id + '-update', this._statesReady);
@@ -78,7 +66,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                 if(this.hasMod('pointerover')) {
                     this._timer = setTimeout(this.setSelection.bind(this), 1550);
                 } else {
-                    throttled(this.setSelection, this);                    
+                    this.setSelection();
                 }
 
                 this.__base.apply(this, arguments);
@@ -102,6 +90,18 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                 com.emit('remove-selection');
                 com.once('remove-selection', this.removeSelection, this);
                 this.emit('selected');
+
+                this._details && this._details.setMod('selected');
+            },
+            '' : function() {
+                com.un('rename', this.rename, this);
+                this._details && this._details.delMod('selected');
+            }
+        },
+
+        'pending' : {
+            '' : function() {
+                this.hasMod('need-update') && this._dirSuccess(state.isDir(this._path));
             }
         },
 
@@ -117,6 +117,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 
     setSelection: function() {
         this.setMod('selected');
+        this.hasMod('pointerover') && this.findBlockOutside('menu').setMod('focused');
     },
 
     removeSelection: function() {
@@ -131,11 +132,17 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         return this._path;
     },
 
+    setPath: function(path) {
+        this._path = path;
+    },
+
 
     // redefining basic onclick handling
     _onPointerClick: function() {
         var base = this.__base,
             _old = function(){ 
+                clearTimeout(this._timer);
+                this.setMod('selected');
                 base.apply(this, arguments);
                 timer = false;
             };
@@ -150,12 +157,10 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         (this._isdir || this.hasMod('toplevel')) && 
             com.emit('exec', { position: this._position, path: this._path });
         timer = false;
+        console.log(this._path);
     },
 
-    _isDir: function() {
-        state.setDir(this._path, 'waiting');
-
-        com.once(this._id + '-is-dir', this._dirSuccess, this);
+    _isDir : function() {
         com.emit('is-dir', { path: this._path, id: this._id, object: this });
     },
 
@@ -171,22 +176,21 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         mouseActive && this.__base.apply(this, arguments);
     },
 
-    _statesReady: function(e, data) {
+    _statesReady : function(e, data) {
         com.emit('updated-item-' + this._position);
         this.updateContent(e, data);
+        this.delMod('pending');
     },
 
-    updateContent: function(e, data) {
-        this._stat = data;
-        data || (this._stat = e);
-
+    updateContent : function(e, data) {
+        this._stat = data ? data : e;
 
         if(!this.hasMod('toplevel')){
             var html = BEMHTML.apply(
                     {
                         block: 'details',
                         name: this._stat.name,
-                        type: this._stat.type, 
+                        type: this._stat.type ? this._stat.type : 'file', 
                         stats: this._stat
                     }
                 );
@@ -196,9 +200,18 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         }
     },
 
-    _dirSuccess: function(e, data) {
+    _dirSuccess: function(data) {
         this._isdir = data;
-        !this.hasMod('toplevel') && data && this.setMod('dir');
+        if(!this.hasMod('toplevel') && data) {
+            state.setReadableState(this._path, 'type', 'dir');
+            this.setMod('dir');
+
+            if(this._details) { 
+                this._details.setMod('dir');
+            } else {
+                this.hasMod('pending') && this.setMod('need-update');
+            }        
+        }
     }
 },
 {   // cancel live initialization
@@ -209,6 +222,28 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 	},
     getMouseState : function() { 
         return mouseActive
+    }
+}));
+});
+
+/**
+ * @module menu-item
+ */
+
+modules.define('menu-item', function(provide, MenuItem) {
+
+/**
+ * @exports
+ * @class menu-item
+ * @bem
+ */
+provide(MenuItem.decl({ modName : 'toplevel', modVal : true }, /** @lends menu-item.prototype */{
+    beforeSetMod : {
+        'checked' : {
+            'true' : function() {
+                return false
+            }
+        }
     }
 }));
 });

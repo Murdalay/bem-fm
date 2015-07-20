@@ -164,6 +164,13 @@ var com = channels('116'),
 				action: 'move' }, cb, onFail);
 	    },
 
+	    rename: function(source, destination, cb, onFail) {
+			_formRequest({ 
+				item: source, 
+				destination: destination, 
+				action: 'rename' }, cb, onFail);
+	    },
+
 	    symlink: function(source, destination, cb, onFail) {
 			_formRequest({ 
 				item: source, 

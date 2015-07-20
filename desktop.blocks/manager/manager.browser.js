@@ -22,6 +22,8 @@ provide(BEMDOM.decl(this.name, {
 
 				// command button click handlers
 				com.on('exec', this._exec, this);
+				com.on('disable', this._disable, this);
+				com.on('enable', this._enable, this);
 				com.on('config-ready', function() { this.findBlocksInside('panel'); this._disabler.setMod('disabled', 'true'); }, this);
 				com.on('copy', this._copy, this);
 				com.on('mkdir', this._mkdir, this);
@@ -95,6 +97,16 @@ provide(BEMDOM.decl(this.name, {
 
     _getConfirm: function(message) {
 		return this._confirm.getConfirm(message);
+    },
+
+    _disable: function() {
+        this.findBlockInside('control-group').findBlocksInside('button').forEach(function(item){ item.setMod('disabled')} );
+        this.findBlocksInside('panel').forEach(function(item){ item.setMod('disabled')} );
+    },
+
+    _enable: function() {
+        this.findBlockInside('control-group').findBlocksInside('button').forEach(function(item){ item.delMod('disabled')} );
+        this.findBlocksInside('panel').forEach(function(item){ item.delMod('disabled')} );
     },
 
     _levelUp : function(e, data) {

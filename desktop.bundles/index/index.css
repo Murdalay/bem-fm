@@ -518,7 +518,12 @@
   background: 13px 70% no-repeat url("images/tip.svg");
 }
 .menu-item_theme_islands.i-bem.menu-item_hovered {
+  background-color: #ddd;
+}
+.menu-item_theme_islands.i-bem.menu-item_selected {
   background-color: #96549e;
+  -webkit-transition: background-color 0.6s;
+  transition: background-color 0.6s;
   color: #eee;
 }
 .menu-item {
@@ -553,6 +558,15 @@
   min-width: 40px;
   padding-left: 6px;
 }
+.details_error .input {
+  box-shadow: 0 0 0 1px #f00;
+}
+.details_good .input {
+  box-shadow: 0 0 0 1px #2f0;
+}
+.details_typing .input {
+  box-shadow: 0 0 0 1px #999;
+}
 .details__name {
   font-size: 16px;
   color: #333;
@@ -582,13 +596,25 @@
   font-weight: bolder;
   font-variant: small-caps;
 }
-.details__name_hovered.details__name_type_file {
+.details_selected .details__name {
+  max-width: 460px;
+  -webkit-transition: max-width 1s;
+  transition: max-width 1s;
+}
+.details_selected .details__name_type_file {
   color: #eee;
   -webkit-text-fill-color: #eee;
 }
-.details__name_hovered.details__name_type_dir {
+.details_selected .details__name_type_dir {
   color: #fff;
   -webkit-text-fill-color: #fff;
+}
+.details_selected .details__name_rename {
+  -webkit-transition: min-width 0.8s;
+  transition: min-width 0.8s;
+  min-width: 460px;
+  color: #333;
+  -webkit-text-fill-color: #333;
 }
 .details__size {
   color: #a9d;

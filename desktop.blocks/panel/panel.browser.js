@@ -55,6 +55,20 @@ provide(BEMDOM.decl(this.name, {
 					return state.getState(path, 'uid');	
 				};
             }
+        },
+        'disabled' : {
+            'true' : function() {
+        		this._list.findBlockInside('menu').setMod('disabled');
+        		this._select.setMod('disabled');
+        		this._path.setMod('disabled');
+        		this._sorters.setMod('disabled');
+            },
+            '' : function() {
+        		this._list.findBlockInside('menu').delMod('disabled');
+        		this._select.delMod('disabled');
+        		this._path.delMod('disabled');
+        		this._sorters.delMod('disabled');
+            }
         }      
     },
 

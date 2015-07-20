@@ -402,6 +402,9 @@ exports.deps = [
         "block": "details"
     },
     {
+        "block": "function__debounce"
+    },
+    {
         "block": "menu",
         "mod": "focused"
     },
@@ -1041,7 +1044,25 @@ exports.depsByTechs = {
             },
             {
                 "tech": "tmpl-spec.js",
-                "block": "size"
+                "block": "input",
+                "mod": "theme"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input",
+                "mod": "size"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "input",
+                "mod": "size",
+                "val": "l"
             },
             {
                 "tech": "tmpl-spec.js",
@@ -1051,6 +1072,14 @@ exports.depsByTechs = {
                 "tech": "tmpl-spec.js",
                 "block": "events",
                 "elem": "channels"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "size"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "function__debounce"
             },
             {
                 "tech": "tmpl-spec.js",
@@ -1271,6 +1300,10 @@ exports.depsByTechs = {
                 "elem": "event",
                 "mod": "type",
                 "val": "pointernative"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "details"
             },
             {
                 "tech": "tmpl-spec.js",
@@ -1673,7 +1706,25 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
-                "block": "size"
+                "block": "input",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "size",
+                "val": "l"
             },
             {
                 "tech": "bemhtml",
@@ -1683,6 +1734,14 @@ exports.depsByTechs = {
                 "tech": "bemhtml",
                 "block": "events",
                 "elem": "channels"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "function__debounce"
             },
             {
                 "tech": "bemhtml",
@@ -2174,7 +2233,25 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
-                "block": "size"
+                "block": "input",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "size",
+                "val": "l"
             },
             {
                 "tech": "bemhtml",
@@ -2184,6 +2261,14 @@ exports.depsByTechs = {
                 "tech": "bemhtml",
                 "block": "events",
                 "elem": "channels"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "function__debounce"
             },
             {
                 "tech": "bemhtml",
@@ -2700,7 +2785,25 @@ exports.depsByTechs = {
             },
             {
                 "tech": "spec.js",
-                "block": "size"
+                "block": "input",
+                "mod": "theme"
+            },
+            {
+                "tech": "spec.js",
+                "block": "input",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "spec.js",
+                "block": "input",
+                "mod": "size"
+            },
+            {
+                "tech": "spec.js",
+                "block": "input",
+                "mod": "size",
+                "val": "l"
             },
             {
                 "tech": "spec.js",
@@ -2710,6 +2813,14 @@ exports.depsByTechs = {
                 "tech": "spec.js",
                 "block": "events",
                 "elem": "channels"
+            },
+            {
+                "tech": "spec.js",
+                "block": "size"
+            },
+            {
+                "tech": "spec.js",
+                "block": "function__debounce"
             },
             {
                 "tech": "spec.js",
@@ -2958,6 +3069,10 @@ exports.depsByTechs = {
                 "elem": "event",
                 "mod": "type",
                 "val": "pointernative"
+            },
+            {
+                "tech": "spec.js",
+                "block": "details"
             },
             {
                 "tech": "spec.js",
@@ -3290,7 +3405,57 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
-                "block": "size"
+                "block": "input"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "elem": "box"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "elem": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "disabled"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "tick"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "idle"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "size",
+                "val": "l"
             },
             {
                 "tech": "bemhtml",
@@ -3300,6 +3465,14 @@ exports.depsByTechs = {
                 "tech": "bemhtml",
                 "block": "events",
                 "elem": "channels"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "function__debounce"
             },
             {
                 "tech": "bemhtml",
@@ -3533,60 +3706,6 @@ exports.depsByTechs = {
                 "tech": "bemhtml",
                 "block": "functions",
                 "elem": "debounce"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "elem": "box"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "elem": "control"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "disabled"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "focused"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "tick"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "idle"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "theme"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "theme",
-                "val": "islands"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "size"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "size",
-                "val": "l"
             },
             {
                 "tech": "bemhtml",
@@ -3933,6 +4052,10 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
+                "block": "function__debounce"
+            },
+            {
+                "tech": "js",
                 "block": "menu",
                 "mod": "focused"
             },
@@ -4207,6 +4330,10 @@ exports.depsByTechs = {
             {
                 "tech": "js",
                 "block": "dom"
+            },
+            {
+                "tech": "js",
+                "block": "details"
             },
             {
                 "tech": "js",
@@ -4544,7 +4671,57 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
-                "block": "size"
+                "block": "input"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "elem": "box"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "elem": "control"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "disabled"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "focused"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "tick"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "idle"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "theme"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "theme",
+                "val": "islands"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "input",
+                "mod": "size",
+                "val": "l"
             },
             {
                 "tech": "bemhtml",
@@ -4554,6 +4731,14 @@ exports.depsByTechs = {
                 "tech": "bemhtml",
                 "block": "events",
                 "elem": "channels"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "size"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "function__debounce"
             },
             {
                 "tech": "bemhtml",
@@ -4741,60 +4926,6 @@ exports.depsByTechs = {
                 "tech": "bemhtml",
                 "block": "functions",
                 "elem": "debounce"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "elem": "box"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "elem": "control"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "disabled"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "focused"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "tick"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "idle"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "theme"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "theme",
-                "val": "islands"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "size"
-            },
-            {
-                "tech": "bemhtml",
-                "block": "input",
-                "mod": "size",
-                "val": "l"
             },
             {
                 "tech": "bemhtml",
@@ -5050,6 +5181,10 @@ exports.depsByTechs = {
             {
                 "tech": "bemhtml",
                 "block": "idle"
+            },
+            {
+                "tech": "bemhtml",
+                "block": "details"
             },
             {
                 "tech": "bemhtml",

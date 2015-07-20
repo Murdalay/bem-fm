@@ -255,6 +255,19 @@ modules.define('router', ['config', 'vow'], function(provide, config, vow) {
 		});
 	});
 
+	app.get('/rename', function (req, res) {
+		vfs.move(req.query.source, req.query.destination)
+		.then(function(data){
+			console.log('success');
+			res.end(JSON.stringify('done'));
+		})
+		.fail(function(response){
+			res.status(500).end(JSON.stringify(response));
+			console.warn('Failed to move\n');
+			console.error(response);
+		});
+	});
+
 	app.get('/state', function (req, res) {
 		var _path = path.normalize(req.query.path);
 

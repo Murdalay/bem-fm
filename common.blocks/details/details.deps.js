@@ -3,12 +3,14 @@
 },
 {
     shouldDeps : [
-        { block : 'input', mods : { theme : 'islands', size : 'm' } },
+        { block : 'input', mods : { theme : 'islands', size : 'l' } },
+        { block : 'state' },
+        { block : 'function__debounce' }
     ]
 },
 {
     tech: 'js',
     mustDeps: [
-        { tech : 'bemhtml', block : 'input', mods : { theme : 'islands', size : 'm' } }
+        { tech : 'bemhtml', block : 'input', mods : { theme : 'islands', size : 'l' } }
     ]
 }]
