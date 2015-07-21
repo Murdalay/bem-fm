@@ -11098,18 +11098,36 @@ provide(BEMDOM.decl(this.name, {
                 this.delMod(this.findElem('name'), 'hovered');
             }
         },
-        'typing' : {
-            '' : function() {
-                if(this._isConfirmed){
-                    this._isConfirmed = false;
-                    this._confirm();
-                }
-            }
-        },
         'dir' : {
             'true' : function() {
                 this.elem('type').html('dir');
                 this.setMod(this.elem('name'), 'type', 'dir');
+            }
+        },
+        'selected' : {
+            'true' : function() {
+                com.on('rename', this.rename, this);
+            },
+            '' : function() {
+                com.un('rename', this._rename, this);
+            }
+        },
+        'error' : {
+            'true' : function() {
+                this.delMod('good');
+                this.delMod('old');
+            }
+        },
+        'good' : {
+            'true' : function() {
+                this.delMod('error');
+                this.delMod('old');
+            }
+        },
+        'old' : {
+            'true' : function() {
+                this.delMod('good');
+                this.delMod('error');
             }
         },
         'rename' : {
@@ -11155,33 +11173,7 @@ provide(BEMDOM.decl(this.name, {
                 delete this._item;
                 delete this._basePath;
             }
-        },
-        'selected' : {
-            'true' : function() {
-                com.on('rename', this.rename, this);
-            },
-            '' : function() {
-                com.un('rename', this._rename, this);
-            }
-        },
-        'error' : {
-            'true' : function() {
-                this.delMod('good');
-                this.delMod('old');
-            }
-        },
-        'good' : {
-            'true' : function() {
-                this.delMod('error');
-                this.delMod('old');
-            }
-        },
-        'old' : {
-            'true' : function() {
-                this.delMod('good');
-                this.delMod('error');
-            }
-        }      
+        }     
     },
 
     rename : function() {
@@ -11201,8 +11193,8 @@ provide(BEMDOM.decl(this.name, {
     },
 
     _sendRequest : debounce(function(path, cb) {
-        request.checkExist(path, cb, function(){ console.log('Error checking exist')});
-    }, 850),
+        request.checkExist(path, cb, function(){ console.error('Error checking exist')});
+    }, 450),
 
     _confirm : function() {
         var _success = function() {
