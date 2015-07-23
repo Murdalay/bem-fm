@@ -33,6 +33,125 @@
                 "hint": "To specify the subfolders use a slash"
             }
         },
+        "keyBindings":[
+            {
+                "action":"copy",
+                "KeyCode": 53,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"move",
+                "KeyCode": 54,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"download",
+                "KeyCode": 55,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"symlink",
+                "KeyCode": 52,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"hardlink",
+                "KeyCode": 51,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"mkdir",
+                "KeyCode": 50,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"delete",
+                "KeyCode": 8,
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : false,
+                    "Cmd" : true
+                }
+            },
+            {
+                "action":"levelup",
+                "KeyCode": 38,
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : false,
+                    "Cmd" : true
+                }
+            },
+            {
+                "action":"exec",
+                "KeyCode": 40,
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : false,
+                    "Cmd" : true
+                }
+            },
+            {
+                "action":"all",
+                "KeyCode": 187,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"deselect",
+                "KeyCode": 189,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"inverse",
+                "KeyCode": 192,
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : false,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"rename",
+                "KeyCode": 13,
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : false,
+                    "Cmd" : true
+                }
+            }
+        ],
         "queueSettings": {
             "copy": {
                 "priority": 5,

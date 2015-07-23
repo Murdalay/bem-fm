@@ -1,5 +1,5 @@
-modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state', 'functions__throttle'], 
-	function(provide, BEMDOM, channels, BEMHTML, state, throttle, MenuItem) {
+modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state', 'functions__throttle', 'path-normalizer'], 
+	function(provide, BEMDOM, channels, BEMHTML, state, throttle, normalizer, MenuItem) {
 		var timer,
             mouseActive = true,
             _mouseActivityTimer,
@@ -13,6 +13,7 @@ modules.define('menu-item', ['i-bem__dom', 'events__channels', 'BEMHTML', 'state
                 }, 1000);
             },
 
+            normalize = normalizer.normalize,
 			com = channels('116');
 
 provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu-item.prototype */{
@@ -29,7 +30,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         'js' : {
             'inited' : function() {
                 this._position = this.getMod('position');
-                this._path = this.getVal();
+                this._path = normalize(this.getVal());
 
                 this.__base.apply(this, arguments);
 
@@ -89,12 +90,13 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
             'true' : function() {
                 com.emit('remove-selection');
                 com.once('remove-selection', this.removeSelection, this);
+                com.on('exec', this._exec, this);
                 this.emit('selected');
 
                 this._details && this._details.setMod('selected');
             },
             '' : function() {
-                com.un('rename', this.rename, this);
+                com.un('exec');
                 this._details && this._details.delMod('selected');
             }
         },
@@ -136,6 +138,18 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         this._path = path;
     },
 
+    _exec : function(e, data) {
+        var _isDir = state.isDir(this._path);
+            _destination = normalize(this._path);
+
+        if(this.hasMod('toplevel')) {
+            com.emit('set-path-' + this._position, _destination);
+            com.emit('path-'     + this._position, _destination); 
+        } else if(_isDir) {
+            com.emit('set-path-' + this._position, this._path);
+            com.emit('path-'     + this._position, this._path); 
+        }
+    },
 
     // redefining basic onclick handling
     _onPointerClick: function() {
@@ -150,14 +164,6 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
         if(!timer){
             timer = setTimeout(_old.bind(this), 300);
         }
-    },
-
-    _exec: function(e) {
-        window.clearTimeout(timer); 
-        (this._isdir || this.hasMod('toplevel')) && 
-            com.emit('exec', { position: this._position, path: this._path });
-        timer = false;
-        console.log(this._path);
     },
 
     _isDir : function() {

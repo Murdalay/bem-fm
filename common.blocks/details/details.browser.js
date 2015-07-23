@@ -31,7 +31,7 @@ provide(BEMDOM.decl(this.name, {
                 com.on('rename', this.rename, this);
             },
             '' : function() {
-                com.un('rename', this._rename, this);
+                com.un('rename', this.rename, this);
             }
         },
         'error' : {
@@ -54,6 +54,8 @@ provide(BEMDOM.decl(this.name, {
         },
         'rename' : {
             'true' : function() {
+                com.emit('keyOverride');
+
                 this._oldVal = this.elem('name').html();
 
                 this.setMod(this.elem('name'), 'rename');
@@ -64,16 +66,14 @@ provide(BEMDOM.decl(this.name, {
                     val : this._oldVal
                 });
 
-                com.emit('keyOverride');
                 BEMDOM.update(this.elem('name'), html);
+                
                 this._input = this.findBlockInside('input');
-
-                this.bindToDoc('keypress', this._onKeyPress, this);
-                this._input.on('input change', this._onInput, this);
-
                 this._input.setMod('focused');
 
                 this._path = this._item.getPath();
+                this.bindToDoc('keypress', this._onKeyPress, this);
+                this._input.on('input change', this._onInput, this);
 
                 com.emit('disable');
                 this.findBlockOutside('menu-item').delMod('disabled');

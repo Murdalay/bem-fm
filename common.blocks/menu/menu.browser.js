@@ -4,9 +4,22 @@
  * @module menu
  */
 
-modules.define('menu', ['keyboard__codes', 'events__channels', 'menu-item', 'functions__throttle'], 
-function(provide, keyCodes, channels, Item, throttle, Menu) {
-	var com = channels('116');
+modules.define('menu', ['keyboard__codes', 'events__channels', 'menu-item', 'functions__throttle', 'functions__debounce', 'state'], 
+function(provide, keyCodes, channels, Item, throttle, debounce, state, Menu) {
+    var com = channels('116'),
+        transitionRequest,
+        transitionInProgress = false,
+
+        _onAnimationEnd = function(){
+            transitionInProgress = false;
+
+            if(transitionRequest) {
+                transitionRequest();
+                transitionRequest = false;
+            } 
+        },
+
+        throttleMe = throttle(_onAnimationEnd, 450, true);
 
 /**
  * @exports
@@ -19,67 +32,94 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
             'inited' : function() {
                 this._lastItem = false;
                 com.on('keyOverride', this._keyPressOverride, this);
-                com.on('keyRestore', this._keyRestore, this);
+                com.on('keyRestore', this._keyPressRestore, this);
 
-                Item.on(this.domElem, 'selected', throttle(this._onSelect, 450), this);
+                Item.on(this.domElem, 'selected', this._onSelect, this);
+
+                this.__base.apply(this, arguments);
+            },
+            '' : function() {
+                com.un('keyOverride', this._keyPressOverride, this);
+                com.un('keyRestore', this._keyPressRestore, this);
+
+                Item.un(this.domElem, 'selected', this._onSelect);
 
                 this.__base.apply(this, arguments);
             }
         },
         'focused' : {
             'true' : function() {
-            	if(this._lastItem){
-	            	this._hoveredItem = this._lastItem.setMod('hovered');	
-            	} else {
-	                this._lastItem = this._hoveredItem ? 
-		                this._hoveredItem :
-			                this.getItems()[0].setMod('hovered');
-            	}
+                if(this._lastItem){
+                    this._hoveredItem = this._lastItem.setMod('selected');  
+                } else {
+                    this._lastItem = this._hoveredItem ? 
+                        this._hoveredItem.setMod('selected') :
+                            this.getItems()[0].setMod('selected').setMod('hovered');
+                }
 
                 this.__base.apply(this, arguments);
+            }
+        },
+        'active' : {
+            'true' : function() {
+               this.setMod('focused');
+            },
+            '' : function() {
+                this.hasMod('focused') && this.delMod('focused');
             }
         }
     },
 
     _onKeyDown : function(e) {
+		if(this.hasMod('keys-disabled') || !this.hasMod('active')) { return };
+
         var keyCode = e.keyCode,
-	        cmdDown = false,
-	        _cmd = function(e){ 
-	        	if (e.keyCode === 91) {
-					this.unbindFromDoc('keyup', _cmd);
-					cmdDown = false;
-	        	}
-			};
+            ctrlDown = e.ctrlKey,
+            altDown = e.altKey,
+            cmdDown = e.metaKey,
+            keyBindings = state.getClientConfig().keyBindings,
 
-			console.log(e);
+            _isSpecial = function(){ 
+                if (keyCode === 91 || keyCode === 17 || keyCode === 18) {
+                    return true;
+                }
+                return false
+            },
 
-		if(this.hasMod('keys-disabled')) { 
-            // e.preventDefault();
-            return 
-        };
+            _filterMatchedSpecials = function(){
+                var matched = [];
 
-        e.metaKey && (cmdDown = true) && this.bindToDoc('keyup', _cmd);
+                keyBindings.forEach(function(item){
+                    !item.controlKeys.Ctrl === !ctrlDown &&
+                    !item.controlKeys.Alt === !altDown &&
+                    !item.controlKeys.Cmd === !cmdDown && matched.push(item);
+                }.bind(this));
 
-        if(this._hoveredItem && cmdDown && keyCode === keyCodes.ENTER) {
-            com.emit('rename');
-            return false
+                return matched;
+            };
+
+        console.log(keyCode);
+
+        if(cmdDown || ctrlDown || altDown) {
+            if(!_isSpecial()){
+                var matched = _filterMatchedSpecials();
+
+                matched.forEach(function(item){
+                    if(keyCode === item.KeyCode && typeof item.action === 'string'){
+                        com.emit(item.action, this);
+                    }
+                }.bind(this));
+
+                return false;
+            }
         }
-        else if(this._hoveredItem && keyCode === keyCodes.ENTER || cmdDown && keyCode === keyCodes.DOWN ) {
-			com.emit('exec', { 
-				position: this._hoveredItem.getPosition(),
-				path: this._hoveredItem.getPath() 
-			});
-        } 
-        else if(this._hoveredItem && cmdDown) {
-        	if (keyCode === keyCodes.BACKSPACE) {
-				com.emit('delete');
-        	}
-        	else if(keyCode === keyCodes.UP) {
-				com.emit('levelup', this._hoveredItem.getPosition());
-        	}
+
+        if(this._hoveredItem && keyCode === keyCodes.ENTER || cmdDown && keyCode === keyCodes.DOWN ) {
+            com.emit('exec');
+            e.preventDefault();
         } 
         else if(keyCode === keyCodes.TAB) {
-        	e.preventDefault();
+            e.preventDefault();
         	this.findBlockOutside('manager').getInactiveMenu().setMod('focused');
         } else {
 	        this.__base.apply(this, arguments);
@@ -90,29 +130,42 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
         this.setMod('keys-disabled');
     },
 
-    _onSelect : function(e) {
-        var list = this.findBlockOutside('list').domElem,
-            topOfset = list.offset().top,
-            listHeight = list.innerHeight(),
-            position = list.scrollTop(),
-            itemPos = e.target.domElem.offset().top - topOfset,
-            height = e.target.domElem.innerHeight();
-            activeTop = height * 2,
-            activeBottom = listHeight - (height * 2);
-
-        if(itemPos > activeBottom) {
-            list.animate({ scrollTop: position + itemPos - height }, "slow");
-        } else if(itemPos < activeTop && itemPos >= 0) {
-            list.animate({ scrollTop: position - height * 2 }, "slow");
-        } else if(itemPos < 0) {
-            list.animate({ scrollTop: position + itemPos - height * 2 }, "slow");
-        }
-
-        this._lastItem = e.target; 
+    _keyPressRestore : function(e) {
+        this.delMod('keys-disabled');
     },
 
-    _keyRestore : function(e) {
-        this.delMod('keys-disabled');
+    _onSelect : function(event) {
+        transitionRequest = function() {
+            var list = this.findBlockOutside('list').domElem,
+                e = event,
+
+                startTransition = function(scrollTop) {
+                    if(list){
+                        transitionInProgress = true;
+                        list.animate({ scrollTop: scrollTop }, "slow", _onAnimationEnd);
+                    }
+                }.bind(this),
+
+                topOfset = list.offset().top,
+                listHeight = list.innerHeight(),
+                position = list.scrollTop(),
+                itemPos = e.target.domElem.offset().top - topOfset,
+                height = e.target.domElem.innerHeight();
+                activeTop = height * 2,
+                activeBottom = listHeight - (height * 2);
+
+            if(itemPos > activeBottom) {
+                startTransition(position + itemPos - height);
+            } else if(itemPos < activeTop && itemPos >= 0) {
+                startTransition(position - height * 2);
+            } else if(itemPos < 0) {
+                startTransition(position + itemPos - height * 2);
+            }
+
+            this._lastItem = e.target;
+        }.bind(this);
+
+        transitionInProgress || throttleMe();
     },
 
     _onItemHover : function(item) {

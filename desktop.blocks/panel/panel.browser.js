@@ -20,6 +20,7 @@ provide(BEMDOM.decl(this.name, {
 
         		com.on('disks-changed', this._setSelectValue, this);
         		com.on(this._position + '-drive-changed', this._setActiveSelectItem, this);
+        		com.on(this._position + '-sort', this._customSort, this);
 
 				com.on('refresh', this._getList, this);
 				com.on('path-' + this._position, this._getList, this);
@@ -72,17 +73,17 @@ provide(BEMDOM.decl(this.name, {
         }      
     },
 
-    getListLenght: function() {
+    getListLenght : function() {
         return this._listLength;
     },
 
-    _setChildsMod: function() {
+    _setChildsMod : function() {
     	this._path.setMod('position', this._position);
     	this._select.setMod('position', this._position);
     	state.getDisks() && this._setSelectValue();
     },
 
-    _setPath: function(e) {
+    _setPath : function(e) {
     	var drives = state.getDisks(),
 	    	mountpoint = drives[e.target.getVal()].mountpoint;
 
@@ -136,7 +137,11 @@ provide(BEMDOM.decl(this.name, {
 			this.hasMod('reverse') && this.delMod('reverse');
 		}
 		
-		this.setMod('sort', _name);
+		this._customSort(_name);
+    },
+
+    _customSort : function(sortmode) {
+		this.setMod('sort', sortmode);
 		this.setMod('custom-sort');
 		this._update();
     },
@@ -145,18 +150,18 @@ provide(BEMDOM.decl(this.name, {
 		this.hasMod('custom-sort') && this._getList('');
     },
 
-	_getList: function(e, data) {
+	_getList : function(e, data) {
 		data && (this._curPath = data);
 
 	   	com.on(this._position + '-list-is', this._buildItems, this);
 	   	com.emit('give-list', { 
 	   		position : this._position, 
-	   		path: this._curPath, 
-	   		refresh: e.type === 'refresh' ? true : false 
+	   		path : this._curPath, 
+	   		refresh : e.type === 'refresh' ? true : false 
 	   	});
     },
 
-    _buildItems: function(e, data) {
+    _buildItems : function(e, data) {
 		var items = [],
 			list = [],
 			html,

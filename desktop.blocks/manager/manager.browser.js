@@ -21,7 +21,6 @@ provide(BEMDOM.decl(this.name, {
 				BEMDOM.blocks['button'].on(this._control, 'click', this._onButtonClick, this);
 
 				// command button click handlers
-				com.on('exec', this._exec, this);
 				com.on('disable', this._disable, this);
 				com.on('enable', this._enable, this);
 				com.on('config-ready', function() { this.findBlocksInside('panel'); this._disabler.setMod('disabled', 'true'); }, this);
@@ -109,33 +108,12 @@ provide(BEMDOM.decl(this.name, {
         this.findBlocksInside('panel').forEach(function(item){ item.delMod('disabled')} );
     },
 
-    _levelUp : function(e, data) {
-    	var _position = data,
-	    	_path = state.getCurPath(_position) + '/..',
-	    	_destination = normalize(_path);
+    _levelUp : function() {
+    	var _position = this.getActiveMenu().getMod('position'),
+	    	_destination = normalize(state.getCurPath(_position) + '/..');
 
         com.emit('set-path-' + _position, _destination);
         com.emit('path-'     + _position, _destination);  	
-    },
-
-    _exec : function(e, data) {
-    	this._execPosition = data.position;
-    	var normalPath = normalize(data.path),
-	    	_name,
-	    	_isDir = state.isDir(normalPath);
-
-		if(_isDir){
-			com.emit('set-path-' + this._execPosition, normalPath);    	
-	        com.emit('path-'     + this._execPosition, normalPath);  
-		} else {
-			_name = data.path.split('/');
-			_name = _name[_name.length - 1];
-
-			if (_name === '..'){
-		        com.emit('set-path-' + this._execPosition, normalPath);    	
-		        com.emit('path-'     + this._execPosition, normalPath);  	
-			}
-		}
     },
 
 	_selectAll: function(e, data) {
