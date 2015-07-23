@@ -8563,7 +8563,8 @@ var com = channels('116'),
 			        	ctime: _ctime.toLocaleString(),
 						size: size(resp.size),
 						uid: resp.uid,
-						name: state.getName(data.path)
+						name: state.getName(data.path),
+						type: 'file'
 					};
 
 		        data.object.updateContent(readable);
@@ -9419,7 +9420,6 @@ provide(BEMDOM.decl(this.name, {
         		this._path = this.findBlockInside('path');
         		this._sorters = this.findBlockInside('radio-group');
 
-
         		this.bindTo(this._sorters.domElem, 'click', this._onSorterClick, this);
 
         		com.on('disks-changed', this._setSelectValue, this);
@@ -9440,6 +9440,7 @@ provide(BEMDOM.decl(this.name, {
         'sort' : {
             'type' : function() {
 				this._sortField = function(path){
+					console.log(state.getReadableState(path, 'type'));
 					return state.getReadableState(path, 'type');	
 				};
             },
@@ -11057,7 +11058,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
                     {
                         block: 'details',
                         name: this._stat.name,
-                        type: this._stat.type ? this._stat.type : 'file', 
+                        type: this._stat.type, 
                         stats: this._stat
                     }
                 );
@@ -11187,7 +11188,6 @@ provide(BEMDOM.decl(this.name, {
                 });
 
                 BEMDOM.update(this.elem('name'), html);
-                
                 this._input = this.findBlockInside('input');
                 this._input.setMod('focused');
 

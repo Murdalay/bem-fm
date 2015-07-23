@@ -36,7 +36,8 @@ var com = channels('116'),
 			        	ctime: _ctime.toLocaleString(),
 						size: size(resp.size),
 						uid: resp.uid,
-						name: state.getName(data.path)
+						name: state.getName(data.path),
+						type: 'file'
 					};
 
 		        data.object.updateContent(readable);

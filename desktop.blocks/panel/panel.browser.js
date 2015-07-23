@@ -15,7 +15,6 @@ provide(BEMDOM.decl(this.name, {
         		this._path = this.findBlockInside('path');
         		this._sorters = this.findBlockInside('radio-group');
 
-
         		this.bindTo(this._sorters.domElem, 'click', this._onSorterClick, this);
 
         		com.on('disks-changed', this._setSelectValue, this);
@@ -36,6 +35,7 @@ provide(BEMDOM.decl(this.name, {
         'sort' : {
             'type' : function() {
 				this._sortField = function(path){
+					console.log(state.getReadableState(path, 'type'));
 					return state.getReadableState(path, 'type');	
 				};
             },

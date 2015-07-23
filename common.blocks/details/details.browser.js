@@ -67,7 +67,6 @@ provide(BEMDOM.decl(this.name, {
                 });
 
                 BEMDOM.update(this.elem('name'), html);
-                
                 this._input = this.findBlockInside('input');
                 this._input.setMod('focused');
 

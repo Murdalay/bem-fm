@@ -193,13 +193,13 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 
         if(!this.hasMod('toplevel')){
             var html = BEMHTML.apply(
-                    {
-                        block: 'details',
-                        name: this._stat.name,
-                        type: this._stat.type ? this._stat.type : 'file', 
-                        stats: this._stat
-                    }
-                );
+                {
+                    block: 'details',
+                    name: this._stat.name,
+                    type: this._stat.type, 
+                    stats: this._stat
+                }
+            );
     
             BEMDOM.update(this.domElem, html);
             this._details = this.findBlockInside('details');
