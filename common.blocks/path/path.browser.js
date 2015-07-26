@@ -51,11 +51,11 @@ provide(BEMDOM.decl(this.name, {
     serveAsPathfinder : function(position) {
         this._position = position;
 
-        this.bindTo('input change', debounce(this._checkPath, 650, this));
+        this.bindTo('input change', debounce(this._checkPath, 850, this));
         com.on('check-path', this._checkPath, this);
 
-        this._getDefPath();
         this._ready4All();
+        this._getDefPath();
     },
 
     serveAsDestination : function() {
@@ -72,14 +72,14 @@ provide(BEMDOM.decl(this.name, {
                 
             if(_res.exist && _res.path !== '.' && _res.path !== './') {
                 this._lastVal = normalize(_res.path);
-                this.setVal(this._lastVal);
+                this.setVal(normalize(this._lastVal));
             }
             else {
-                this._lastVal ? this.setVal(this._lastVal) : this.setVal('/');
+                this._lastVal ? this.setVal(normalize(this._lastVal)) : this.setVal('/');
             };
         };
 
-        this._lastVal || (this._lastVal = this.getVal());
+        this._lastVal || (this._lastVal = normalize(this.getVal()));
         this._checkPath(value, _requestSuccess);
     },
 
@@ -91,6 +91,7 @@ provide(BEMDOM.decl(this.name, {
     setAll : function(e, data) {
         data || (data = e);
 
+        data = normalize(data);
         this.setVal(data);
         this._setCook(data);
         this._curPath = data;
@@ -125,15 +126,19 @@ provide(BEMDOM.decl(this.name, {
 
     _getDefPath : function() {
         this._curPath = cookie.get('path-' + this._position);
-        this._curPath || (this._curPath = conf()[this._position]);
-
+console.log(this._curPath);
         this._checkPath(this._curPath);
     },
 
    _checkPath: function(path, cb) {
         this._abortRequest();
+        cb = cb ? cb.bind(this) : this._onSuccess.bind(this);
+        var _path = typeof path !== 'object' ? path : this.getVal();
         
-        var _path = typeof path !== 'object' ? normalize(path) : normalize(this.getVal());
+        if(!_path){
+            cb('{"res":{"exist":false}}');
+            return
+        }
 
         this._xhr = $.ajax({
             type: 'GET',
@@ -141,7 +146,7 @@ provide(BEMDOM.decl(this.name, {
             url: '/exist',
             data: { path: _path },
             cache: false,
-            success: cb ? cb.bind(this) : this._onSuccess.bind(this)
+            success: cb
         });
     },
 
@@ -153,22 +158,25 @@ provide(BEMDOM.decl(this.name, {
         var _res = JSON.parse(result);
             
         if(_res.exist) {
-            _res.path = normalize(_res.path);
-            this.setAll(_res.path);
-            com.emit('path-' + this._position, _res.path);
+            var _path = normalize(_res.path);
+
+            this.setAll(_path);
+            com.emit('path-' + this._position, _path);
 
             this.detectMountpoint();
         }
         else {
-            this._curPath ? 
-                this.setAll(this._curPath) :
-                    this.setAll('/');
+            if(!this._curPath) {
+                this._curPath = conf()[this._position]
+                com.emit('path-' + this._position, this._curPath);
+            }
+            this.setAll(normalize(this._curPath));
         };
 
     },
 
     _setCook : function(path) {
-        this._position && cookie.set('path-' + this._position, path);
+        this._position && cookie.set('path-' + this._position, normalize(path));
     }
-}));
+},{ live : true }));
 });

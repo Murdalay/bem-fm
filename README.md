@@ -28,7 +28,7 @@ Main libraries used:
 * [bem-core](https://github.com/bem/bem-core) v2.6+ – the helpers for work with BEM entities, and events, BEM-flavored JS framework, and other helpful stuff. 
 * [bem-components](https://github.com/bem/bem-components) v2.1+ – the set of interface components.
 * `vow-fs` – async file system library for NodeJS.
-* `express` framework.
+* `express` router.
 
 ## Instalation
 

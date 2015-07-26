@@ -19,7 +19,9 @@ provide(BEMDOM.decl(this.name, {
 
         		com.on('disks-changed', this._setSelectValue, this);
         		com.on(this._position + '-drive-changed', this._setActiveSelectItem, this);
-        		com.on(this._position + '-sort', this._customSort, this);
+        		com.on('sort', this._onSortEvent, this);
+        		com.on('cd', this._onDriveChange, this);
+        		com.on('focus-to-path', this._focusToPath, this);
 
 				com.on('refresh', this._getList, this);
 				com.on('path-' + this._position, this._getList, this);
@@ -131,19 +133,38 @@ provide(BEMDOM.decl(this.name, {
     _onSorterClick : function() {
 		var _name = this._sorters.getVal();
 
-		if(this.hasMod('sort', _name)) {
+		this._customSort(_name);
+    },
+
+    _customSort : function(sortmode) {
+		if(this.hasMod('sort', sortmode)) {
 			this.toggleMod('reverse');
 		} else {
 			this.hasMod('reverse') && this.delMod('reverse');
 		}
 		
-		this._customSort(_name);
-    },
-
-    _customSort : function(sortmode) {
 		this.setMod('sort', sortmode);
 		this.setMod('custom-sort');
 		this._update();
+    },
+
+    _onSortEvent : function(e, data) {
+    	if (data && data.position === this._position && data.extras) {
+			this._customSort(data.extras);
+			this._sorters.setVal(data.extras);
+    	}
+    },
+
+	_onDriveChange : function(e, data) {
+    	if (data && data.extras && data.extras === this._position) {
+			this._select.setMod('opened');
+    	}
+    },
+
+	_focusToPath : function(e, data) {
+    	if (data && data.position === this._position) {
+			this._path.findBlockInside('input').setMod('focused');
+    	}
     },
 
     _update : function() {
@@ -226,6 +247,6 @@ provide(BEMDOM.decl(this.name, {
 
 		this._path.detectMountpoint();
     }
-}));
+}, { live : true }));
 
 });

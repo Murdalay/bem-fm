@@ -326,10 +326,10 @@ exports.deps = [
         "block": "panel"
     },
     {
-        "block": "path"
+        "block": "cookie"
     },
     {
-        "block": "cookie"
+        "block": "path"
     },
     {
         "block": "functions",
@@ -3692,11 +3692,11 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
-                "block": "path"
+                "block": "cookie"
             },
             {
                 "tech": "bemhtml",
-                "block": "cookie"
+                "block": "path"
             },
             {
                 "tech": "bemhtml",
@@ -3802,6 +3802,10 @@ exports.depsByTechs = {
             },
             {
                 "tech": "js",
+                "block": "cookie"
+            },
+            {
+                "tech": "js",
                 "block": "state"
             },
             {
@@ -3816,10 +3820,6 @@ exports.depsByTechs = {
             {
                 "tech": "js",
                 "block": "path"
-            },
-            {
-                "tech": "js",
-                "block": "cookie"
             },
             {
                 "tech": "js",
@@ -4912,11 +4912,11 @@ exports.depsByTechs = {
             },
             {
                 "tech": "bemhtml",
-                "block": "path"
+                "block": "cookie"
             },
             {
                 "tech": "bemhtml",
-                "block": "cookie"
+                "block": "path"
             },
             {
                 "tech": "bemhtml",

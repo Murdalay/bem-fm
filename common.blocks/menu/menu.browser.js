@@ -70,6 +70,10 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
         }
     },
 
+    getActiveItem : function() {
+        return this.getItems().filter(function(item) { return item.hasMod('active'); });
+    },
+
     _onKeyDown : function(e) {
 		if(this.hasMod('keys-disabled') || !this.hasMod('active')) { return };
 
@@ -91,8 +95,8 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
 
                 keyBindings.forEach(function(item){
                     !item.controlKeys.Ctrl === !ctrlDown &&
-                    !item.controlKeys.Alt === !altDown &&
-                    !item.controlKeys.Cmd === !cmdDown && matched.push(item);
+                    !item.controlKeys.Alt  === !altDown  &&
+                    !item.controlKeys.Cmd  === !cmdDown  && matched.push(item);
                 }.bind(this));
 
                 return matched;
@@ -106,7 +110,14 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
 
                 matched.forEach(function(item){
                     if(keyCode === item.KeyCode && typeof item.action === 'string'){
-                        com.emit(item.action, this);
+                        com.emit(item.action, 
+                            { 
+                                active : this.getActiveItem(), 
+                                position : this.getMod('position'), 
+                                menuObj : this, 
+                                extras : item.extra ? item.extra : null 
+                            }
+                        );
                     }
                 }.bind(this));
 

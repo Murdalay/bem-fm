@@ -43,8 +43,8 @@
 /*borschik:include:../../libs/bem-core/common.blocks/querystring/__uri/querystring__uri.vanilla.js*/;
 /*borschik:include:../../common.blocks/vow-queue/vow-queue.vanilla.js*/;
 /*borschik:include:../../desktop.blocks/panel/panel.browser.js*/;
-/*borschik:include:../../common.blocks/path/path.browser.js*/;
 /*borschik:include:../../libs/bem-core/common.blocks/cookie/cookie.js*/;
+/*borschik:include:../../common.blocks/path/path.browser.js*/;
 /*borschik:include:../../libs/bem-core/common.blocks/functions/__debounce/functions__debounce.vanilla.js*/;
 /*borschik:include:../../common.blocks/sort/sort.browser.js*/;
 /*borschik:include:../../libs/bem-components/common.blocks/select/select.js*/;

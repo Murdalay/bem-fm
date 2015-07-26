@@ -5,8 +5,8 @@
         "defLevel": "desktop.bundles/"
     },
     "client": {
-        "left": "/",
-        "right": "/",
+        "left": "/Users/",
+        "right": "/Users/",
         "updateFrequency": 30,
         "messages": {
             "delete": {
@@ -98,6 +98,15 @@
                 }
             },
             {
+                "action":"focus-to-path",
+                "KeyCode": 16,
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : false,
+                    "Cmd" : true
+                }
+            },
+            {
                 "action":"levelup",
                 "KeyCode": 38,
                 "controlKeys":{
@@ -149,6 +158,76 @@
                     "Ctrl" : false,
                     "Alt" : false,
                     "Cmd" : true
+                }
+            },
+            {
+                "action":"cd",
+                "KeyCode": 49,
+                "extra": "left",
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : true,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"cd",
+                "KeyCode": 50,
+                "extra": "right",
+                "controlKeys":{
+                    "Ctrl" : true,
+                    "Alt" : true,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"sort",
+                "KeyCode": 49,
+                "extra": "name",
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : true,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"sort",
+                "KeyCode": 50,
+                "extra": "type",
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : true,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"sort",
+                "KeyCode": 51,
+                "extra": "size",
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : true,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"sort",
+                "KeyCode": 52,
+                "extra": "owner",
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : true,
+                    "Cmd" : false
+                }
+            },
+            {
+                "action":"sort",
+                "KeyCode": 53,
+                "extra": "date",
+                "controlKeys":{
+                    "Ctrl" : false,
+                    "Alt" : true,
+                    "Cmd" : false
                 }
             }
         ],
