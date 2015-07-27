@@ -64,8 +64,8 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
             'true' : function() {
                 this._stat && !this.hasMod('toplevel') && this._details.setMod('hovered');
 
-                if(this.hasMod('pointerover')) {
-                    this._timer = setTimeout(this.setSelection.bind(this), 1550);
+                if(this.hasMod('pointerover') && mouseActive) {
+                    BEMDOM.blocks['menu'].isScrolling() || (this._timer = setTimeout(this.setSelection.bind(this), 1550));
                 } else {
                     this.setSelection();
                 }

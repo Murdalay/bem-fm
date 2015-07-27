@@ -183,5 +183,5 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
     	this._lastItem = item;
     	this.__base.apply(this, arguments);
     }
-}));
+},{ isScrolling : function(){ return transitionInProgress } }));
 });
