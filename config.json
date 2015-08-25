@@ -2,11 +2,15 @@
     "server": {
         "basePath": "/Users/ragnar/",
         "defEncoding": "utf-8",
-        "defLevel": "desktop.bundles/"
+        "security": {
+            "password" : "Tenebris"
+        },
+        "defLevel": "desktop.bundles/",
+        "defPort" : 7000
     },
     "client": {
-        "left": "/Users/",
-        "right": "/Users/",
+        "left": "/",
+        "right": "/",
         "updateFrequency": 30,
         "messages": {
             "delete": {

@@ -10749,8 +10749,8 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
         }
 
         if(this._hoveredItem && keyCode === keyCodes.ENTER || cmdDown && keyCode === keyCodes.DOWN ) {
-            com.emit('exec');
             e.preventDefault();
+            com.emit('exec');
         } 
         else if(keyCode === keyCodes.TAB) {
             e.preventDefault();
@@ -11081,7 +11081,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 
     _onPointerLeave : function() {
         this.delMod('pointerover');
-        mouseActive && this.__base.apply(this, arguments);
+        this.__base.apply(this, arguments);
     },
 
     _statesReady : function(e, data) {

@@ -2,7 +2,7 @@
   "author": "Ragnar",
   "name": "bem-fm",
   "email": "murdalay@gmail.com",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "node": ">=0.10"
   },
@@ -12,6 +12,8 @@
     "morgan":"^1.5.0",
     "express":"4.11.2",
     "body-parser": "^1.12.1",
+    "express.io": "^1.1.13",
+    "express-session": "^1.11.3",
     "nodejs-disks": "^0.2.1",
     "vow":"^0.4.8",
     "vow-fs":"^0.3.2",

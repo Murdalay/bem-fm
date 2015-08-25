@@ -1,0 +1,27 @@
+.login {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	text-align: center;
+	background-image: url("/images/disabler.png");
+	background-repeat: repeat repeat;
+	overflow: hidden;
+}
+
+.login-wrapper {
+	top:27%;
+	left: 30%;
+	position: absolute;
+	padding-top: 4%;
+	background: RGBA(250,250,250, 0.3);
+	width: 40%;
+	min-width: 360px;
+	height: 67%;
+}
+
+.login-wrapper__label {
+	font-family: Helvetica;
+	font-size: 21px;
+	color: #fff;
+	font-weight: normal;
+}

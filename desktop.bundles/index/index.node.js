@@ -12,6 +12,7 @@ require('../../libs/bem-core/common.blocks/events/events.vanilla.js');
 require('../../libs/bem-core/common.blocks/tick/tick.vanilla.js');
 require('../../common.blocks/router/router.node.js');
 require('../../libs/bem-core/common.blocks/vow/vow.vanilla.js');
+require('../../common.blocks/folders-tree/folders-tree.node.js');
 require('../../libs/bem-core/common.blocks/events/__channels/events__channels.vanilla.js');
 require('../../common.blocks/size/size.vanilla.js');
 require('../../common.blocks/config/config.vanilla.js');

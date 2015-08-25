@@ -1,0 +1,39 @@
+block('login')(content()(
+	function(){
+		return [
+			{
+			    block : 'login-wrapper',
+			    content : 
+			    [
+				    {
+						elem : 'label',
+						content : 'Welcome to BEM File Manager.'
+				    },
+	    			{
+					    block : 'control-group',
+					    content : [
+					        {
+					            block : 'input',
+					            mods : { theme : 'islands', size : 'xl', type : 'password', focused : true },
+					            name : 'pass',
+					            placeholder : 'Enter the password'
+					        },
+					        {
+					            block : 'button',
+					            mods : { theme : 'islands', size : 'xl', type : 'submit' },
+					            text : 'Send'
+					        }
+					    ]
+					}
+				]
+			}
+		]
+	})
+)
+
+block('login-wrapper')(
+	tag()('form'),
+	attrs()({ method: 'post' }),
+	elem('label')(tag()('h2'))
+)
+

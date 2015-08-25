@@ -258,6 +258,9 @@ exports.deps = [
         "block": "vow"
     },
     {
+        "block": "folders-tree"
+    },
+    {
         "block": "manager"
     },
     {
@@ -979,6 +982,10 @@ exports.depsByTechs = {
             {
                 "tech": "tmpl-spec.js",
                 "block": "vow"
+            },
+            {
+                "tech": "tmpl-spec.js",
+                "block": "folders-tree"
             },
             {
                 "tech": "tmpl-spec.js",

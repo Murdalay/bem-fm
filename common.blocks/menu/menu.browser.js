@@ -126,8 +126,8 @@ provide(Menu.decl({ modName : 'panel', modVal : true }, /** @lends menu.prototyp
         }
 
         if(this._hoveredItem && keyCode === keyCodes.ENTER || cmdDown && keyCode === keyCodes.DOWN ) {
-            com.emit('exec');
             e.preventDefault();
+            com.emit('exec');
         } 
         else if(keyCode === keyCodes.TAB) {
             e.preventDefault();

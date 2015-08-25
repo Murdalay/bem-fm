@@ -1,4 +1,4 @@
-modules.define('router', ['config', 'vow'], function(provide, config, vow) {
+modules.define('router', ['vow'], function(provide, vow) {
 	var express = require('express'),
 	    path = require('path'),
 	    fs = require('fs'),
@@ -6,21 +6,36 @@ modules.define('router', ['config', 'vow'], function(provide, config, vow) {
 	    morgan = require('morgan'),
 	    mime = require('mime'),
 	    njds = require('nodejs-disks'),
+	    session = require('express-session'),
 		app = express(),
-		pathToBundle = path.join(process.cwd(), 'desktop.bundles', 'index'),
-
+		basePath = process.cwd(),
+		pathToIndex = path.join(basePath, 'desktop.bundles', 'index'),
+		pathToBundles = path.join(basePath, 'desktop.bundles'),
+		pathToImages = path.join(basePath, 'images'),
+		pathToLogin = path.join(basePath, 'desktop.bundles', 'login'),
+		conf = require(basePath + '/config.json'),
+		pass = conf.server.security.password,
 	    disksObj = null;
+
 
 	    njds.drives(function (err, drives) {
 	        njds.drivesDetail(drives, function (err, data) { disksObj = data });
         });
 
+	function checkAcess(req, res, next) {
+	  if (req.session.confirmed) {
+	    next();
+	  } else {
+	    res.redirect('/login');
+	  }
+	}
+
 	app
 	    .disable('x-powered-by')
 	    .use(morgan('dev'))
-	    .use(express.static(pathToBundle))
-	    .use(express.static(__dirname))
-	    .use(express.static(process.cwd()));
+
+	    .use('/login', express.static(pathToLogin, { index: 'login.html' }))
+	    .use('/images', express.static(pathToImages));
 
 	app.get('/list', function (req, res) {
 		var _path = path.normalize(req.query.path);
@@ -97,6 +112,15 @@ modules.define('router', ['config', 'vow'], function(provide, config, vow) {
 			.fail(function(response){
 				console.error('Failed to detect if it is symlink\n' + response);
 			});
+	});
+
+	app.get('/astpart', function (req, res) {
+		if(req.query.path){
+
+		} else {
+			res.status('500').end('No path was provided in request');
+			console.error('No path was provided in request\n');
+		}
 	});
 
 	app.get('/exist', function (req, res) {
@@ -292,6 +316,23 @@ modules.define('router', ['config', 'vow'], function(provide, config, vow) {
 				console.error('Failed to make dir\n' + response.responseText);
 			});
 	});
+
+	app 
+	    .use(require('body-parser').urlencoded())
+		.use(session({
+		  secret: 'The lost tome of elves',
+		  resave: false
+		}))
+		.get('/', checkAcess, function (req, res, next) { next() })
+	    .use('/', express.static(pathToIndex));
+
+	app.post('/login', function (req, res, next) {
+		if(req.body.pass == pass){
+			req.session.confirmed = true;
+		}
+	    res.redirect('/');
+	});
+
 
 provide({ 'app': app });
 

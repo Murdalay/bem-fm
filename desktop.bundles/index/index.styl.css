@@ -520,6 +520,7 @@
   font-size: 16px;
   color: #333;
   line-height: 32px;
+  overflow: scroll;
 }
 .menu-item_dir {
   font-family: Helvetica;
@@ -586,7 +587,7 @@
   font-variant: small-caps;
 }
 .details_selected .details__name {
-  max-width: 460px;
+  max-width: 800px;
   transition: max-width 1s;
 }
 .details_selected .details__name_type_file {

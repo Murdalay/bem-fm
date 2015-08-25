@@ -179,7 +179,7 @@ provide(MenuItem.decl({ modName : 'pathfinder', modVal : true }, /** @lends menu
 
     _onPointerLeave : function() {
         this.delMod('pointerover');
-        mouseActive && this.__base.apply(this, arguments);
+        this.__base.apply(this, arguments);
     },
 
     _statesReady : function(e, data) {
